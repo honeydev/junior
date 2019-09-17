@@ -5,6 +5,9 @@ python:
 env:
   - FLASK_APP=main.py
 
+before_install:
+- pip install poetry
+
 install: 
   -poetry install
 
