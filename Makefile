@@ -3,4 +3,3 @@ install:
 
 lint:
 	flake8
-	pylint .
