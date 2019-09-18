@@ -7,6 +7,12 @@ authors = ["Alexey Lebedev <alexey.lebedev@fogstream.ru>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 flask = "^1.1"
+flask-restplus = "^0.13.0"
+SQLAlchemy = "^1.3"
+python-dotenv = "^0.10.3"
+flask-sqlalchemy = "^2.4"
+psycopg2-binary = "^2.8"
+Flask-Migrate = "^2.5"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7"
