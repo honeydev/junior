@@ -18,7 +18,7 @@ class Registration(MethodView):
         login = request.form['login']
         email = request.form['email']
         password = request.form['password']
-        password2 = request.form['password2']
+        password_confirmation = request.form['password_confirmation']
         firstname = request.form['firstname']
         middlename = request.form['middlename']
         lastname = request.form['lastname']
@@ -31,7 +31,7 @@ class Registration(MethodView):
             middlename=middlename,
             lastname=lastname,
         )
-        if User.check_password(user, password2):
+        if User.check_password(user, password_confirmation):
             try:
                 user.save()
                 result = redirect('/')

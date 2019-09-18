@@ -1,20 +1,89 @@
 {% extends 'base.jinja2' %}
+{% block header %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/register.css') }}">
+{% endblock %}
 {% block content %}
-    <form action="/auth/", method="post">
-        <label>Логин:</label>
-        <input name="login" type="text"> <br>
-        <label>Пароль:</label>
-        <input name="password" type="password"> <br>
-        <label>Повторите пароль:</label>
-        <input name="password2" type="password"> <br>
-        <label>Email:</label>
-        <input name="email" type="email"> <br>
-        <label>Имя:</label>
-        <input name="firstname" type="text"> <br>
-        <label>Фамилия:</label>
-        <input name="middlename" type="text"> <br>
-        <label>Отчество:</label>
-        <input name="lastname" type="text"> <br>
-    <button type="submit">Отправить</button>
-    </form>
+    <div class="text-center element-center">
+	<div class="logo">Регистрация</div>
+	<!-- Main Form -->
+	<div class="login-form-1">
+		<form id="login-form" class="text-left" action='/auth/' method="post">
+			<div class="login-form-main-message"></div>
+			<div class="main-login-form">
+				<div class="login-group">
+					<div class="form-group">
+						<label for="lg_username" class="sr-only">
+                            Логин:
+                        </label>
+						<input type="text"
+                               class="form-control"
+                               id="lg_username"
+                               name="login">
+					</div>
+
+                    <div class="form-group">
+						<label for="lg_username" class="sr-only">
+                            Пароль:
+                        </label>
+						<input type="password"
+                               class="form-control"
+                               id="lg_username"
+                               name="password">
+					</div>
+
+                    <div class="form-group">
+						<label for="lg_username" class="sr-only">
+                            Повторите пароль:
+                        </label>
+						<input type="password"
+                               class="form-control"
+                               id="lg_username"
+                               name="password_confirmation">
+					</div>
+
+                    <div class="form-group">
+						<label for="lg_username" class="sr-only">
+                            Email:
+                        </label>
+						<input type="email"
+                               class="form-control"
+                               id="lg_username"
+                               name="email">
+					</div>
+
+                    <div class="form-group">
+						<label for="lg_username" class="sr-only">
+                            Имя:
+                        </label>
+						<input type="text"
+                               class="form-control"
+                               id="lg_username"
+                               name="firstname">
+					</div>
+
+                    <div class="form-group">
+						<label for="lg_username" class="sr-only">
+                            Фамилия:
+                        </label>
+						<input type="text"
+                               class="form-control"
+                               id="lg_username"
+                               name="middlename">
+					</div>
+
+                    <div class="form-group">
+						<label for="lg_username" class="sr-only">
+                            Отчество:
+                        </label>
+						<input type="text"
+                               class="form-control"
+                               id="lg_username"
+                               name="lastname">
+					</div>
+				<button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
+			</div>
+		</form>
+	</div>
+	<!-- end:Main Form -->
+</div>
 {% endblock %}
