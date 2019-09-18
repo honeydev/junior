@@ -3,9 +3,10 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from junior import settings
-from junior.app.views import index_bp
-from junior.user.views import bp
+import settings
+
+from .app.views import index_bp
+from .user.views import bp
 
 db = SQLAlchemy()
 
