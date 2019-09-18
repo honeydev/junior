@@ -1,5 +1,5 @@
-from flask.views import MethodView
 from flask import Blueprint
+from flask.views import MethodView
 
 bp = Blueprint('auth', __name__)
 

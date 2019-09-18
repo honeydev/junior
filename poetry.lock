@@ -113,6 +113,14 @@ Flask = ">=0.10"
 SQLAlchemy = ">=0.8.0"
 
 [[package]]
+category = "dev"
+description = "A Python utility / library to sort Python imports."
+name = "isort"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "4.3.21"
+
+[[package]]
 category = "main"
 description = "Various helpers to pass data to untrusted environments and back."
 name = "itsdangerous"
@@ -267,7 +275,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.15.6"
 
 [metadata]
-content-hash = "550d3fda82213a6b9bf6b75cdca93950b655133adacdcf0a7dc310fe1d1f2bae"
+content-hash = "49b2d069759274ee8cc1ba19258c5ea5b270fb3d03f1d06730723643faf1c40c"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -281,6 +289,7 @@ flask = ["13f9f196f330c7c2c5d7a5cf91af894110ca0215ac051b5844701f2bfd934d52", "45
 flask-migrate = ["6fb038be63d4c60727d5dfa5f581a6189af5b4e2925bc378697b4f0a40cfb4e1", "a96ff1875a49a40bd3e8ac04fce73fdb0870b9211e6168608cbafa4eb839d502"]
 flask-restplus = ["a15d251923a8feb09a5d805c2f4d188555910a42c64d58f7dd281b8cac095f1b", "a66e442d0bca08f389fc3d07b4d808fc89961285d12fb8013f7cf15516fa9f5c"]
 flask-sqlalchemy = ["0c9609b0d72871c540a7945ea559c8fdf5455192d2db67219509aed680a3d45a", "8631bbea987bc3eb0f72b1f691d47bd37ceb795e73b59ab48586d76d75a7c605"]
+isort = ["54da7e92468955c4fceacd0c86bd0ec997b0e1ee80d97f67c35a78b719dccab1", "6e811fcb295968434526407adb8796944f1988c5b65e8139058f2014cbe100fd"]
 itsdangerous = ["321b033d07f2a4136d3ec762eac9f16a10ccd60f53c0c91af90217ace7ba1f19", "b12271b2047cb23eeb98c8b5622e2e5c5e9abd9784a153e9d8ef9cb4dd09d749"]
 jinja2 = ["065c4f02ebe7f7cf559e49ee5a95fb800a9e4528727aec6f24402a5374c65013", "14dd6caf1527abb21f08f86c784eac40853ba93edb79552aa1e4b8aef1b61c7b"]
 jsonschema = ["5f9c0a719ca2ce14c5de2fd350a64fd2d13e8539db29836a86adc990bb1a068f", "8d4a2b7b6c2237e0199c8ea1a6d3e05bf118e289ae2b9d7ba444182a2959560d"]

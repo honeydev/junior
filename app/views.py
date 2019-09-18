@@ -1,6 +1,5 @@
+from flask import Blueprint, render_template
 from flask.views import MethodView
-from flask import Blueprint
-from flask import render_template
 
 index_bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
