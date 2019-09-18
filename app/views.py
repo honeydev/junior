@@ -7,7 +7,7 @@ index_bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 class IndexPage(MethodView):
 
     def __init__(self, template_name):
-        self.template_name = template_name
+        self.template_name: str = template_name
 
     def get(self):
         return render_template(self.template_name)
