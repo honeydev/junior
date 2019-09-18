@@ -1,0 +1,8 @@
+[flake8]
+exclude = .git,__pycache__,migrations, main.py
+ignore = \
+    D104, \             # Докстринги в публичных пакетах (__init__.py)
+    D105, \             # Докстринги в магических методах
+    D106, \             # Докстринги в публичных вложенных классах (например, Meta)
+    D107, \             # Докстриги в __init__
+import-order-style = pep8

@@ -1,0 +1,14 @@
+{% extends 'base.jinja2' %}
+{% block content %}
+    <form action="/auth/", method="post">
+        <label>Логин:</label>
+        <input name="login" type="text"> <br>
+        <label>Пароль:</label>
+        <input name="password" type="password"> <br>
+        <label>Повторите пароль:</label>
+        <input name="password2" type="password"> <br>
+        <label>Email:</label>
+        <input name="email" type="email"> <br>
+    <button type="submit">Отправить</button>
+    </form>
+{% endblock %}

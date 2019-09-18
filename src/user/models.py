@@ -1,9 +1,10 @@
-from base.main import db
+from src.main import db
 
 
 class User(db.Model):
     __tablename__ = 'users'
-
+    __table_args__ = {'extend_existing': True}
+    extend_existing = True
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(), )
     password = db.Column(db.String(), )
