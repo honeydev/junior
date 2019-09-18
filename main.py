@@ -1,11 +1,15 @@
 """Модуль запуска сервера."""
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-import settings
-from user.views import bp
+from junior import settings
+from junior.user.views import bp
+from junior.app.views import index_bp
+
 db = SQLAlchemy()
 
 app = Flask(__name__,)
+app.register_blueprint(index_bp)
 app.register_blueprint(bp)
 app.config['SQLALCHEMY_DATABASE_URI'] = settings.DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False

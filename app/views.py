@@ -1,0 +1,18 @@
+from flask.views import MethodView
+from flask import Blueprint
+from flask import render_template
+
+index_bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
+
+
+class IndexPage(MethodView):
+
+    def __init__(self, template_name):
+        self.template_name = template_name
+
+    def get(self):
+        return render_template(self.template_name)
+
+
+index_bp.add_url_rule('/', view_func=IndexPage.as_view(
+        name='index', template_name='index.jinja2'))
