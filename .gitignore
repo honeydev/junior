@@ -106,3 +106,4 @@ venv.bak/
 .vscode
 .idea
 node_modules
+src/static/dist

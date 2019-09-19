@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-</head>
-<body>
-{% block header %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/bootstrap.min.css') }}">
-    <script src="{{ url_for('static', filename='vendor/bootstrap.min.js')}}"></script>
-{% endblock %}
-{% block content %}{% endblock %}
-</body>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+        <script src="{{ url_for('static', filename='dist/app.js') }}"></script>
+        <div id="app"></div>
+    </body>
 </html>
