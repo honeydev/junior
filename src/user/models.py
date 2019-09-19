@@ -1,6 +1,6 @@
 from flask_bcrypt import check_password_hash, generate_password_hash
 
-from src.main import db
+from src.extensions import db
 
 
 class User(db.Model, ):
@@ -18,7 +18,6 @@ class User(db.Model, ):
         self.middlename = middlename
         self.lastname = lastname
 
-    extend_existing = True
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(), unique=True)
     password = db.Column(db.String(), )

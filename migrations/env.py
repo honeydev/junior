@@ -1,7 +1,7 @@
 from __future__ import with_statement
 
-import logging
 from logging.config import fileConfig
+import logging
 
 # add your model's MetaData object here
 # for 'autogenerate' support

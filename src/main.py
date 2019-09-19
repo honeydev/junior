@@ -1,10 +1,12 @@
 """Модуль запуска сервера."""
 
 from flask import Flask
+from flask_admin.contrib.sqla import ModelView
 
 from src import user
-from src.extensions import bcrypt, db, migrate
+from src.extensions import admin, bcrypt, db, migrate, sess
 from src.settings import DevelopConfig
+from src.user import User
 from src.views import index_bp
 
 
@@ -20,6 +22,8 @@ def create_app(config=DevelopConfig):
     register_extensions(app)
     register_blueprints(app)
     register_shellcontext(app)
+    register_adminpanel(app)
+    register_sessions(app)
     return app
 
 
@@ -28,6 +32,21 @@ def register_extensions(app):
     bcrypt.init_app(app)
     db.init_app(app)
     migrate.init_app(app, db)
+    admin.init_app(app)
+
+
+def register_adminpanel(app):
+    app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
+    admin.add_view(ModelView(User, db.session))
+
+
+def register_sessions(app):
+    # Session storage type.
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    # Max sess file before start deleting.
+    app.config['SESSION_FILE_THRESHOLD'] = 100
+    sess.init_app(app)
 
 
 def register_blueprints(app):
