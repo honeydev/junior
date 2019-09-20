@@ -91,3 +91,4 @@ venv.bak/
 .idea
 node_modules
 src/static/dist
+flask_session

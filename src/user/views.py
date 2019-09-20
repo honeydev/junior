@@ -1,15 +1,8 @@
-from flask import (
-    Blueprint,
-    make_response,
-    redirect,
-    render_template,
-    request,
-    session,
-)
+from flask import (Blueprint, make_response, redirect, render_template,
+                   request, session)
 from flask.views import MethodView
 
 from .models import User
-
 
 bp = Blueprint('auth', __name__, template_folder='templates')
 
