@@ -1,0 +1,14 @@
+{% extends 'base.jinja2' %}
+{% block content %}
+    <div>
+        Авторизация
+        <form action="{{ url_for('auth.login') }}" method="post">
+            <label>Логин:</label>
+            <input type="text" name="login">
+            <label>Пароль:</label>
+            <input type="password" name="password">
+            <button type="submit"></button>
+        </form>
+    </div>
+        <a href="/" methods="get">Главная</a>
+{% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 from flask.views import MethodView
 
 
@@ -11,7 +11,13 @@ class IndexPage(MethodView):
         self.template_name: str = template_name
 
     def get(self):
-        return render_template(self.template_name)
+        context = {}
+        if session.get('auth'):
+            context['user'] = session.get('user').login
+            context['register'] = True
+        else:
+            context['register'] = False
+        return render_template(self.template_name, **context)
 
 
 index_bp.add_url_rule(

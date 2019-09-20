@@ -1,5 +1,7 @@
+from flask_admin import Admin
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
+from flask_session import Session
 from flask_sqlalchemy import Model, SQLAlchemy
 
 
@@ -33,3 +35,5 @@ class CRUDMixin(Model):
 bcrypt = Bcrypt()
 db = SQLAlchemy(model_class=CRUDMixin)
 migrate = Migrate()
+admin = Admin(name='junnior', template_mode='bootstrap3')
+sess = Session()

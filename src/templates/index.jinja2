@@ -1,4 +1,11 @@
 {% extends 'base.jinja2' %}
 {% block content %}
-    <h1>hello worlds</h1>
+
+    {% if register  %}
+    <a href="{{ url_for('auth.logout') }}">Выход</a>
+        <div>Вошли как: {{ user }}</div>
+    {% else %}
+    <a href="{{ url_for('auth.login') }}" methods="get">Вход</a>
+    <a href="{{ url_for('auth.registration') }}" methods="get">Регистрация</a>
+    {% endif %}
 {% endblock %}
