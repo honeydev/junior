@@ -1,8 +1,8 @@
 """Модуль запуска сервера."""
 
 from flask import Flask
-from flask_admin.contrib.sqla import ModelView
 
+from flask_admin.contrib.sqla import ModelView
 from src import user
 from src.extensions import admin, bcrypt, db, migrate, sess
 from src.settings import DevelopConfig
