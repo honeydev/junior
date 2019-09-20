@@ -1,5 +1,5 @@
 language: python
-
+sudo: false
 python:
   - 3.7
 env:
@@ -7,6 +7,7 @@ env:
 
 before_install:
   - pip install poetry
+  - "export PYTHONPATH=$PYTHONPATH:$(pwd)"
 
 install: 
   - make install
