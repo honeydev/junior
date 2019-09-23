@@ -1,92 +1,94 @@
 {% extends 'base.jinja2' %}
+{% include 'navbar.jinja2'%}
 {% block header %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/register.css') }}">
 {% endblock %}
+
 {% block content %}
-    <div class="text-center element-center">
-	<div class="logo">Регистрация</div>
-	<!-- Main Form -->
-	<div class="login-form-1">
-		<form id="login-form"
-              class="text-left"
-              action='{{ url_for('auth.registration') }}'
-              method="post">
-			<div class="login-form-main-message"></div>
-			<div class="main-login-form">
-				<div class="login-group">
-					<div class="form-group">
-						<label for="lg_username" class="sr-only">
-                            Логин:
-                        </label>
-						<input type="text"
-                               class="form-control"
-                               id="lg_username"
-                               name="login">
-					</div>
 
-                    <div class="form-group">
-						<label for="lg_username" class="sr-only">
-                            Пароль:
-                        </label>
-						<input type="password"
-                               class="form-control"
-                               id="lg_username"
-                               name="password">
-					</div>
+<div class="container card mt-5 col-4">
 
-                    <div class="form-group">
-						<label for="lg_username" class="sr-only">
-                            Повторите пароль:
-                        </label>
-						<input type="password"
-                               class="form-control"
-                               id="lg_username"
-                               name="password_confirmation">
-					</div>
+  <div class="row card-header">
+    <div class="mx-auto col-auto">
+      РЕГИСТРАЦИЯ
+    </div>
+  </div>
 
-                    <div class="form-group">
-						<label for="lg_username" class="sr-only">
-                            Email:
-                        </label>
-						<input type="email"
-                               class="form-control"
-                               id="lg_username"
-                               name="email">
-					</div>
+<form class="form-horizontal mb-5" action="{{ url_for('auth.registration') }}" method="post">
+  <div class="form-group">
+    <div class="row">
+      <div class="mx-auto col-10 mt-5 mb-2">
+        <input type="text"
+               name="login"
+               required
+               class="form-control"
+               id="login"
+               placeholder="Логин">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mx-auto col-10 mb-2">
+        <input type="email"
+               name="email"
+               required
+               class="form-control"
+               id="email"
+               placeholder="Адресс электронной почты">
+        </div>
+    </div>
+    <div class="row">
+      <div class="mx-auto col-10 mb-2">
+        <input type="password"
+               name="password"
+               required
+               class="form-control"
+               id="password1"
+               placeholder="Пароль">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mx-auto col-10 mb-2">
+        <input type="password"
+               name="password_confirmation"
+               class="form-control"
+               id="password_confirmation"
+               required="true"
+               placeholder="Повторите пароль">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mx-auto col-10 mb-2">
+        <input type="text"
+               name="firstname"
+               class="form-control"
+               id="firstname"
+               placeholder="Имя">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mx-auto col-10 mb-2">
+        <input type="text"
+               name="middlename"
+               class="form-control"
+               id="middlename"
+               placeholder="Фамилия">
+      </div>
+    </div>
+    <div class="row">
+      <div class="mx-auto col-10 mb-2">
+        <input type="text"
+               name="lastname"
+               class="form-control"
+               id="lastname"
+               placeholder="Отчество">
+      </div>
+    </div>
 
-                    <div class="form-group">
-						<label for="lg_username" class="sr-only">
-                            Имя:
-                        </label>
-						<input type="text"
-                               class="form-control"
-                               id="lg_username"
-                               name="firstname">
-					</div>
-
-                    <div class="form-group">
-						<label for="lg_username" class="sr-only">
-                            Фамилия:
-                        </label>
-						<input type="text"
-                               class="form-control"
-                               id="lg_username"
-                               name="middlename">
-					</div>
-
-                    <div class="form-group">
-						<label for="lg_username" class="sr-only">
-                            Отчество:
-                        </label>
-						<input type="text"
-                               class="form-control"
-                               id="lg_username"
-                               name="lastname">
-					</div>
-				<button type="submit" class="login-button"><i class="fa fa-chevron-right"></i></button>
-			</div>
-		</form>
-	</div>
-	<!-- end:Main Form -->
+    <div class="row">
+      <div class="mx-auto col-auto mt-4">
+        <button type="submit" class="btn btn-success">Зарегистрироваться</button>
+      </div>
+    </div>
+  </div>
+</form>
 </div>
 {% endblock %}
