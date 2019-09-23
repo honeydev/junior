@@ -14,6 +14,8 @@ def create_app(config=DevelopConfig):
     """App factory."""
     app = Flask(
         __name__.split('.')[0],
+        static_url_path='/static',
+        static_folder='src/static'
     )
     app.url_map.strict_slashes = False
     app.config.from_object(config)
