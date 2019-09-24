@@ -1,4 +1,5 @@
 from flask_bcrypt import check_password_hash, generate_password_hash
+
 from src.extensions import db
 
 

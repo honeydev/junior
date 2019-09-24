@@ -5,11 +5,11 @@ from flask_admin.contrib.sqla import ModelView
 
 from src import user
 from src.extensions import admin, bcrypt, db, migrate, sess
+from src.faq.models import Answer, Question
+from src.faq.views import bp as faq_bp
 from src.settings import DevelopConfig
 from src.user import User
-from src.faq.models import Answer, Question
 from src.views import bp as index_bp
-from src.faq.views import bp as faq_bp
 
 
 def create_app(config=DevelopConfig):

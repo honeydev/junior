@@ -1,7 +1,5 @@
-from flask import Blueprint, redirect, render_template, request, session
+from flask import Blueprint, render_template
 from flask.views import MethodView
-
-from src.faq.models import Answer, Question
 
 bp = Blueprint('faq', __name__, template_folder='templates')
 

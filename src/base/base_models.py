@@ -1,6 +1,8 @@
-from src.extensions import db
 import datetime
+
 from sqlalchemy.ext.declarative import declarative_base
+
+from src.extensions import db
 
 Base = declarative_base()
 

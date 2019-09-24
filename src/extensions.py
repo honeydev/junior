@@ -1,9 +1,8 @@
 from flask_admin import Admin
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
-from flask_sqlalchemy import Model, SQLAlchemy
-
 from flask_session import Session
+from flask_sqlalchemy import Model, SQLAlchemy
 
 
 class CRUDMixin(Model):

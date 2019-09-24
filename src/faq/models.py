@@ -1,5 +1,5 @@
-from src.extensions import db
 from src.base.base_models import BaseDateTimeModel
+from src.extensions import db
 
 
 class Question(BaseDateTimeModel):
