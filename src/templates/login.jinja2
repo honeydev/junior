@@ -9,28 +9,21 @@
   </div>
 
   <form class="form-horizontal" action="{{ url_for('auth.login') }}" method="post">
+    {% if form.errors %}
+      {% for field, errors in form.errors.items() %}
+        <div class="alert alert-error">
+          {{ form[field].label }}: {{ ', '.join(errors) }}
+        </div>
+      {% endfor %}
+    {% endif %}
     <div class="form-group">
-      <div class="row">
-        <div class="mx-auto col-10 mt-5 mb-2">
-          <input type="text"
-                 name="login"
-                 required
-                 class="form-control"
-                 id="login"
-                 placeholder="Логин">
+      {% for form in form %}
+        <div class="row">
+          <div class="mx-auto col-10 mt-5 mb-2">
+            {{ form(class_='form-control', placeholder = form.label.text) }}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="mx-auto col-10 mb-2">
-          <input type="password"
-                 name="password"
-                 required
-                 class="form-control"
-                 id="password"
-                 placeholder="Пароль">
-        </div>
-      </div>
-
+      {% endfor %}
       <div class="row">
         <div class="mx-auto col-auto mt-4">
           <button type="submit" class="btn btn-success">Отправить</button>
