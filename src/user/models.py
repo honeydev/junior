@@ -1,9 +1,8 @@
 from flask_bcrypt import check_password_hash, generate_password_hash
-
 from src.extensions import db
 
 
-class User(db.Model, ):
+class User(db.Model):
     __tablename__ = 'users'
     __table_args__ = {'extend_existing': True}
 
@@ -25,6 +24,9 @@ class User(db.Model, ):
     firstname = db.Column(db.String(), nullable=True)
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
+    db.relationship(
+        'User', backref='users', lazy='dynamic'
+    )
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
