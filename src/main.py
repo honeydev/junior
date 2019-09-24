@@ -5,9 +5,11 @@ from flask_admin.contrib.sqla import ModelView
 
 from src import user
 from src.extensions import admin, bcrypt, db, migrate, sess
+from src.faq.models import Answer, Question
+from src.faq.views import bp as faq_bp
 from src.settings import DevelopConfig
 from src.user import User
-from src.views import index_bp
+from src.views import bp as index_bp
 
 
 def create_app(config=DevelopConfig):
@@ -38,6 +40,8 @@ def register_extensions(app):
 def register_adminpanel(app):
     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
     admin.add_view(ModelView(User, db.session))
+    admin.add_view(ModelView(Answer, db.session))
+    admin.add_view(ModelView(Question, db.session))
 
 
 def register_sessions(app):
@@ -52,6 +56,7 @@ def register_sessions(app):
 def register_blueprints(app):
     app.register_blueprint(user.views.bp)
     app.register_blueprint(index_bp)
+    app.register_blueprint(faq_bp)
 
 
 def register_shellcontext(app):
