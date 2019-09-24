@@ -360,7 +360,7 @@ python-versions = "*"
 version = "2.2.1"
 
 [metadata]
-content-hash = "e55f59baa2c0ac81ae5918cb12c0d674c494f8ee5a4da0a23cab10b46e540f62"
+content-hash = "f463fd6889025cb6d451424ee1f609ea93d12cc106873f8d9244936f21317e4d"
 python-versions = "^3.7"
 
 [metadata.hashes]

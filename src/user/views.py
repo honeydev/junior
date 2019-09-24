@@ -1,8 +1,8 @@
-from flask import (Blueprint, make_response, redirect, render_template,
-                   request, session)
+from flask import Blueprint, redirect, render_template, request, session
 from flask.views import MethodView
 
-from .models import User
+from src.user.forms import LoginForm, RegistrationForm
+from src.user.models import User
 
 bp = Blueprint('auth', __name__, template_folder='templates')
 
@@ -10,13 +10,16 @@ bp = Blueprint('auth', __name__, template_folder='templates')
 class Registration(MethodView):
 
     def __init__(self, template_name):
-        self.template_name: str = template_name
+        self.template: str = template_name
+        self.form = RegistrationForm
 
     def post(self):
+        form = self.form(request.form)
+        if not form.validate():
+            return render_template(self.template, **{'form': form})
         login = request.form['login']
         email = request.form['email']
         password = request.form['password']
-        password_confirmation = request.form['password_confirmation']
         firstname = request.form['firstname']
         middlename = request.form['middlename']
         lastname = request.form['lastname']
@@ -29,28 +32,34 @@ class Registration(MethodView):
             middlename=middlename,
             lastname=lastname,
         )
-        if User.check_password(user, password_confirmation):
-            if User.query.filter_by(login=login, email=email).first():
-                result = make_response(('Логин или Email уже заняты.', 400))
-            else:
-                User.save(user)
-                result = redirect('/')
+        if User.query.filter_by(login=login).first():
+            result = render_template(
+                self.template,
+                **{'form': form, 'info': 'Логин уже занят'}
+            )
         else:
-            result = make_response(('Неверные данные', 400))
+            User.save(user)
+            result = redirect('/login')
         return result
 
     def get(self):
-        return render_template(self.template_name)
+        return render_template(self.template, **{'form': self.form()})
 
 
 class Login(MethodView):
     def __init__(self, template_name):
         self.template = template_name
+        self.form = LoginForm
 
     def get(self):
-        return render_template(self.template)
+        return render_template(self.template, **{'form': self.form()})
 
     def post(self):
+        form = self.form(request.form)
+
+        if not form.validate():
+            return render_template(self.template, **{'form': form})
+
         login = request.form['login']
         password = request.form['password']
         user = User.query.filter_by(
