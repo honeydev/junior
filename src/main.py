@@ -1,7 +1,10 @@
 """Модуль запуска сервера."""
 
+import os
+
 from flask import Flask
 from flask_admin.contrib.sqla import ModelView
+from flask_dance.contrib.github import make_github_blueprint, github
 
 from src import user
 from src.extensions import admin, bcrypt, db, migrate, sess
@@ -17,7 +20,7 @@ def create_app(config=DevelopConfig):
     app = Flask(
         __name__.split('.')[0],
         static_url_path='/static',
-        static_folder='src/static'
+        static_folder=f'{config.PROJECT_PATH}/src/static'
     )
     app.url_map.strict_slashes = False
     app.config.from_object(config)
@@ -26,6 +29,7 @@ def create_app(config=DevelopConfig):
     register_shellcontext(app)
     register_adminpanel(app)
     register_sessions(app)
+    regist_github_oauth(app)
     return app
 
 
@@ -70,3 +74,10 @@ def register_shellcontext(app):
         }
 
     app.shell_context_processor(shell_context)
+
+def regist_github_oauth(app):
+    app.config["GITHUB_OAUTH_CLIENT_ID"] = os.environ.get("GITHUB_OAUTH_CLIENT_ID")
+    app.config["GITHUB_OAUTH_CLIENT_SECRET"] = os.environ.get("GITHUB_OAUTH_CLIENT_SECRET")
+    github_bp = make_github_blueprint()
+    app.register_blueprint(github_bp, url_prefix="/login")
+    return app
