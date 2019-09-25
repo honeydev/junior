@@ -2,6 +2,7 @@ from flask import (Blueprint, redirect, render_template, request, session,
                    url_for)
 from flask.views import MethodView
 
+from src.user.auth import SessionAuth
 from src.user.forms import LoginForm, RegistrationForm
 from src.user.models import User
 
@@ -67,7 +68,7 @@ class Login(MethodView):
             login=login,
         ).first()
         if User.check_password(user, password):
-            session['auth'] = True
+            session['auth'] = SessionAuth(True, user)
             session['user'] = user
         return redirect('/')
 

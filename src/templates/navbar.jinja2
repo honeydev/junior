@@ -29,7 +29,7 @@
           {% if register  %}
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Вы вошли как {{ user }}
+            Вы вошли как {{ auth.user.login }}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="nav-link" href="{{ url_for('auth.logout') }}">Выход</a>

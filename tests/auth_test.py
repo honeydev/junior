@@ -7,7 +7,7 @@ from tests.base import BaseTest
 
 class TestRegistrationView(BaseTest):
 
-    def test_registration(self):
+    def test(self):
         factory: Generator = Faker()
         username: str = factory.user_name()
         password: str = factory.password()
@@ -23,3 +23,14 @@ class TestRegistrationView(BaseTest):
             'firstname': first_name
         })
         self.assert_redirects(response, url_for('auth.login'))
+
+
+class TestGithubAuthRedirect(BaseTest):
+
+    def test(self):
+        response = self.client.get(url_for('github.login'))
+        self.assert_status(response, 302)
+
+
+class TestGithubAuth(BaseTest):
+    pass
