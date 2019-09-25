@@ -7,6 +7,9 @@ freeze:
 lint:
 	flake8 --config=.flake8
 
+test:
+	nosetests
+
 run:
 	flask db upgrade
 	flask run --host=0.0.0.0 --port=${PORT}

@@ -26,3 +26,7 @@ class DevelopConfig(Config):
     DEBUG = True
     ASSETS_DEBUG = True
     extend_existing = True
+
+
+class TestConfig(ProductionConfig):
+    SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL', 'sqlite://')

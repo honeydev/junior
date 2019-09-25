@@ -1,4 +1,5 @@
-from flask import Blueprint, redirect, render_template, request, session
+from flask import (Blueprint, redirect, render_template, request, session,
+                   url_for)
 from flask.views import MethodView
 
 from src.user.forms import LoginForm, RegistrationForm
@@ -17,12 +18,12 @@ class Registration(MethodView):
         form = self.form(request.form)
         if not form.validate():
             return render_template(self.template, **{'form': form})
-        login = request.form['login']
-        email = request.form['email']
-        password = request.form['password']
-        firstname = request.form['firstname']
-        middlename = request.form['middlename']
-        lastname = request.form['lastname']
+        login = request.form.get('login')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        firstname = request.form.get('firstname')
+        middlename = request.form.get('middlename')
+        lastname = request.form.get('lastname')
         pass_hash = User.hash_password(password)
         user = User(
             login=login,
@@ -39,7 +40,7 @@ class Registration(MethodView):
             )
         else:
             User.save(user)
-            result = redirect('/login')
+            result = redirect(url_for('auth.login'))
         return result
 
     def get(self):
