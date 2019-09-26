@@ -50,7 +50,7 @@ class GithubAuth(BaseAuth):
     def is_oauth() -> bool:
         return True
 
-    def logout(self, github_client) -> None:
+    def logout(self, github_client=github) -> None:
 
         client_id: str = github_client.client_id
         access_token: str = github_client.access_token
