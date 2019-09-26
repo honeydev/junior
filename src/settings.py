@@ -8,6 +8,7 @@ load_dotenv(find_dotenv())
 
 
 class Config:
+    APP_NAME = os.getenv('APP_NAME', 'Junior')
     DEBUG = os.getenv('DEBUG', False)
     CSRF_ENABLED = True
     WTF_CSRF_SECRET_KEY = 'dsofpkoasodksap'

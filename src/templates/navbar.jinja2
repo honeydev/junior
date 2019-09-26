@@ -1,50 +1,35 @@
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">Junior</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-           <a class="nav-link" href="{{ url_for('index.index') }}">Главная <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Раз</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Дроп
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">1</a>
-            <a class="dropdown-item" href="#">2</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">3</a>
-          </div>
-        </li>
-      </ul>
-      <ul class="navbar-nav dropdown-menu-left">
-        <div class="form-inline my-2 my-lg-0">
-          {% if auth  %}
+  <div class="navbar-brand">
+    <img height="32" width="32" src="{{ url_for('static', filename='logo.png') }}" class="img-fluid" alt="Responsive image">
+  </div>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">  
+      <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('index.index') }}">Минимум<span class="sr-only">(current)</span></a>
+      </li>
+    </ul>
+    <ul class="navbar-nav dropdown-menu-left">
+      <div class="form-inline my-2 my-lg-0">
+        {% if auth  %}
           <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Вы вошли как {{ auth.user.login }}
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="nav-link" href="{{ url_for('auth.logout') }}">Выход</a>
-          </div>
-        </li>
-          {% else %}
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Вы вошли как {{ auth.user.login }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="nav-link" href="{{ url_for('auth.logout') }}">Выход</a>
+            </div>
+          </li>
+        {% else %}
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('auth.login') }}" methods="get">Вход</a>
           </li>
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('auth.registration') }}" methods="get">Регистрация</a>
           </li>
-          {% endif %}
-        </div>
-      </ul>
-    </div>
+        {% endif %}
+      </div>
+    </ul>
+  </div>
 </nav>
 {% endblock %}
