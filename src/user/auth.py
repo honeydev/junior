@@ -1,9 +1,11 @@
+from http import HTTPStatus
+
 from flask import current_app as junior_app
 from flask import session
 from flask_dance.contrib.github import github
 
 from src.user.models import User
-from src.user.utils import get_or_create_user_through_github
+from src.user.uttils import get_or_create_user_through_github
 
 
 def auth_hook() -> None:
@@ -12,12 +14,12 @@ def auth_hook() -> None:
     if github.authorized:
         session['auth'] = GithubAuth.create(github.get('user').json())
     else:
-        current_session or session.update(dict(auth=SessionAuth(False)))
+        current_session or session.update(dict(auth=SessionAuth(False)))  # noqa WPS428
 
 
 class BaseAuth:
 
-    def __init__(self, auth: bool, user: User = None, ouath_data: dict = {}):
+    def __init__(self, auth: bool, user: User = None, ouath_data: dict = None):
         self.auth: bool = auth
         self.user: User = user
         self.ouath_data: dict = ouath_data
@@ -47,7 +49,7 @@ class GithubAuth(BaseAuth):
         return self.user
 
     @property
-    def is_oauth() -> bool:
+    def is_oauth(self) -> bool:
         return True
 
     def logout(self, github_client=github) -> None:
@@ -60,10 +62,10 @@ class GithubAuth(BaseAuth):
             f'/applications/{client_id}/grants/{access_token}',
             auth=(client_id, client_secret))
 
-        if not response.status_code == 204:
-            raise Exception('Github logout error')
-
-        del junior_app.blueprints['github'].token
+        if response.status_code != HTTPStatus.NO_CONTENT:
+            raise RuntimeError('Github logout error')
+        # log out nethod writen in flask-dance documentation
+        del junior_app.blueprints['github'].token  # noqa WPS420
 
         super().logout()
 

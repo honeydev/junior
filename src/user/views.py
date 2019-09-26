@@ -35,14 +35,13 @@ class Registration(MethodView):
             lastname=lastname,
         )
         if User.query.filter_by(login=login).first():
-            result = render_template(
+            return render_template(
                 self.template,
-                **{'form': form, 'info': 'Логин уже занят'}
+                **{'form': form, 'info': 'Логин уже занят'},
             )
-        else:
-            User.save(user)
-            result = redirect(url_for('auth.login'))
-        return result
+
+        User.save(user)
+        return redirect(url_for('auth.login'))
 
     def get(self):
         return render_template(self.template, **{'form': self.form()})

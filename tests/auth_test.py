@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from faker import Faker
 from faker.generator import Generator
 from flask import url_for
@@ -6,7 +8,7 @@ from src.user.auth import GithubAuth
 from src.user.models import User
 from tests.base import BaseTest
 from tests.mocks import get_github_profile_mock
-from tests.test_utils import load_yaml_fixture
+from tests.test_uttils import load_yaml_fixture
 
 
 class TestRegistrationView(BaseTest):
@@ -24,7 +26,7 @@ class TestRegistrationView(BaseTest):
             'password': password,
             'password_confirmation': password_confirmation,
             'email': email,
-            'firstname': first_name
+            'firstname': first_name,
         })
         self.assert_redirects(response, url_for('auth.login'))
 
@@ -33,7 +35,7 @@ class TestGithubAuthRedirect(BaseTest):
 
     def test(self):
         response = self.client.get(url_for('github.login'))
-        self.assert_status(response, 302)
+        self.assert_status(response, int(HTTPStatus.FOUND))
 
 
 class TestGithubAuthCreateNewUser(BaseTest):
@@ -58,7 +60,7 @@ class TestGithubAuthWithExistUser(BaseTest):
     def test(self):
         github_auth: GithubAuth = GithubAuth.create({
             'email': self.user.email,
-            'login': self.user.login
+            'login': self.user.login,
         })
 
         self.assertTrue(github_auth.auth_user.email, self.user.email)
