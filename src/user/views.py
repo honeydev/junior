@@ -69,15 +69,14 @@ class Login(MethodView):
         ).first()
         if User.check_password(user, password):
             session['auth'] = SessionAuth(True, user)
-            session['user'] = user
         return redirect('/')
 
 
 class Logout(MethodView):
     def get(self):
-        if session.get('auth'):
-            session.pop('auth')
-            return redirect('/')
+        auth = session.get('auth')
+        auth.logout()
+        return redirect(url_for('index.index'))
 
 
 bp.add_url_rule(

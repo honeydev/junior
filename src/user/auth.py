@@ -1,3 +1,4 @@
+from flask import current_app as junior_app
 from flask import session
 from flask_dance.contrib.github import github
 
@@ -21,6 +22,12 @@ class BaseAuth:
         self.user: User = user
         self.ouath_data: dict = ouath_data
 
+    def __bool__(self) -> bool:
+        return self.auth
+
+    def logout(self) -> None:
+        session['auth'] = SessionAuth(False)
+
 
 class SessionAuth(BaseAuth):
 
@@ -42,6 +49,23 @@ class GithubAuth(BaseAuth):
     @property
     def is_oauth() -> bool:
         return True
+
+    def logout(self, github_client) -> None:
+
+        client_id: str = github_client.client_id
+        access_token: str = github_client.access_token
+        client_secret: str = github_client.blueprint.client_secret
+
+        response = github_client.delete(
+            f'/applications/{client_id}/grants/{access_token}',
+            auth=(client_id, client_secret))
+
+        if not response.status_code == 204:
+            raise Exception('Github logout error')
+
+        del junior_app.blueprints['github'].token
+
+        super().logout()
 
     @classmethod
     def create(cls, github_profile: dict) -> BaseAuth:
