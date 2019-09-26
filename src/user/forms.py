@@ -31,7 +31,7 @@ class RegistrationForm(Form):
             min=6, max=15, message='Длинна пароля от 6 до 15 символов.'
         )
     ])
-    password_confirmation = PasswordField('Подтерждение пароля', [
+    password_confirmation = PasswordField('Подтверждение пароля', [
         validators.data_required(message='Поле обязательно для заполнения.'),
         validators.length(
             min=6, max=15, message='Длинна пароля от 6 до 15 символов.'
@@ -45,13 +45,13 @@ class RegistrationForm(Form):
             min=4, max=30, message='Длинна поля от 4 до 30 символов.'
         )
     ])
-    firstname = StringField('Имя', [
+    middlename = StringField('Фамилия', [
         validators.optional(),
         validators.length(
             min=4, max=30, message='Длинна поля от 4 до 30 символов.'
         )
     ])
-    middlename = StringField('Фамилия', [
+    firstname = StringField('Имя', [
         validators.optional(),
         validators.length(
             min=4, max=30, message='Длинна поля от 4 до 30 символов.'
