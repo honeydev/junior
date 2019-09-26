@@ -1,35 +1,42 @@
 {% extends 'base.jinja2' %}
 {% include 'navbar.jinja2'%}
 {% block content %}
-<div class="container card mt-5 col-4">
-  <div class="row card-header">
-    <div class="mx-auto col-auto">
-      ВОЙТИ
-    </div>
-  </div>
 
-  <form class="form-horizontal" action="{{ url_for('auth.login') }}" method="post">
-    {% if form.errors %}
-      {% for field, errors in form.errors.items() %}
-        <div class="alert alert-error">
-          {{ form[field].label }}: {{ ', '.join(errors) }}
-        </div>
-      {% endfor %}
-    {% endif %}
-    <div class="form-group">
-      {% for form in form %}
-        <div class="row">
-          <div class="mx-auto col-10 mt-5 mb-2">
-            {{ form(class_='form-control', placeholder = form.label.text) }}
-          </div>
-        </div>
-      {% endfor %}
-      <div class="row">
-        <div class="mx-auto col-auto mt-4">
-          <button type="submit" class="btn btn-success">Отправить</button>
+<div class="container">
+  <div class="row">
+    <div class="card mt-5 col-6 offset-3">
+      <div class="row card-header">
+        <div class="mx-auto col-auto">
+          ВОЙТИ
         </div>
       </div>
+
+      <form class="form-horizontal" action="{{ url_for('auth.login') }}" method="post">
+        {% if form.errors %}
+          {% for field, errors in form.errors.items() %}
+            <div class="alert alert-error">
+              {{ form[field].label }}: {{ ', '.join(errors) }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        <div class="form-group">
+          {% for form in form %}
+            <div class="row">
+              <div class="mx-auto col-10 mt-5 mb-2">
+                {{ form(class_='form-control', placeholder = form.label.text) }}
+              </div>
+            </div>
+          {% endfor %}
+          <div class="row">
+            <div class="mx-auto col-auto mt-4">
+              <button type="submit" class="btn btn-success">Отправить</button>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
+  {% include 'components/or.jinja2' %}
+  {% include 'components/social_login.jinja2' %} 
 </div>
 {% endblock %}
