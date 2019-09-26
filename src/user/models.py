@@ -8,8 +8,9 @@ class User(db.Model):
     __table_args__ = {'extend_existing': True}
 
     def __init__(
-            self, login, password, email,
-            firstname, middlename, lastname
+            self, login: str, email: str, password: str = '',
+            firstname: str = '', middlename: str = '', lastname: str = '',
+            is_oauth: bool = False
     ):
         self.login = login
         self.password = password
@@ -17,6 +18,7 @@ class User(db.Model):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
+        self.is_oauth = is_oauth
 
     id = db.Column(db.Integer, primary_key=True)
     login = db.Column(db.String(), unique=True)
@@ -25,6 +27,7 @@ class User(db.Model):
     firstname = db.Column(db.String(), nullable=True)
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
+    is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     db.relationship(
         'User', backref='users', lazy='dynamic'
     )

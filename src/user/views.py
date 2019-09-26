@@ -2,6 +2,7 @@ from flask import (Blueprint, redirect, render_template, request, session,
                    url_for)
 from flask.views import MethodView
 
+from src.user.auth import SessionAuth
 from src.user.forms import LoginForm, RegistrationForm
 from src.user.models import User
 
@@ -67,16 +68,15 @@ class Login(MethodView):
             login=login,
         ).first()
         if User.check_password(user, password):
-            session['auth'] = True
-            session['user'] = user
+            session['auth'] = SessionAuth(True, user)
         return redirect('/')
 
 
 class Logout(MethodView):
     def get(self):
-        if session.get('auth'):
-            session.pop('auth')
-            return redirect('/')
+        auth = session.get('auth')
+        auth.logout()
+        return redirect(url_for('index.index'))
 
 
 bp.add_url_rule(

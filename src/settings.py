@@ -16,6 +16,8 @@ class Config:
         'DATABASE_URL', 'postgres://junior:junior@127.0.0.1:5432/junior'
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    PROJECT_PATH = os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)))
 
 
 class ProductionConfig(Config):

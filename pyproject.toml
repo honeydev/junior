@@ -19,6 +19,8 @@ flask-admin = "^1.5"
 Flask-Session = "^0.3.1"
 isort = "=4.3.20"
 WTForms = "^2.2"
+flask-dance = "^2.2"
+pyyaml = "^5.1"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.7"

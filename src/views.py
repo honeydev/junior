@@ -10,12 +10,7 @@ class IndexPage(MethodView):
         self.template_name: str = template_name
 
     def get(self):
-        context = {}
-        if session.get('auth'):
-            context['user'] = session.get('user').login
-            context['register'] = True
-        else:
-            context['register'] = False
+        context = dict(auth=session.get('auth'))
         return render_template(self.template_name, **context)
 
 
