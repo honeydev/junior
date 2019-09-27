@@ -26,6 +26,7 @@
       {% endif %}
 
       <form class="form-horizontal mb-5" action="{{ url_for('auth.registration') }}" method="post">
+      {{ form.csrf_token }}
         <div class="form-group">
 
           {% for form in form %}

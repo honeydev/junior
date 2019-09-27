@@ -10,15 +10,15 @@ class Question(BaseDateTimeModel):
         self.text = text
         self.answers = answers
 
-    id = db.Column(db.Integer(), primary_key=True)
+    id = db.Column(db.Integer(), primary_key=True)  # noqa: A003
     text = db.Column(db.Text(), nullable=False)
     user = db.Column(db.Integer, db.ForeignKey('users.id'))
     answers = db.relationship(
-        'Answer', backref='questions', lazy='dynamic'
+        'Answer', backref='questions', lazy='dynamic',
     )
 
     def __repr__(self):
-        return '<id {}>'.format(self.id)
+        return '<id {0}>'.format(self.id)
 
 
 class Answer(BaseDateTimeModel):
@@ -28,6 +28,6 @@ class Answer(BaseDateTimeModel):
     def __init__(self, question):
         self.question = question
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     text = db.Column(db.Text(), nullable=False)
     question = db.Column(db.Integer, db.ForeignKey('questions.id'))

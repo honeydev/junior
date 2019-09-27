@@ -1,9 +1,9 @@
 language: python
 sudo: false
 python:
-  - 3.7
+  - 3.7.4
 env:
-  - FLASK_APP=main.py
+  - FLASK_APP=app.py
 
 before_install:
   - pip install poetry

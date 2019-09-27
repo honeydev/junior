@@ -9,5 +9,8 @@ def get_or_create_user_through_github(github_profile: dict) -> User:
     if user is not None:
         return user
 
-    return User(email=github_profile['email'], login=github_profile['login'],
-                is_oauth=True).save()
+    return User(
+        email=github_profile['email'],
+        login=github_profile['login'],
+        is_oauth=True,
+    ).save()

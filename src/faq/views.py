@@ -11,14 +11,11 @@ class Answers(MethodView):
     def get(self):
         return render_template(self.template)
 
-    def post(self):
-        pass
-
 
 bp.add_url_rule(
     '/faq/',
     view_func=Answers.as_view(
         name='faq',
-        template_name='FAQ_page.jinja2'
-    )
+        template_name='FAQ_page.jinja2',
+    ),
 )

@@ -1,26 +1,27 @@
 from functools import wraps
+from http import HTTPStatus
 
 from flask import abort, session
 
 
-def login_required_user(f):
+def login_required_user(wrapped_callable):
     """Login required decorator, add user obj in func."""
-    @wraps(f)
+    @wraps(wrapped_callable)
     def decorated_function(*args, **kwargs):
         auth = session.get('auth', False)
         user = session.get('user', None)
         if not auth or not user:
-            abort(401)
-        return f(user, *args, **kwargs)
+            abort(int(HTTPStatus.UNAUTHORIZED))
+        return wrapped_callable(user, *args, **kwargs)
     return decorated_function
 
 
-def login_required(f):
+def login_required(wrapped_callable):
     """Login required decorator, without user obj."""
-    @wraps(f)
+    @wraps(wrapped_callable)
     def decorated_function(*args, **kwargs):
         auth = session.get('auth', False)
         if not auth:
-            abort(401)
-        return f(*args, **kwargs)
+            abort(int(HTTPStatus.UNAUTHORIZED))
+        return wrapped_callable(*args, **kwargs)
     return decorated_function
