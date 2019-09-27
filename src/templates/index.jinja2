@@ -1,6 +1,23 @@
 {% extends 'base.jinja2' %}
-{% include 'navbar.jinja2'%}
 {% block content %}
-
-
+<div class="container">
+  <div class="h4">
+  {% for questions in questions %}
+  <div class="row">
+  <div class="col-6 mt-4">
+    <div class="card" style="background-color: #D8BFD8">
+      <div class="card-body">{{ questions[0].text }}</div>
+    </div>
+  </div>
+  {% if questions[1] %}
+  <div class="col-6 mt-4">
+    <div class="card " style="background-color: #D8BFD8">
+        <div class="card-body">{{ questions[1].text }}</div>
+    </div>
+  </div>
+  {% endif %}
+  </div>
+  {% endfor %}
+  </div>
+</div>
 {% endblock %}
