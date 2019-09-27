@@ -6,10 +6,6 @@ class Question(BaseDateTimeModel):
     __tablename__ = 'questions'
     __table_args__ = {'extend_existing': True}
 
-    def __init__(self, text, answers):
-        self.text = text
-        self.answers = answers
-
     id = db.Column(db.Integer(), primary_key=True)  # noqa: A003
     text = db.Column(db.Text(), nullable=False)
     user = db.Column(db.Integer, db.ForeignKey('users.id'))
