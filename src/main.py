@@ -5,6 +5,7 @@ import os
 from flask import Flask
 from flask_admin.contrib.sqla import ModelView
 from flask_dance.contrib.github import github, make_github_blueprint
+from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
 from src.extensions import admin, bcrypt, db, migrate, sess
@@ -52,12 +53,11 @@ def register_adminpanel(app):
 
 
 def register_sessions(app):
-    # Session storage type.
-    app.config['SESSION_TYPE'] = 'filesystem'
-
-    # Max sess file before start deleting.
-    app.config['SESSION_FILE_THRESHOLD'] = 100
+    app.config['SESSION_TYPE'] = 'sqlalchemy'
+    app.config['SESSION_SQLALCHEMY'] = db
+    SqlAlchemySessionInterface(app, db, 'flask_sessions', 'key_')
     sess.init_app(app)
+    return app
 
 
 def register_blueprints(app):
