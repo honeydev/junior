@@ -14,6 +14,7 @@ from src.settings import DevelopConfig
 from src.user import User
 from src.user.auth import auth_hook
 from src.views import bp as index_bp
+from src.admin_forms import QuestionWYSIWYG
 
 
 def create_app(config=DevelopConfig):
@@ -47,7 +48,7 @@ def register_adminpanel(app):
     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Answer, db.session))
-    admin.add_view(ModelView(Question, db.session))
+    admin.add_view(QuestionWYSIWYG(Question, db.session))
 
 
 def register_sessions(app):
