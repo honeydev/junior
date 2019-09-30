@@ -501,6 +501,17 @@ Flask = ">=0.8"
 
 [[package]]
 category = "main"
+description = "Adds session support to your Flask application"
+name = "flask-sessionstore"
+optional = false
+python-versions = "*"
+version = "0.4.5"
+
+[package.dependencies]
+Flask = ">=0.8"
+
+[[package]]
+category = "main"
 description = "Adds SQLAlchemy support to your Flask application."
 name = "flask-sqlalchemy"
 optional = false
@@ -1072,7 +1083,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "e1a73ee743551d3c0cb69e827646637767f1262114a92a8608ef6278020aa0db"
+content-hash = "ad1e5e3b6dd4c61e84f25802280b0fca8d057cfe0ea379c15cedd46f3d4ae7a0"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -1121,6 +1132,7 @@ flask-migrate = ["6fb038be63d4c60727d5dfa5f581a6189af5b4e2925bc378697b4f0a40cfb4
 flask-restplus = ["a15d251923a8feb09a5d805c2f4d188555910a42c64d58f7dd281b8cac095f1b", "a66e442d0bca08f389fc3d07b4d808fc89961285d12fb8013f7cf15516fa9f5c"]
 flask-script = ["6425963d91054cfcc185807141c7314a9c5ad46325911bd24dcb489bd0161c65"]
 flask-session = ["a31c27e0c3287f00c825b3d9625aba585f4df4cccedb1e7dd5a69a215881a731", "b9b32126bfc52c3169089f2ed9a40e34b589527bda48b633428e07d39d9c8792"]
+flask-sessionstore = ["010de35ab9f0d9423c2f79c5131e00843c063f847c4ebee204cb034b98cb40f4", "c4ff03d5abe3e5048cf3435c930eda090f54efe77cffa6201247cd63f6c7ee4b"]
 flask-sqlalchemy = ["0078d8663330dc05a74bc72b3b6ddc441b9a744e2f56fe60af1a5bfc81334327", "6974785d913666587949f7c2946f7001e4fa2cb2d19f4e69ead02e4b8f50b33d"]
 flask-testing = ["dc076623d7d850653a018cb64f500948334c8aeb6b10a5a842bf1bcfb98122bc"]
 gitdb2 = ["83361131a1836661a155172932a13c08bda2db3674e4caa32368aa6eb02f38c2", "e3a0141c5f2a3f635c7209d56c496ebe1ad35da82fe4d3ec4aaa36278d70648a"]
