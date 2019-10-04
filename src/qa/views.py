@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from flask.views import MethodView
 
-bp = Blueprint('faq', __name__, template_folder='templates')
+bp = Blueprint('qa', __name__, template_folder='templates')
 
 
 class Answers(MethodView):
@@ -13,9 +13,9 @@ class Answers(MethodView):
 
 
 bp.add_url_rule(
-    '/faq/',
+    '/qa/',
     view_func=Answers.as_view(
-        name='faq',
+        name='qa',
         template_name='FAQ_page.jinja2',
     ),
 )

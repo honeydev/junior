@@ -5,7 +5,7 @@ freeze:
 	poetry run pip freeze > requirements.txt
 
 lint:
-	flake8 --config=.flake8
+	flake8 --config=setup.cfg
 
 test:
 	nosetests

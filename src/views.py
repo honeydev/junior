@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
 
-from src.faq.models import Question
+from src.qa.models import Question
 from src.uttils import split_by_two
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
