@@ -1,6 +1,6 @@
 from flask import url_for
 
-from src.faq.models import Question
+from src.qa.models import Question
 from tests.base import BaseTest
 from tests.test_uttils import load_yaml_fixture
 
@@ -21,8 +21,7 @@ class TestQuestionsView(BaseTest):
         self.questions: tuple[Question] = tuple()
 
         for fixture in fixtures:
-            question: Question = Question()
-            question.text = fixture['text']
+            question: Question = Question(**fixture)
             question.save()
             self.questions += (question,)
 

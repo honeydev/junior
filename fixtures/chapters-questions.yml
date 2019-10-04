@@ -1,0 +1,54 @@
+chapters:
+  -
+    name: 'ООП'
+    order_number: 1
+    id: 1
+  -
+    name: 'Python'
+    order_number: 2
+    id: 2
+  -
+    name: 'Django'
+    order_number: 3
+    id: 3
+questions:
+  -
+    text: 'Что такое полиморфизм и как ее можно реализовать в Python?'
+    order_number: 1
+    chapter_id: 1
+  -
+    text: 'Что лучше: наследование или композиция (агрегация)?'
+    order_number: 2
+    chapter_id: 1
+  -
+    text: 'Что такое интерфейс?'
+    order_number: 3
+    chapter_id: 1
+  -
+    text: 'Есть ли интерфейсы в питоне?'
+    order_number: 4
+    chapter_id: 1
+  -
+    text: 'Что такое DI и IoC?'
+    order_number: 5
+    chapter_id: 1
+  -
+    text: 'Слабая связность, примеры в питоне'
+    order_number: 6
+    chapter_id: 1
+  -
+    text: 'Множественное наследование, хорошо или плохо?'
+    order_number: 7
+    chapter_id: 1
+  -
+    text: 'Отличие классов нового стиля от классов старого стиля в питоне'
+    order_number: 8
+    chapter_id: 1
+  -
+    text: 'Зачем нужна инкапсуляция и как можно ее достичь в питоне. Какие способы наиболее предпочтительнее?'
+    order_number: 9
+    chapter_id: 1
+  -
+    text: 'Понятия конструкторов, деструкторов'
+    order_number: 10
+    chapter_id: 1
