@@ -1,8 +1,8 @@
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
 
-from src.qa.models import Question
-from src.uttils import split_by_two
+from src.qa.uttils import select_chapters_with_splited_questions
+from src.uttils import split_sequence
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -19,10 +19,12 @@ class BaseView(MethodView):
 class IndexPage(BaseView):
 
     def get(self):
+
         self.context.update(
             dict(
                 auth=session.get('auth'),
-                questions=split_by_two(Question.query.all()),
+                chapters=select_chapters_with_splited_questions(
+                    split_sequence),
             ),
         )
         return render_template(self.template_name, **self.context)

@@ -13,7 +13,7 @@ chapters:
     id: 3
 questions:
   -
-    text: 'Что такое полиморфизм и как ее можно реализовать в Python?'
+    text: 'Что такое полиморфизм и как его можно реализовать в Python?'
     order_number: 1
     chapter_id: 1
   -
@@ -52,3 +52,59 @@ questions:
     text: 'Понятия конструкторов, деструкторов'
     order_number: 10
     chapter_id: 1
+  -
+    text: 'Как правильно нужно оформлять импорты? Отличие from от import?'
+    order_number: 1
+    chapter_id: 2
+  -
+    text: 'Что такое декоратор?'
+    order_number: 2
+    chapter_id: 2
+  -
+    text: 'Чем отличаются декораторы @classmethod и @staticmethod?'
+    order_number: 3
+    chapter_id: 2
+  -
+    text: 'Для чего используется декоратор @property'
+    order_number: 4
+    chapter_id: 2
+  -
+    text: 'Что такое «Сборщик мусора» и как он работает?'
+    order_number: 5
+    chapter_id: 2
+  -
+    text: 'Что такое with?'
+    order_number: 6
+    chapter_id: 2
+  -
+    text: 'Что такое iterators, generators, list comprehensions, dict comprehensions?'
+    order_number: 7
+    chapter_id: 2
+  -
+    text: 'Разница range и xrange. Что предпочтительнее?'
+    order_number: 8
+    chapter_id: 2
+  -
+    text: 'Есть некий queryset, как проверить существование хотя бы одной записи в нем?'
+    order_number: 1
+    chapter_id: 3
+  -
+    text: 'Перечислить ситуации финализации кверисета.'
+    order_number: 2
+    chapter_id: 3
+  -
+    text: 'Что такое middleware, CBV, context processor?'
+    order_number: 3
+    chapter_id: 3
+  -
+    text: 'Как работают сигналы?'
+    order_number: 4
+    chapter_id: 3
+  -
+    text: 'Как работает кеширование?'
+    order_number: 5
+    chapter_id: 3
+  -
+    text: 'Как проверить какие запросы уходят на сервер БД?'
+    order_number: 6
+    chapter_id: 3

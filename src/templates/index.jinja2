@@ -2,22 +2,14 @@
 {% block content %}
 <div class="container">
   <div class="h4">
-  {% for questions in questions %}
-  <div class="row">
-  <div class="col-6 mt-4">
-    <div class="card" style="background-color: #D8BFD8">
-      <div class="card-body">{{ questions[0].text | safe }}</div>
-    </div>
-  </div>
-  {% if questions[1] %}
-  <div class="col-6 mt-4">
-    <div class="card " style="background-color: #D8BFD8">
-        <div class="card-body">{{ questions[1].text | safe }}</div>
-    </div>
-  </div>
-  {% endif %}
-  </div>
-  {% endfor %}
+    {% for chapter in chapters %}
+      <div class="row">
+        <div class="mt-3 text-light">
+          <h3>{{ chapter.name }}</h3>
+        </div>
+      </div>
+      {% include 'components/questions_block.jinja2' %}
+    {% endfor %}
   </div>
 </div>
 {% endblock %}
