@@ -16,6 +16,7 @@ class User(db.Model):  # noqa: WPS230
             middlename: str = '',
             lastname: str = '',
             is_oauth: bool = False,
+            is_superuser: bool = False,
     ):
         self.login = login
         self.password = password
@@ -24,6 +25,7 @@ class User(db.Model):  # noqa: WPS230
         self.middlename = middlename
         self.lastname = lastname
         self.is_oauth = is_oauth
+        self.is_superuser = is_superuser
 
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     login = db.Column(db.String(), unique=True)
