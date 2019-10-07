@@ -33,6 +33,7 @@ class User(db.Model):  # noqa: WPS230
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
+    is_superuser = db.Column(db.Boolean, default=False, nullable=False)
     db.relationship(  # noqa: WPS604
         'User', backref='users', lazy='dynamic',
     )
