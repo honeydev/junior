@@ -93,5 +93,4 @@ def register_before_hooks(app):
 
 
 def register_commadns(app):
-
     app.cli.add_command(load_chapters_questions)

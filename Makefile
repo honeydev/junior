@@ -12,6 +12,7 @@ test:
 
 run:
 	flask db upgrade
+	gunicorn run
 	flask run --host=0.0.0.0 --port=${PORT}
 
 post_run:
