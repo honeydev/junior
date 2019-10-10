@@ -66,7 +66,7 @@ class Login(MethodView):
         user = User.query.filter_by(
             login=login,
         ).first()
-        if User.check_password(user, password):
+        if user and User.check_password(user, password):
             session['auth'] = SessionAuth(True, user)
         return redirect('/')
 

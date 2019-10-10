@@ -9,7 +9,7 @@ from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
 from src.admin_forms import QuestionWYSIWYG
-from src.commands import load_chapters_questions
+from src.commands import create_admin_user, load_chapters_questions
 from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
 from src.qa.views import bp as faq_bp
@@ -93,4 +93,6 @@ def register_before_hooks(app):
 
 
 def register_commadns(app):
+    from src.commands import load_chapters_questions
+
     app.cli.add_command(load_chapters_questions)
