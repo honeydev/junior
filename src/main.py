@@ -35,7 +35,7 @@ def create_app(config=DevelopConfig):
     register_sessions(app)
     register_github_oauth(app)
     register_before_hooks(app)
-    register_commadns(app)
+    register_commands(app)
     return app
 
 
@@ -92,6 +92,6 @@ def register_before_hooks(app):
     app.before_request(auth_hook)
 
 
-def register_commadns(app):
+def register_commands(app):
     app.cli.add_command(load_chapters_questions)
     app.cli.add_command(create_admin_user)
