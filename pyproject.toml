@@ -21,6 +21,7 @@ WTForms = "^2.2"
 flask-dance = "^2.2"
 pyyaml = "^5.1"
 flask-sessionstore = "^0.4.5"
+gunicorn = "^19.9"
 
 [tool.poetry.dev-dependencies]
 Flask-Testing = "^0.7.1"

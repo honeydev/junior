@@ -93,5 +93,6 @@ def register_before_hooks(app):
 
 
 def register_commadns(app):
+    from src.commands import load_chapters_questions
+
     app.cli.add_command(load_chapters_questions)
-    app.cli.add_command(create_admin_user)
