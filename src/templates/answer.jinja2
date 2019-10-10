@@ -1,0 +1,59 @@
+{% extends 'base.jinja2' %}
+{% block content %}
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="card mt-3 col-lg-6 offset-3" style="background-color: #D8BFD8">
+        <div class="card-header h5">Раздел # {{ question.chapter.order_number }} Вопрос #{{ question.order_number }}</div>
+      <div class="card-body">{{ question.text | safe }}</div>
+      </div>
+    </div>
+
+    {% include 'components/answer_form.jinja2' %}
+
+    {% if answers %}
+      {% for answer in answers %}
+        {% if answer.is_approve %}
+        <div class="row">
+          <div class="card mt-2 col-6 offset-3 bg-light border-success" style="border-width: 4px">
+            <div class="card-header" >
+              Ответ
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                 <div class="card-body">{{ answer.text | safe }}</div>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        {% else %}
+          <div class="row">
+          <div class="card mt-2 col-6 offset-3 bg-light">
+            <div class="card-header">
+              Ответ
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <div class="card-body">{{ answer.text | safe }}</div>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+      {% else %}
+        <div class="row">
+          <div class="card mt-2 col-6 offset-3 bg-light">
+            <div class="card-header">
+              :(
+            </div>
+            <div class="card-body">
+              <blockquote class="blockquote mb-0">
+                <div class="card-body">Ответов нет :( Вы можете стать первым.</div>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+    </div>
+  {% endif %}
+{% endblock %}

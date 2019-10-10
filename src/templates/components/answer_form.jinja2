@@ -1,0 +1,20 @@
+{% if auth %}
+  <form action="{{ url_for('answers.answer', question_id=question.id) }}" method="post">
+    <div class="row">
+      <div class="card mt-3 col-lg-6 offset-3">
+        {% for form in form %}
+          <div class="row">
+            <div class="card col-12">
+
+          <script src="http://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.0.1/ckeditor.js"></script>
+          {{ form }}
+            </div>
+          </div>
+        {% endfor %}
+        <div class="mx-auto col-auto mt-4">
+          <input type=submit value="Publish">
+        </div>
+      </div>
+    </div>
+  </form>
+{% endif %}

@@ -8,11 +8,11 @@ from flask_dance.contrib.github import make_github_blueprint
 from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
-from src.admin_forms import QuestionWYSIWYG
+from src.admin_forms import QAWYSIWYG
 from src.commands import create_admin_user, load_chapters_questions
 from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
-from src.qa.views import bp as faq_bp
+from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
 from src.user import User
 from src.user.auth import auth_hook
@@ -50,8 +50,8 @@ def register_extensions(app):
 def register_adminpanel(app):
     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
     admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Answer, db.session))
-    admin.add_view(QuestionWYSIWYG(Question, db.session))
+    admin.add_view(QAWYSIWYG(Answer, db.session))
+    admin.add_view(QAWYSIWYG(Question, db.session))
 
 
 def register_sessions(app):
@@ -65,7 +65,7 @@ def register_sessions(app):
 def register_blueprints(app):
     app.register_blueprint(user.views.bp)
     app.register_blueprint(index_bp)
-    app.register_blueprint(faq_bp)
+    app.register_blueprint(qa_bp)
 
 
 def register_shellcontext(app):

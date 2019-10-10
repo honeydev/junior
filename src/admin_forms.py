@@ -20,7 +20,7 @@ class CKTextAreaField(TextAreaField):
     widget = CKTextAreaWidget()
 
 
-class QuestionWYSIWYG(ModelView):
+class QAWYSIWYG(ModelView):
     extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
 
     form_overrides = {
