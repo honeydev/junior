@@ -1,7 +1,9 @@
+
+
 def when_ready(server):
-    open('/tmp/app-initialized', 'w').close()
+    with open('/tmp/app-initialized', 'w') as nginx_app_init:  # noqa: S108
+        nginx_app_init.close()
 
 
 bind = 'unix:///tmp/nginx.socket'
-# worker_class = 'gevent'  # not necessary
 timeout = 90  # not necesssary
