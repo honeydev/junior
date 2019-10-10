@@ -1,4 +1,9 @@
 <div class="card" style="background-color: #D8BFD8">
   <div class="card-header h5">#{{ question.order_number }}</div>
   <div class="card-body">{{ question.text | safe }}</div>
+  <a href="{{ url_for('answers.answer', question_id=question.id) }}"
+     class="btn"
+     style="background-color: #9e779eb0">
+    Подробней...
+  </a>
 </div>
