@@ -35,10 +35,6 @@ class Answer(BaseDateTimeModel):
     __tablename__ = 'answers'
     __table_args__ = {'extend_existing': True}
 
-    def __init__(self, text, question_id):
-        self.text = text
-        self.question_id = question_id
-
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     text = db.Column(db.Text(), nullable=False)
     is_approve = db.Column(db.Boolean, default=False)
