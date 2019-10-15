@@ -37,6 +37,6 @@ bcrypt = Bcrypt()
 db = SQLAlchemy(model_class=CRUDMixin)
 migrate = Migrate()
 admin = Admin(
-    name='junnior', template_mode='bootstrap3', index_view=CustomAdminView(),
+    name='junior', template_mode='bootstrap3', index_view=CustomAdminView(),
 )
 sess = Session()
