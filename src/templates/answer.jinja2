@@ -15,9 +15,9 @@
       {% for answer in answers %}
         {% if answer.is_approve %}
         <div class="row">
-          <div class="card mt-2 col-6 offset-3 bg-light border-success" style="border-width: 4px">
+          <div class="card mt-2 col-6 offset-3 bg-light border-info">
             <div class="card-header" >
-              Ответ
+              Ответ <img src="{{ url_for('static', filename='approve_symbol.jpg') }}" width="30">
             </div>
             <div class="card-body">
               <blockquote class="blockquote mb-0">
