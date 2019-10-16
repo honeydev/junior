@@ -58,11 +58,10 @@ class TestAnswerView(BaseTest):
         question_text: str = factory.paragraph()
         question_order_number: int = 1
         question_user_id: int = 1
-        question_chapter_id: int = 1
         question = Question(
             order_number=question_order_number,
             user=question_user_id,
-            chapter_id=question_chapter_id,
+            chapter_id=chapter.id,
             text=question_text,
         )
         Question.save(question)
