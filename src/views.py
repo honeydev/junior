@@ -11,7 +11,8 @@ class BaseView(MethodView):
 
     def __init__(self, template_name):
         self.context = {
-            'APP_NAME': current_app.config['APP_NAME'],
+            'auth': session.get('auth'),
+            'app_name': current_app.config['APP_NAME'],
         }
         self.template_name: str = template_name
 
@@ -22,7 +23,6 @@ class IndexPage(BaseView):
 
         self.context.update(
             dict(
-                auth=session.get('auth'),
                 chapters=select_chapters_with_splited_questions(
                     split_sequence),
             ),
@@ -30,7 +30,18 @@ class IndexPage(BaseView):
         return render_template(self.template_name, **self.context)
 
 
+class NotFoundPage(BaseView):
+
+    def get(self):
+        return render_template(self.template_name, **self.context)
+
+
 bp.add_url_rule(
     '/',
     view_func=IndexPage.as_view(name='index', template_name='index.jinja2'),
+)
+
+bp.add_url_rule(
+    '/',
+    view_func=IndexPage.as_view(name='404', template_name='404.jinja2'),
 )

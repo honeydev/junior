@@ -14,6 +14,7 @@ from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
 from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
+from src.test_cases.views import bp as test_cases_bp
 from src.user import User
 from src.user.auth import auth_hook
 from src.views import bp as index_bp
@@ -66,6 +67,7 @@ def register_blueprints(app):
     app.register_blueprint(user.views.bp)
     app.register_blueprint(index_bp)
     app.register_blueprint(qa_bp)
+    app.register_blueprint(test_cases_bp)
 
 
 def register_shellcontext(app):
