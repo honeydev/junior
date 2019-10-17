@@ -1,4 +1,4 @@
-from collections import Callable, Generator
+from collections.abc import Callable, Generator
 
 from src.qa.models import Chapter
 
