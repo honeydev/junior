@@ -1,20 +1,28 @@
 {% if auth %}
-  <form action="{{ url_for('answers.answer', question_id=question.id) }}" method="post">
-    <div class="row">
-      <div class="card mt-3 col-lg-6 offset-3">
-        {% for form in form %}
-          <div class="row">
-            <div class="card col-12">
+  {% for form in form %}
+    <form action="{{ url_for('answers.answer', question_id=question.id) }}" method="post" class="card mt-4 col-6 offset-3 bg">
+      <div class="panel-group" id="collapse-group">
+        <div class="panel panel-default">
 
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.0.1/ckeditor.js"></script>
-          {{ form }}
+          <div class="panel-heading" style="cursor: pointer;">
+            <h4 class="panel-title ">
+              <div data-toggle="collapse" class="text-center" data-parent="#collapse-group" href="#el1">
+                <div class="card-body">Дать ответ</div>
+              </div>
+            </h4>
+          </div>
+
+          <div id="el1" class="panel-collapse collapse">
+            <div class="panel-body">
+              <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+              {{ form }}
+              <div class="mx-auto col-2 mt-2 mb-4">
+                <button type="submit" class="btn btn-success">Отправить</button>
+              </div>
             </div>
           </div>
-        {% endfor %}
-        <div class="mx-auto col-auto mt-4">
-          <input type=submit value="Publish">
         </div>
       </div>
-    </div>
-  </form>
+    </form>
+  {% endfor %}
 {% endif %}
