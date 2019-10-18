@@ -21,7 +21,7 @@ class CKTextAreaField(TextAreaField):
 
 
 class QAWYSIWYG(ModelView):
-    extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
+    extra_js = ['https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js']
 
     form_overrides = {
         'text': CKTextAreaField,
