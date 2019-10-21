@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    {% include 'components/answer_form.jinja2' %}
+
 
     {% if answers %}
       {% for answer in answers %}
@@ -54,6 +54,8 @@
             </div>
           </div>
         </div>
-    </div>
   {% endif %}
+               {% include 'components/answer_form.jinja2' %}
+    </div>
+
 {% endblock %}
