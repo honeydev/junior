@@ -4,7 +4,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="card mt-3 col-lg-6 offset-3" style="background-color: #D8BFD8">
-        <div class="card-header h5">Раздел # {{ question.chapter.order_number }} Вопрос #{{ question.order_number }}</div>
+        <div class="card-header h5">Раздел {{ question.chapter.name }} Вопрос #{{ question.order_number }}</div>
       <div class="card-body">{{ question.text | safe }}</div>
       </div>
     </div>
