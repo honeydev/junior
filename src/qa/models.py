@@ -26,6 +26,8 @@ class Question(BaseDateTimeModel):
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapters.id'))
     chapter = db.relationship(
         'Chapter', back_populates='questions')
+    test_case = db.relationship(
+        'TestCase', back_populates='question', uselist=False)
 
     def __repr__(self):
         return self.text
