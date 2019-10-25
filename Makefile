@@ -6,6 +6,8 @@ freeze:
 
 lint:
 	flake8 --config=setup.cfg
+	python scripts/check_freeze.py
+
 
 test:
 	pytest tests
