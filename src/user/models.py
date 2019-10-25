@@ -39,6 +39,10 @@ class User(db.Model):  # noqa: WPS230
     db.relationship(  # noqa: WPS604
         'User', backref='users', lazy='dynamic',
     )
+    question_relation = db.relationship(
+        'TestQuestionUserRelation',
+        back_populates='user',
+    )
 
     def __repr__(self):
         return '<id {0}>'.format(self.id)
