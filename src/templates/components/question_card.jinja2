@@ -1,5 +1,10 @@
-<div class="card" style="background-color: #D8BFD8">
-  <div class="card-header h5">#{{ question.order_number }}</div>
+<div class="card background-light">
+  <div class="card-header h5">
+    <span>#{{ question.order_number }}</span>
+    <span>
+      <a href="{{ url_for('test_cases.test_case_index', question_id=question.id) }}"><img height="20" src="{{ url_for('static', filename='error.png') }}"/></a>
+    </span>
+  </div>
   <div class="card-body">{{ question.text | safe }}</div>
   <a href="{{ url_for('answers.answer', question_id=question.id) }}"
      class="btn"

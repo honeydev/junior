@@ -16,3 +16,11 @@ class TestQuestionSchema(Schema):
     text = fields.String()
     question_type = fields.Int()
     test_case_id = fields.Int()
+    answers = fields.Nested('TestCaseAnswerSchema', many=True)
+
+
+class TestCaseAnswerSchema(Schema):
+    """TestAnswer schema."""
+
+    id = fields.Int(dump_only=True)  # noqa: A003
+    text = fields.String()
