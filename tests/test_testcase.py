@@ -4,7 +4,7 @@ from flask import url_for
 
 from src.extensions import db
 from src.qa.models import Chapter, Question
-from src.test_cases import TestCase, TestQuestion
+from src.test_cases import TestAnswer, TestCase, TestQuestion
 from src.uttils import load_fixture
 from tests.base import BaseTest
 from tests.test_uttils import load_yaml_fixture
@@ -95,3 +95,55 @@ class TestFetchTestCaseData(BaseTest):
 
             self.assertEqual(response_question['question_type'], test_question.question_type)
             self.assertEqual(response_question['text'], test_question.text)
+
+
+class TestTestAnswer(BaseTest):
+
+    def setUp(self):
+        super().setUp()
+        fixtures: list[dict] = load_fixture('chapters-questions.yml')
+        test_cases_fixtures: dict = load_yaml_fixture('test_cases.yaml')
+
+        self.questions: tuple = tuple(
+            Question(**question_fixture).save()
+            for question_fixture in fixtures['questions']
+        )
+
+        self.chapters: tuple = tuple(
+            Chapter(**chapter_fixture)
+            for chapter_fixture in fixtures['chapters']
+        )
+
+        self.test_cases: tuple = tuple(
+            TestCase(**test_case_fixture)
+            for test_case_fixture in test_cases_fixtures['test_cases']
+        )
+
+        self.test_questions: tuple = tuple(
+            TestQuestion(**test_question)
+            for test_question in test_cases_fixtures['test_questions']
+        )
+
+        self.test_answers: tuple = tuple(
+            TestAnswer(**test_answer)
+            for test_answer in test_cases_fixtures['test_answers']
+        )
+
+        db.session.add_all(self.chapters)
+        db.session.add_all(self.questions)
+        db.session.add_all(self.test_cases)
+        db.session.add_all(self.test_questions)
+        db.session.add_all(self.test_answers)
+
+    def test(self):
+        answer: TestAnswer = self.test_answers[0]
+        response = self.client.get(
+            url_for('test_cases.test_answer', answer_id=answer.id),
+        )
+
+        self.assert200(response)
+
+        parsed_response: dict = json.loads(response.get_data())
+
+        self.assertEqual(answer.right, parsed_response['right'])
+        self.assertEqual(answer.text, parsed_response['text'])

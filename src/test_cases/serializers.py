@@ -24,3 +24,4 @@ class TestCaseAnswerSchema(Schema):
 
     id = fields.Int(dump_only=True)  # noqa: A003
     text = fields.String()
+    right = fields.Boolean()

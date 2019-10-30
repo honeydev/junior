@@ -1,11 +1,17 @@
-<div class="card background-light">
+<div class="card background-light questionCard">
   <div class="card-header h5">
     <span>#{{ question.order_number }}</span>
     <span>
-      <a href="{{ url_for('test_cases.test_case_index', question_id=question.id) }}"><img height="20" src="{{ url_for('static', filename='error.png') }}"/></a>
+      <a href="{{ url_for('test_cases.test_case_index', question_id=question.id) }}">
+        <span class="float-right badge badge-danger">Тест</span>
+      </a>
     </span>
   </div>
-  <div class="card-body">{{ question.text | safe }}</div>
+  {% if question.text | length > 60 %}
+    <div class="card-body">{{ question.text[:60] | safe }}...</div>
+  {% else %}
+    <div class="card-body">{{ question.text | safe }}</div>
+  {% endif %}
   <a href="{{ url_for('answers.answer', question_id=question.id) }}"
      class="btn"
      style="background-color: #9e779eb0">
