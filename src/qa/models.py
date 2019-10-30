@@ -29,8 +29,8 @@ class Question(BaseDateTimeModel):
     test_case = db.relationship(
         'TestCase', back_populates='question', uselist=False)
 
-    def __repr__(self):
-        return self.text
+    def __str__(self):
+        return f'Вопрос #{self.order_number} {self.text}'
 
 
 class Answer(BaseDateTimeModel):
