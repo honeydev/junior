@@ -13,3 +13,14 @@ test_questions:
     text: 'question 2'
     question_type: 1
     test_case_id: 1
+test_answers:
+  -
+    id: 1
+    question_id: 1
+    text: answer text
+    right: False
+  -
+    id: 2
+    question_id: 1
+    text: answer text
+    right: True

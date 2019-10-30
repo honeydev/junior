@@ -56,5 +56,6 @@ class TestAnswer(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     text = db.Column(db.Text, nullable=False)
+    right = db.Column(db.Boolean, nullable=False, default=False)
     question_id = db.Column(db.Integer, db.ForeignKey('test_questions.id'))
     question = db.relationship('TestQuestion', back_populates='answers')
