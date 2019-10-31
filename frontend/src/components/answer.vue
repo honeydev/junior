@@ -1,13 +1,20 @@
 <template>
-    <div class="form-check">
-        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
-        <label class="form-check-label" for="exampleRadios1" v-html=text></label>
+    <div>
+        <div v-if="type == 'radius'">
+            <radiusAnswer :text="text" :id="id"/>
+        </div>
     </div>
 </template>
 
 <script>
+
+import radiusAnswer from './radiusAnswer';
+
 export default {
-    'name': 'answer',
-    props: ['text', 'id']
-}
+    'name': 'Answer',
+    'props': ['text', 'type', 'id'],
+    'components': {
+        radiusAnswer
+    }
+};
 </script>
