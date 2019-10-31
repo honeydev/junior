@@ -5,6 +5,7 @@ from flask import url_for
 from src.extensions import db
 from src.qa.models import Chapter, Question
 from src.test_cases import TestAnswer, TestCase, TestQuestion
+from src.test_cases.constants import AnswerTypes
 from src.uttils import load_fixture
 from tests.base import BaseTest
 from tests.test_uttils import load_yaml_fixture
@@ -93,7 +94,10 @@ class TestFetchTestCaseData(BaseTest):
                 parsed_response['test_questions'],
             ))[0]
 
-            self.assertEqual(response_question['question_type'], test_question.question_type)
+            self.assertEqual(
+                response_question['question_type'],
+                AnswerTypes.get_name(test_question.question_type).name.lower(),
+            )
             self.assertEqual(response_question['text'], test_question.text)
 
 

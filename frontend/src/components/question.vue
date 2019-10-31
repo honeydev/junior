@@ -5,10 +5,10 @@
             <div class="card-title"><h3 v-html="text"/></div>
             <ul class="list-unstyled">
                 <li v-for="answer in answers" v-bind:key="answer.id">
-                    <answer :text="answer.text" :id="answer.id"/>
+                    <answer :text="answer.text" :type="question_type" :id="answer.id"/>
                 </li>
             </ul>
-            <button class="btn btn-primary" type="submit">Дальше</button>
+            <button v-on:click="checkAnswer" class="btn btn-primary" type="submit">Дальше</button>
         </div>
     </div>
     </div>
@@ -16,7 +16,7 @@
 
 <script>
 
-import answer from './answer.vue';
+import answer from './answer';
 
 export default {
     name: 'Question',
@@ -25,5 +25,10 @@ export default {
     components: {
         'answer': answer
     },
+    methods: {
+        checkAnswer (clickEvent) {
+            console.log(clickEvent, this);
+        }
+    }
 };
 </script>

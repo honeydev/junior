@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col">
                 <div v-for="question in questions" v-bind:key="question.id">
-                    <question 
+                    <question
                         :id="question.id"
                         :question_type=question.question_type
                         :text=question.text
@@ -25,23 +25,23 @@ import question from './question.vue';
 
 export default {
     name: 'TestCase',
-    data() {
+    data () {
         return {
             questions: []
-        }
+        };
     },
     created: function () {
-        TestCaseApi.getTestCase(this, getQuestionIdByUrl())
+        TestCaseApi.getTestCase(this, getQuestionIdByUrl());
     },
     methods: {
-        handleTestCaseResponse(apiResponse) {
+        handleTestCaseResponse (apiResponse) {
             const questions = apiResponse['data']['test_questions'];
-            const head = _.head(questions)
+            const head = _.head(questions);
             head['active'] = true;
             const tail = _.tail(questions).map(question => {
                 question['active'] = false;
                 return question;
-            })
+            });
             this.questions = [head].concat(tail);
         }
     },
