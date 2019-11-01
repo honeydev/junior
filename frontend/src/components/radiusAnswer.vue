@@ -1,20 +1,26 @@
 <template>
     <div class="form-check">
-        <input v-model="picked" v-on:change="changeEvent" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value=":id">
+        <input v-on:change="switchChecked" class="form-check-input" type="radio" name="answerRadio" :value="id" :checked="checked">
         <label class="form-check-label" for="exampleRadios1" v-html=text></label>
     </div>
 </template>
 
 <script>
 
-import { eventBus } from '../eventBus.js';
-
 export default {
     'name': 'Answer',
-    props: ['text', 'picked', 'id'],
+    props: ['text', 'id'],
+    data () {
+        return {
+            checked: false
+        };
+    },
     methods: {
-        changeEvent (event) {
-            eventBus.$emit('switch-radius-value', this);
+        switchChecked () {
+            this.$parent.$children.map(cmp => {
+                cmp.checked = false;
+            });
+            this.checked = !this.checked;
         }
     }
 };
