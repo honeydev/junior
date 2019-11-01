@@ -1,22 +1,23 @@
 <template>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-        <label class="form-check-label" for="defaultCheck1">
-            Default checkbox
-        </label>
+        <input v-on:change="switchChecked" class="form-check-input" type="checkbox" id="answerCheckbox" :value="id" :checked="checked">
+        <label class="form-check-label" for="defaultCheck1">{{ text }}</label>
     </div>
 </template>
 
 <script>
 
-import { eventBus } from '../eventBus.js';
-
 export default {
     'name': 'Answer',
     props: ['text', 'id'],
+    data () {
+        return {
+            'checked': false
+        };
+    },
     methods: {
-        changeEvent (event) {
-            eventBus.$emit('switch-radius-value', this);
+        switchChecked () {
+            this.checked = !this.checked;
         }
     }
 };
