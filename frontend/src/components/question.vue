@@ -16,22 +16,16 @@
 
 <script>
 
-import answer from './answer';
-
 import { eventBus } from '../eventBus.js';
 
 export default {
     name: 'Question',
     props: ['text', 'active', 'question_type', 'answers', 'id'],
 
-    components: {
-        'answer': answer
-    },
     created () {
     },
     methods: {
         checkAnswer (clickEvent) {
-            this.$set(this, 'active', false);
             eventBus.$emit('click-next', this);
         }
     }
