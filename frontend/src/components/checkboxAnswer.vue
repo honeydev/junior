@@ -1,7 +1,9 @@
 <template>
     <div class="form-check">
-        <input v-on:change="changeEvent" class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
-        <label class="form-check-label" for="exampleRadios1" v-html=text></label>
+        <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+        <label class="form-check-label" for="defaultCheck1">
+            Default checkbox
+        </label>
     </div>
 </template>
 

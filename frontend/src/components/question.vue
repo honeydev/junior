@@ -18,6 +18,8 @@
 
 import answer from './answer';
 
+import { eventBus } from '../eventBus.js';
+
 export default {
     name: 'Question',
     props: ['text', 'active', 'question_type', 'answers', 'id'],
@@ -25,9 +27,12 @@ export default {
     components: {
         'answer': answer
     },
+    created () {
+    },
     methods: {
         checkAnswer (clickEvent) {
-            console.log(clickEvent, this);
+            this.$set(this, 'active', false);
+            eventBus.$emit('click-next', this);
         }
     }
 };
