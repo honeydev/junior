@@ -1,4 +1,3 @@
-
 <script>
 
 import Question from './question';

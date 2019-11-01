@@ -46,10 +46,9 @@ export default {
             const currentIndex = _.findIndex(this.questions, question => {
                 return Number(question.id) === Number(questionComponent.id);
             });
+            this.questions[currentIndex]['active'] = false;
             const nextIndex = (currentIndex + 1 < this.$children.length) ? currentIndex + 1 : 0;
-            const nextQuestion = this.$children[nextIndex];
-
-            nextQuestion.active = true;
+            this.questions[nextIndex]['active'] = true;
         });
     },
     methods: {
