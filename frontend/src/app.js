@@ -8,9 +8,7 @@ import TestCase from './components/testCase.vue';
 window.onload = () => {
     new Vue().$mount('#app');
 
-    const testCase = document.getElementById('testCase');
-
-    if (testCase) {
+    if (document.getElementById('testCase')) {
         new Vue({
             render: h => h(TestCase)
         }).$mount('#testCase');

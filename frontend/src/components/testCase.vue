@@ -3,12 +3,20 @@
         <div class="row">
             <div class="col">
                 <div v-for="question in questions" v-bind:key="question.id">
-                    <question
+                    <radiusQuestion v-if="question.question_type == 'radius'"
                         :id="question.id"
                         :question_type=question.question_type
                         :text=question.text
                         :answers=question.answers
-                        :active=question.active />
+                        :active=question.active
+                    />
+                    <checkboxQuestion v-else-if="question.question_type == 'check_box'"
+                        :id="question.id"
+                        :question_type=question.question_type
+                        :text=question.text
+                        :answers=question.answers
+                        :active=question.active
+                    />
                 </div>
             </div>
         </div>
@@ -20,8 +28,10 @@
 import TestCaseApi from '../api/testCaseApi';
 import _ from 'lodash';
 
-import { getQuestionIdByUrl } from '../helpers/commonHelpers.js';
-import question from './question.vue';
+import { getQuestionIdByUrl } from '../helpers/commonHelpers';
+import radiusQuestion from './radiusQuestion';
+import checkboxQuestion from './checkboxQuestion';
+import { eventBus } from '../eventBus';
 
 export default {
     name: 'TestCase',
@@ -32,6 +42,15 @@ export default {
     },
     created: function () {
         TestCaseApi.getTestCase(this, getQuestionIdByUrl());
+        eventBus.$on('click-next', questionComponent => {
+            const currentIndex = _.findIndex(this.questions, question => {
+                return Number(question.id) === Number(questionComponent.id);
+            });
+            const nextIndex = (currentIndex + 1 < this.$children.length) ? currentIndex + 1 : 0;
+            const nextQuestion = this.$children[nextIndex];
+
+            nextQuestion.active = true;
+        });
     },
     methods: {
         handleTestCaseResponse (apiResponse) {
@@ -46,7 +65,8 @@ export default {
         }
     },
     components: {
-        'question': question
+        'radiusQuestion': radiusQuestion,
+        'checkboxQuestion': checkboxQuestion
     }
 };
 
