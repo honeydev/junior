@@ -1,7 +1,7 @@
 <template>
-    <div class="form-check">
-        <input v-on:change="switchChecked" class="form-check-input" type="radio" name="answerRadio" :value="id" :checked="checked">
-        <label class="form-check-label" for="exampleRadios1" v-html=text></label>
+    <div class="custom-control custom-radio">
+        <input v-on:change="switchChecked" class="custom-control-input" type="radio" name="answerRadio" :id="id" :value="id" :checked="checked">
+        <label class="custom-control-label" :for="id" v-html=text></label>
     </div>
 </template>
 

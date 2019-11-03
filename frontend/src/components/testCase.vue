@@ -29,17 +29,14 @@ import TestCaseApi from '../api/testCaseApi';
 import _ from 'lodash';
 
 import { getQuestionIdByUrl } from '../helpers/commonHelpers';
-import radiusQuestion from './radiusQuestion';
-import checkboxQuestion from './checkboxQuestion';
+import RadiusQuestion from './radiusQuestion';
+import CheckboxQuestion from './checkboxQuestion';
 import { eventBus } from '../eventBus';
+import stateStorage from '../stateSorage';
 
 export default {
     name: 'TestCase',
-    data () {
-        return {
-            questions: []
-        };
-    },
+    data: () => stateStorage.state,
     created: function () {
         TestCaseApi.getTestCase(this, getQuestionIdByUrl());
         eventBus.$on('click-next', questionComponent => {
@@ -64,8 +61,8 @@ export default {
         }
     },
     components: {
-        'radiusQuestion': radiusQuestion,
-        'checkboxQuestion': checkboxQuestion
+        'radiusQuestion': RadiusQuestion,
+        'checkboxQuestion': CheckboxQuestion
     }
 };
 
