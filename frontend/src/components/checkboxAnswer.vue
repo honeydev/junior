@@ -1,7 +1,7 @@
 <template>
-    <div class="form-check">
-        <input v-on:change="switchChecked" class="form-check-input" type="checkbox" id="answerCheckbox" :value="id" :checked="checked">
-        <label class="form-check-label" for="defaultCheck1">{{ text }}</label>
+    <div class="custom-control custom-checkbox">
+        <input v-on:change="switchChecked" class="custom-control-input" type="checkbox" :id="id" :value="id" :checked="checked">
+        <label class="custom-control-label" :for="id" v-html=text />
     </div>
 </template>
 

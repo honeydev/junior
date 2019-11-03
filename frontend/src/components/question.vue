@@ -18,10 +18,11 @@
 
 <script>
 
-import _ from 'lodash';
 import { eventBus } from '../eventBus.js';
 import ErrorAlert from './errorAlert';
 import SuccessAlert from './successAlert';
+import { answerIsRight } from '../helpers/questionHelpers';
+import stateStorage from '../stateSorage';
 
 export default {
     name: 'Question',
@@ -30,12 +31,7 @@ export default {
         'errorAlert': ErrorAlert,
         'successAlert': SuccessAlert
     },
-    data () {
-        return {
-            afterClick: false,
-            rightAnswer: false
-        };
-    },
+    data: () => stateStorage.state,
     created () {
         this.rightAnswers = this.answers.reduce((acc, el) => {
             if (el.right) {
@@ -50,9 +46,12 @@ export default {
                 .filter(answerCmp => answerCmp.checked)
                 .map(answerCmp => answerCmp.id);
 
-            this.rightAnswer = this.rightAnswers.size === choicedId.length &&
-                _.every(choicedId, id => this.rightAnswers.has(id));
+            this.rightAnswer = answerIsRight(this.rightAnswers, choicedId);
             this.afterClick = true;
+
+            if (this.rightAnswer) {
+                stateStorage.state.successQuestions.push(this);
+            }
 
             setTimeout(() => {
                 this.afterClick = false;

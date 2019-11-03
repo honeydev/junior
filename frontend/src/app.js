@@ -3,7 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/style.css';
 
 import Vue from 'vue';
-import TestCase from './components/testCase.vue';
+import TestCase from './components/testCase';
+import TestCaseProgress from './components/testCaseProgress';
 
 window.onload = () => {
     new Vue().$mount('#app');
@@ -12,5 +13,9 @@ window.onload = () => {
         new Vue({
             render: h => h(TestCase)
         }).$mount('#testCase');
+
+        new Vue({
+            render: h => h(TestCaseProgress)
+        }).$mount('#testCaseProgress');
     }
 };
