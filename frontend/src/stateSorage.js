@@ -4,7 +4,8 @@ const stateStorage = {
         successQuestions: [],
         questionsParts: 0,
         afterClick: false,
-        rightAnswer: false
+        rightAnswer: false,
+        completed: false
     }
 };
 export default stateStorage;

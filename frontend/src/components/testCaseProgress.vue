@@ -4,9 +4,6 @@
             class="progress-bar"
             role="progressbar"
             :style="'width: ' + progress + '%'"
-            aria-valuenow="0"
-            aria-valuemin="0"
-            aria-valuemax="3"
             ></div>
     </div>
 </template>
