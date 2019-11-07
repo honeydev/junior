@@ -1,7 +1,9 @@
 <template>
     <section class="container">
+
         <div class="row">
             <div class="col">
+                <completedDialog/>
                 <div v-for="question in questions" v-bind:key="question.id">
                     <radiusQuestion v-if="question.question_type == 'radius'"
                         :id="question.id"
@@ -33,6 +35,7 @@ import RadiusQuestion from './radiusQuestion';
 import CheckboxQuestion from './checkboxQuestion';
 import { eventBus } from '../eventBus';
 import stateStorage from '../stateSorage';
+import CompletedDialog from './completedDialog';
 
 export default {
     name: 'TestCase',
@@ -40,9 +43,15 @@ export default {
     created: function () {
         TestCaseApi.getTestCase(this, getQuestionIdByUrl());
         eventBus.$on('click-next', questionComponent => {
+            
+            if (this.completed) {
+                return;
+            }
+
             const currentIndex = _.findIndex(this.questions, question => {
                 return Number(question.id) === Number(questionComponent.id);
             });
+
             this.questions[currentIndex]['active'] = false;
             const nextIndex = (currentIndex + 1 < this.$children.length) ? currentIndex + 1 : 0;
             this.questions[nextIndex]['active'] = true;
@@ -60,9 +69,18 @@ export default {
             this.questions = [head].concat(tail);
         }
     },
+    watch: {
+        successQuestions(newQuestions) {
+            if (newQuestions.length === this.questions.length) {
+                this.questions.map(question => question.active = false)
+                this.completed = true;
+            }
+        }
+    },
     components: {
         'radiusQuestion': RadiusQuestion,
-        'checkboxQuestion': CheckboxQuestion
+        'checkboxQuestion': CheckboxQuestion,
+        'completedDialog': CompletedDialog
     }
 };
 

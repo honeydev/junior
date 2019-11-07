@@ -54,9 +54,9 @@ export default {
             }
 
             setTimeout(() => {
+                eventBus.$emit('click-next', this, this.rightAnswers);
                 this.afterClick = false;
                 this.rightAnswer = false;
-                eventBus.$emit('click-next', this, this.rightAnswers);
             }, 1000);
         }
     },
