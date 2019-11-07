@@ -3,7 +3,7 @@
 
         <div class="row">
             <div class="col">
-                <completedDialog/>
+                <completedDialog v-if="completed"/>
                 <div v-for="question in questions" v-bind:key="question.id">
                     <radiusQuestion v-if="question.question_type == 'radius'"
                         :id="question.id"
