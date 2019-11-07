@@ -60,7 +60,6 @@ bp.add_url_rule(
     ),
 )
 
-
 bp.add_url_rule(
     '/api/testanswer/<answer_id>',
     view_func=TestAnswerView.as_view(
