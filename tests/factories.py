@@ -33,4 +33,6 @@ def create_auth_user(test_client):
     )
 
     session_id = res.headers['Set-Cookie'].split(' ')[0].split('=')[1]
+    test_client.set_cookie('http://localhost/', 'session', session_id)
+
     return user, session_id
