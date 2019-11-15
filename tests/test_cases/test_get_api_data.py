@@ -8,6 +8,7 @@ from src.test_cases import TestAnswer, TestCase, TestQuestion
 from src.test_cases.constants import AnswerTypes
 from src.uttils import load_fixture
 from tests.base import BaseTest
+from tests.factories import create_auth_user
 from tests.test_uttils import load_yaml_fixture
 
 
@@ -77,10 +78,16 @@ class TestFetchTestCaseData(BaseTest):
         db.session.add_all(self.test_questions)
 
     def test(self):
+
         test_case: TestCase = self.test_cases[0]
+
+        user, session_id = create_auth_user(self.client)
+
+        self.client.set_cookie('http://localhost/', 'session', session_id)
         response = self.client.get(
             url_for('test_cases.test_case_json', question_id=test_case.question_id),
         )
+
         self.assert200(response)
 
         parsed_response: dict = json.loads(response.get_data())

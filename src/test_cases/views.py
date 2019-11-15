@@ -3,6 +3,7 @@ from flask import Blueprint, jsonify, redirect, render_template, url_for
 from src.qa.models import Question
 from src.test_cases import TestAnswer, TestCase
 from src.test_cases.serializers import TestCaseAnswerSchema, TestCaseSchema
+from src.user.decorators import login_required_user
 from src.views import BaseView
 
 bp = Blueprint('test_cases', __name__, template_folder='templates')
@@ -19,7 +20,9 @@ class TestCaseIndexView(BaseView):
 
 class TestCaseJsonView(BaseView):
 
-    def get(self, question_id: str) -> tuple:
+    @login_required_user
+    def get(self, user, question_id: str) -> tuple:
+
         schema: TestCaseSchema = TestCaseSchema()
 
         return jsonify(
@@ -27,6 +30,12 @@ class TestCaseJsonView(BaseView):
                 TestCase.query.filter(TestCase.question_id == int(question_id)).first(),
             ),
         ), 200
+
+
+class FinalizeTestQuestion(BaseView):
+
+    def put(self, question_id: str):
+        pass
 
 
 class TestAnswerView(BaseView):

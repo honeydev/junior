@@ -9,6 +9,7 @@ from src.user.uttils import get_or_create_user_through_github
 
 
 def auth_hook() -> None:
+
     current_session: SessionAuth or bool = session.get('auth', False)
 
     if github.authorized:

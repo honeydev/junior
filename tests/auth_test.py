@@ -16,7 +16,7 @@ class TestRegistrationView(BaseTest):
     def test(self):
         factory: Generator = Faker()
         username: str = factory.user_name()
-        password: str = factory.password()
+        password: str = factory.password(8)
         password_confirmation: str = password
         email: str = factory.email()
         first_name: str = factory.first_name()
