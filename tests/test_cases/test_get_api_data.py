@@ -81,9 +81,8 @@ class TestFetchTestCaseData(BaseTest):
 
         test_case: TestCase = self.test_cases[0]
 
-        user, session_id = create_auth_user(self.client)
+        create_auth_user(self.client)
 
-        self.client.set_cookie('http://localhost/', 'session', session_id)
         response = self.client.get(
             url_for('test_cases.test_case_json', question_id=test_case.question_id),
         )
