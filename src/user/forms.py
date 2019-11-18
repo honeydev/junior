@@ -9,7 +9,7 @@ class LoginForm(Form):
         validators.length(
             min=3,
             max=15,  # noqa: WPS432
-            message='Длинна логина от 3 до 15 символов.',
+            message='Длина логина от 3 до 15 символов.',
         ),
     ])
     password = PasswordField('Пароль', [
@@ -17,7 +17,7 @@ class LoginForm(Form):
         validators.length(
             min=3,
             max=15,  # noqa: WPS432
-            message='Длинна пароля от 6 до 15 символов.',
+            message='Длина пароля от 6 до 15 символов.',
         ),
     ])
 
@@ -28,7 +28,7 @@ class RegistrationForm(Form):
         validators.length(
             min=3,
             max=15,  # noqa: WPS432
-            message='Длинна логина от 3 до 15 символов.',
+            message='Длина логина от 3 до 15 символов.',
         ),
     ])
     password = PasswordField('Пароль', [
@@ -36,7 +36,7 @@ class RegistrationForm(Form):
         validators.length(
             min=6,
             max=15,  # noqa: WPS432
-            message='Длинна пароля от 6 до 15 символов.',
+            message='Длина пароля от 6 до 15 символов.',
         ),
     ])
     password_confirmation = PasswordField('Подтверждение пароля', [
@@ -44,17 +44,17 @@ class RegistrationForm(Form):
         validators.length(
             min=6,
             max=15,  # noqa: WPS432
-            message='Длинна пароля от 6 до 15 символов.',
+            message='Длина пароля от 6 до 15 символов.',
         ),
         validators.equal_to('password', message='Пароли должны совпадать.'),
     ])
     email = StringField('Email адрес', [
-        validators.email(message='Значение не является почтовый адресом.'),
+        validators.email(message='Значение не является почтовым адресом.'),
         validators.data_required(message='Поле обязательно.'),
         validators.length(
             min=4,
             max=30,  # noqa: WPS432
-            message='Длинна поля от 4 до 30 символов.',
+            message='Длина поля от 4 до 30 символов.',
         ),
     ])
     middlename = StringField('Фамилия', [
@@ -62,7 +62,7 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,  # noqa: WPS432
-            message='Длинна поля от 4 до 30 символов.',
+            message='Длина поля от 4 до 30 символов.',
         ),
     ])
     firstname = StringField('Имя', [
@@ -70,7 +70,7 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,  # noqa: WPS432
-            message='Длинна поля от 4 до 30 символов.',
+            message='Длина поля от 4 до 30 символов.',
         ),
     ])
     lastname = StringField('Отчество', [
@@ -78,6 +78,6 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,  # noqa: WPS432
-            message='Длинна поля от 4 до 30 символов.',
+            message='Длина поля от 4 до 30 символов.',
         ),
     ])
