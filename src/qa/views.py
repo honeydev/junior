@@ -38,9 +38,9 @@ class AnswerView(BaseView):
                 **self.context,
             )
         answer = Answer(
-                text=self.context['form'].text.data,
-                question_id=question_id,
-            )
+            text=self.context['form'].text.data,
+            question_id=question_id,
+        )
         Answer.save(answer)
         return redirect(request.url)
 
