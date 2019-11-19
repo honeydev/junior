@@ -66,9 +66,12 @@ class Login(MethodView):
         user = User.query.filter_by(
             login=login,
         ).first()
+
         if user and User.check_password(user, password):
             session['auth'] = SessionAuth(True, user)
-        return redirect('/')
+            return redirect(url_for('index.index'))
+        else:
+            return render_template(self.template, error=True, **{'form': form})
 
 
 class Logout(MethodView):
