@@ -57,7 +57,7 @@ class RegistrationForm(Form):
             message='Длина поля от 4 до 30 символов.',
         ),
     ])
-    middlename = StringField('Фамилия', [
+    lastname = StringField('Фамилия', [
         validators.optional(),
         validators.length(
             min=4,
@@ -73,7 +73,43 @@ class RegistrationForm(Form):
             message='Длина поля от 4 до 30 символов.',
         ),
     ])
-    lastname = StringField('Отчество', [
+    middlename = StringField('Отчество', [
+        validators.optional(),
+        validators.length(
+            min=4,
+            max=30,  # noqa: WPS432
+            message='Длина поля от 4 до 30 символов.',
+        ),
+    ])
+
+
+class ProfileForm(Form):
+    email = StringField('Email адрес', [
+        validators.email(message='Значение не является почтовым адресом.'),
+        validators.data_required(message='Поле обязательно.'),
+        validators.length(
+            min=4,
+            max=30,  # noqa: WPS432
+            message='Длина поля от 4 до 30 символов.',
+        ),
+    ])
+    lastname = StringField('Фамилия', [
+        validators.optional(),
+        validators.length(
+            min=4,
+            max=30,  # noqa: WPS432
+            message='Длина поля от 4 до 30 символов.',
+        ),
+    ])
+    firstname = StringField('Имя', [
+        validators.optional(),
+        validators.length(
+            min=4,
+            max=30,  # noqa: WPS432
+            message='Длина поля от 4 до 30 символов.',
+        ),
+    ])
+    middlename = StringField('Отчество', [
         validators.optional(),
         validators.length(
             min=4,
