@@ -25,8 +25,8 @@ class AnswerView(BaseView):
 
     def post(self, question_id):
         form = AnswerForm(request.form)
-        question = Question.query.get(question_id) #может можно не передавать в темплейт question и answer но я хз как
-        answers = Answer.query.filter_by(
+        question = Question.query.get(question_id)  # может можно не передавать question и answer
+        answers = Answer.query.filter_by(           # в темлейт но я хз как
             question_id=question_id,
         ).all()
         if not form.validate():
