@@ -8,39 +8,45 @@ bp: Blueprint = Blueprint('answers', __name__, template_folder='templates')
 
 
 class AnswerView(BaseView):
-    def get(self, question_id):
+
+    def get_context(self, question_id):
         question = Question.query.get(question_id)
         answers = Answer.query.filter_by(
             question_id=question_id,
         ).all()
+        if request.method == 'GET':
+            form = AnswerForm()
+        else:
+            form = AnswerForm(request.form)
         self.context.update(
             dict(
                 auth=session.get('auth'),
                 question=question,
                 answers=answers,
-                form=AnswerForm(),
+                form=form,
             ),
+        )
+        return self.context
+
+    def get(self, question_id):
+        self.context.update(
+            self.get_context(question_id),
         )
         return render_template(self.template_name, **self.context)
 
     def post(self, question_id):
-        form = AnswerForm(request.form)
-        question = Question.query.get(question_id)  # может можно не передавать question и answer
-        answers = Answer.query.filter_by(           # в темлейт но я хз как
-            question_id=question_id,
-        ).all()
-        if not form.validate():
+        self.context.update(
+            self.get_context(question_id),
+        )
+
+        if not self.context['form'].validate():
             return render_template(
                 self.template_name,
-                **{
-                    'form': form,
-                    'question': question,
-                    'answers': answers,
-                },
+                **self.context,
             )
-        if form.text.data:
+        if self.context['form'].text.data:
             answer = Answer(
-                text=form.text.data,
+                text=self.context['form'].text.data,
                 question_id=question_id,
             )
             Answer.save(answer)
