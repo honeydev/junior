@@ -25,8 +25,19 @@ class AnswerView(BaseView):
 
     def post(self, question_id):
         form = AnswerForm(request.form)
+        question = Question.query.get(question_id) #может можно не передавать в темплейт question и answer но я хз как
+        answers = Answer.query.filter_by(
+            question_id=question_id,
+        ).all()
         if not form.validate():
-            return render_template(self.template_name, **{'form': form})
+            return render_template(
+                self.template_name,
+                **{
+                    'form': form,
+                    'question': question,
+                    'answers': answers,
+                },
+            )
         if form.text.data:
             answer = Answer(
                 text=form.text.data,
