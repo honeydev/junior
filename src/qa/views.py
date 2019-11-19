@@ -14,42 +14,34 @@ class AnswerView(BaseView):
         answers = Answer.query.filter_by(
             question_id=question_id,
         ).all()
-        if request.method == 'GET':
-            form = AnswerForm()
-        else:
-            form = AnswerForm(request.form)
         self.context.update(
             dict(
                 auth=session.get('auth'),
                 question=question,
                 answers=answers,
-                form=form,
             ),
         )
         return self.context
 
     def get(self, question_id):
-        self.context.update(
-            self.get_context(question_id),
-        )
+        self.get_context(question_id)
+        self.context['form'] = AnswerForm()
         return render_template(self.template_name, **self.context)
 
     def post(self, question_id):
-        self.context.update(
-            self.get_context(question_id),
-        )
+        self.get_context(question_id)
+        self.context['form'] = AnswerForm(request.form)
 
         if not self.context['form'].validate():
             return render_template(
                 self.template_name,
                 **self.context,
             )
-        if self.context['form'].text.data:
-            answer = Answer(
+        answer = Answer(
                 text=self.context['form'].text.data,
                 question_id=question_id,
             )
-            Answer.save(answer)
+        Answer.save(answer)
         return redirect(request.url)
 
 
