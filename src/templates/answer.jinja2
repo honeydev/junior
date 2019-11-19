@@ -9,7 +9,17 @@
       </div>
     </div>
 
-
+    {% if form.errors %}
+      <div class="row">
+          <div class="card mt-2 col-6 offset-3" style="background-color: #FF6161">
+              {% for field, errors in form.errors.items() %}
+                <div class="alert alert-error">
+                  {{ ', '.join(errors) }}
+                </div>
+              {% endfor %}
+          </div>
+        </div>
+    {% endif %}
 
     {% if answers %}
       {% for answer in answers %}

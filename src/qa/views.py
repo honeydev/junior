@@ -8,7 +8,8 @@ bp: Blueprint = Blueprint('answers', __name__, template_folder='templates')
 
 
 class AnswerView(BaseView):
-    def get(self, question_id):
+
+    def get_context(self, question_id):
         question = Question.query.get(question_id)
         answers = Answer.query.filter_by(
             question_id=question_id,
@@ -18,21 +19,29 @@ class AnswerView(BaseView):
                 auth=session.get('auth'),
                 question=question,
                 answers=answers,
-                form=AnswerForm(),
             ),
         )
+        return self.context
+
+    def get(self, question_id):
+        self.get_context(question_id)
+        self.context['form'] = AnswerForm()
         return render_template(self.template_name, **self.context)
 
     def post(self, question_id):
-        form = AnswerForm(request.form)
-        if not form.validate():
-            return render_template(self.template_name, **{'form': form})
-        if form.text.data:
-            answer = Answer(
-                text=form.text.data,
-                question_id=question_id,
+        self.get_context(question_id)
+        self.context['form'] = AnswerForm(request.form)
+
+        if not self.context['form'].validate():
+            return render_template(
+                self.template_name,
+                **self.context,
             )
-            Answer.save(answer)
+        answer = Answer(
+            text=self.context['form'].text.data,
+            question_id=question_id,
+        )
+        Answer.save(answer)
         return redirect(request.url)
 
 
