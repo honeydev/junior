@@ -20,6 +20,7 @@
               Вы вошли как {{ auth.user.login }}
             </a>
             <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
+                <a class="nav-link text-light" href="{{ url_for('auth.profile') }}">Профиль</a>
               <a class="nav-link text-light" href="{{ url_for('auth.logout') }}">Выход</a>
             </div>
           </li>
