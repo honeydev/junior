@@ -76,7 +76,6 @@ class Login(MethodView):
 class Profile(BaseView):
     def __init__(self, template_name):
         super().__init__(template_name)
-        self.template = template_name
         self.form = ProfileForm
 
     def get(self):
@@ -88,7 +87,7 @@ class Profile(BaseView):
             ('lastname', user.lastname),
         ])
         self.context['form'] = self.form(user_data)
-        return render_template(self.template, **self.context)
+        return render_template(self.template_name, **self.context)
 
     def post(self):
         form = self.form(request.form)
