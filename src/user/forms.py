@@ -9,15 +9,15 @@ class LoginForm(Form):
         validators.length(
             min=3,
             max=15,
-            message='Длина логина от 3 до 15 символов.',
+            message='Длина логина от %(min)d до %(max)d символов.',
         ),
     ])
     password = PasswordField('Пароль', [
         validators.data_required(message='Поле обязательно для заполнения.'),
         validators.length(
-            min=3,
+            min=6,
             max=15,
-            message='Длина пароля от 6 до 15 символов.',
+            message='Длина пароля от %(min)d до %(max)d символов.',
         ),
     ])
 
@@ -28,7 +28,7 @@ class RegistrationForm(Form):
         validators.length(
             min=3,
             max=15,
-            message='Длина логина от 3 до 15 символов.',
+            message='Длина логина от %(min)d до %(max)d символов.',
         ),
     ])
     password = PasswordField('Пароль', [
@@ -36,16 +36,11 @@ class RegistrationForm(Form):
         validators.length(
             min=6,
             max=15,
-            message='Длина пароля от 6 до 15 символов.',
+            message='Длина пароля от %(min)d до %(max)d символов.',
         ),
     ])
     password_confirmation = PasswordField('Подтверждение пароля', [
         validators.data_required(message='Поле обязательно для заполнения.'),
-        validators.length(
-            min=6,
-            max=15,
-            message='Длина пароля от 6 до 15 символов.',
-        ),
         validators.equal_to('password', message='Пароли должны совпадать.'),
     ])
     email = StringField('Email адрес', [
@@ -54,7 +49,7 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     lastname = StringField('Фамилия', [
@@ -62,7 +57,7 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     firstname = StringField('Имя', [
@@ -70,7 +65,7 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     middlename = StringField('Отчество', [
@@ -78,7 +73,7 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
 
@@ -90,7 +85,7 @@ class ProfileForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     lastname = StringField('Фамилия', [
@@ -98,7 +93,7 @@ class ProfileForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     firstname = StringField('Имя', [
@@ -106,7 +101,7 @@ class ProfileForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     middlename = StringField('Отчество', [
@@ -114,6 +109,6 @@ class ProfileForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от 4 до 30 символов.',
+            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
