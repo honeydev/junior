@@ -1,6 +1,7 @@
 from src.extensions import db
 from src.test_cases.models import TestQuestionUserRelation
-from src.test_cases.schemas import UserSchema
+from src.test_cases.schemas import UserTestCaseSchema
+from src.test_cases.uttils import flat_user_test_case
 
 
 class TestCaseService:
@@ -13,9 +14,9 @@ class TestCaseService:
     def load_user_case(self):
         """Return user test case relations."""
         self.create_missing_relations()
-        schema = UserSchema()
+        schema = UserTestCaseSchema()
 
-        return schema.dump(self.user)
+        return flat_user_test_case(schema.dump(self.user))
 
     def create_missing_relations(self):
 

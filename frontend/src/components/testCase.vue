@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         handleTestCaseResponse (apiResponse) {
-            const questions = apiResponse['data']['test_questions'];
+            const questions = apiResponse['data'];
             const head = _.head(questions);
             head['active'] = true;
             const tail = _.tail(questions).map(question => {
