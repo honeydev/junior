@@ -1,10 +1,12 @@
 from flask import (Blueprint, redirect, render_template, request, session,
                    url_for)
 from flask.views import MethodView
+from werkzeug.datastructures import MultiDict
 
 from src.user.auth import SessionAuth
-from src.user.forms import LoginForm, RegistrationForm
+from src.user.forms import LoginForm, ProfileForm, RegistrationForm
 from src.user.models import User
+from src.views import BaseView
 
 bp = Blueprint('auth', __name__, template_folder='templates')
 
@@ -71,6 +73,35 @@ class Login(MethodView):
         return redirect('/')
 
 
+class Profile(BaseView):
+    def __init__(self, template_name):
+        super().__init__(template_name)
+        self.form = ProfileForm
+
+    def get(self):
+        user = User.query.filter_by(login=session['auth'].user.login).first()
+        user_data = MultiDict([
+            ('email', user.email),
+            ('firstname', user.firstname),
+            ('middlename', user.middlename),
+            ('lastname', user.lastname),
+        ])
+        self.context['form'] = self.form(user_data)
+        return render_template(self.template_name, **self.context)
+
+    def post(self):
+        form = self.form(request.form)
+        if not form.validate():
+            return render_template(self.template, **{'form': form})
+        User.query.filter_by(login=session['auth'].user.login).update({
+            'email': request.form.get('email'),
+            'firstname': request.form.get('firstname'),
+            'middlename': request.form.get('middlename'),
+            'lastname': request.form.get('lastname'),
+        })
+        return redirect(url_for('auth.profile'))
+
+
 class Logout(MethodView):
     def get(self):
         auth = session.get('auth')
@@ -97,5 +128,12 @@ bp.add_url_rule(
     view_func=Login.as_view(
         name='login',
         template_name='login.jinja2',
+    ),
+)
+bp.add_url_rule(
+    '/profile/',
+    view_func=Profile.as_view(
+        name='profile',
+        template_name='profile_form.jinja2',
     ),
 )
