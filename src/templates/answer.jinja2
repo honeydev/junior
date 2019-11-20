@@ -1,33 +1,22 @@
 {% extends 'base.jinja2' %}
 {% block content %}
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="card mt-3 col-lg-6 offset-3" style="background-color: #D8BFD8">
+  <div class="container p-4">
+    <div class="row justify-content-center">
+      <div class="card col my-1" style="background-color: #D8BFD8">
         <div class="card-header h5">Раздел {{ question.chapter.name }} Вопрос #{{ question.order_number }}</div>
       <div class="card-body">{{ question.text | safe }}</div>
       </div>
     </div>
 
-    {% if form.errors %}
-      <div class="row">
-          <div class="card mt-2 col-6 offset-3" style="background-color: #FF6161">
-              {% for field, errors in form.errors.items() %}
-                <div class="alert alert-error">
-                  {{ ', '.join(errors) }}
-                </div>
-              {% endfor %}
-          </div>
-        </div>
-    {% endif %}
+    
 
     {% if answers %}
       {% for answer in answers %}
-        {% if answer.is_approve %}
-        <div class="row">
-          <div class="card mt-2 col-6 offset-3 bg-light border-info">
+        <div class="row justify-content-center">
+          <div class="card my-1 col bg-light border-info">
             <div class="card-header" >
-              Ответ <img src="{{ url_for('static', filename='approve_symbol.jpg') }}" width="30">
+              Ответ {% if answer.is_approve %} <img src="{{ url_for('static', filename='approve_symbol.jpg') }}" width="30">{% endif %}
             </div>
             <div class="card-body">
               <blockquote class="blockquote mb-0">
@@ -36,24 +25,10 @@
             </div>
           </div>
         </div>
-        {% else %}
-          <div class="row">
-          <div class="card mt-2 col-6 offset-3 bg-light">
-            <div class="card-header">
-              Ответ
-            </div>
-            <div class="card-body">
-              <blockquote class="blockquote mb-0">
-                <div class="card-body">{{ answer.text | safe }}</div>
-              </blockquote>
-            </div>
-          </div>
-        </div>
-        {% endif %}
       {% endfor %}
-      {% else %}
-        <div class="row">
-          <div class="card mt-2 col-6 offset-3 bg-light">
+    {% else %}
+        <div class="row justify-content-center">
+          <div class="card my-1 col bg-light">
             <div class="card-header">
               :(
             </div>
@@ -64,8 +39,13 @@
             </div>
           </div>
         </div>
+    {% endif %}
+  {% if form.errors %}
+    <div class="row justify-content-center">
+        {% include 'components/form_error.jinja2' %}
+    </div>
   {% endif %}
-               {% include 'components/answer_form.jinja2' %}
+  {% include 'components/answer_form.jinja2' %}
     </div>
 
 {% endblock %}

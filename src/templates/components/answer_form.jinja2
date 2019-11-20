@@ -1,28 +1,35 @@
 {% if auth %}
   {% for form in form %}
-    <form action="{{ url_for('answers.answer', question_id=question.id) }}" method="post" class="card mt-4 col-6 offset-3 bg">
-      <div class="panel-group" id="collapse-group">
-        <div class="panel panel-default">
+  <div class="row justify-content-center pb-4">
+    <div class="card my-1 col">
+      <form action="{{ url_for('answers.answer', question_id=question.id) }}" method="post" class="form-horizontal">
+        <div class="panel-group" id="collapse-group">
+          <div class="panel panel-default">
 
-          <div class="panel-heading" style="cursor: pointer;">
-            <h4 class="panel-title ">
-              <div data-toggle="collapse" class="text-center" data-parent="#collapse-group" href="#el1">
-                <div class="card-body">Дать ответ</div>
-              </div>
-            </h4>
-          </div>
+            <div class="panel-heading" style="cursor: pointer;">
+              <h4 class="panel-title ">
+                <div data-toggle="collapse" class="text-center" data-parent="#collapse-group" href="#el1">
+                  <div class="card-body">Дать ответ</div>
+                </div>
+              </h4>
+              
+            </div>
 
-          <div id="el1" class="panel-collapse collapse">
-            <div class="panel-body">
-              <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
-              {{ form }}
-              <div class="mx-auto col-2 mt-2 mb-4">
-                <button type="submit" class="btn btn-success">Отправить</button>
+            <div id="el1" class="panel-collapse collapse">
+              <div class="panel-body">
+                <script src="https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js"></script>
+                {{ form }}
+                <div class="row">
+                  <div class="mx-auto col-auto my-3">
+                    <button type="submit" class="btn btn-success">Отправить</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
+  </div>
   {% endfor %}
 {% endif %}

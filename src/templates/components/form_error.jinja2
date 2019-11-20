@@ -1,8 +1,8 @@
-      {% if form.errors or error %}
-        <div class="alert alert-danger" style="margin-top: 1em;">
-            {% if error %}
-              <p class="m-0">Неверный логин или пароль!</p>
-            {% endif %}
+      {% if form.errors or errors %}
+        <div class="alert alert-danger col my-1">
+            {% for error in errors %}
+              <p class="m-0">{{ error }}</p>
+            {% endfor %}
             {% for field in form.errors %}
               {% for error in form.errors[field] %}
                 <p class="m-0"><b>{{ form[field].label.text }}:</b> {{ error }}</p>
