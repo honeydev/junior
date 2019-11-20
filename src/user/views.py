@@ -39,7 +39,7 @@ class Registration(MethodView):
         if User.query.filter_by(login=login).first():
             return render_template(
                 self.template,
-                **{'form': form, 'info': 'Логин уже занят'},
+                **{'form': form, 'errors': ['Логин уже занят']},
             )
 
         User.save(user)
@@ -73,7 +73,8 @@ class Login(MethodView):
             session['auth'] = SessionAuth(True, user)
             return redirect(url_for('index.index'))
 
-        return render_template(self.template, error=True, **{'form': form})
+        return render_template(self.template, **{'form': form,
+                                                 'errors': ['Неверный логин или пароль!']})
 
 
 class Profile(BaseView):

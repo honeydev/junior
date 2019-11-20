@@ -2,45 +2,28 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-<div class="container">
-  <div class="row">
-    <div class="card mt-5 col-6 offset-3">
+<div class="container p-4">
+  <div class="row justify-content-center">
+    <div class="card col-lg-6 col-12">
       <div class="row card-header">
         <div class="mx-auto col-auto">РЕГИСТРАЦИЯ</div>
       </div>
       
-      {% if form.errors %}
-        <div class="alert alert-danger" style="margin-top: 1em;">
-          <ul style="margin: 0;">
-            {% for field in form.errors %}
-              {% for error in form.errors[field] %}
-                <li><b>{{ form[field].label.text }}:</b> {{ error }}</li>                
-              {% endfor %}
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
+      {% include 'components/form_error.jinja2' %}
 
-      {% if info %}
-        <div class="alert alert-info">
-          {{ info }}
-        </div>
-      {% endif %}
-
-      <form class="form-horizontal mb-5" action="{{ url_for('auth.registration') }}" method="post">
-      {{ form.csrf_token }}
+      <form class="form-horizontal" action="{{ url_for('auth.registration') }}" method="post">
         <div class="form-group">
-
+          {{ form.csrf_token }}
           {% for form in form %}
             <div class="row">
-              <div class="mx-auto col-10 mt-3">
+              <div class="mx-auto col-11 mt-3">
                 {{ form(class_='form-control', placeholder = form.label.text) }}
               </div>
             </div>
           {% endfor %}
 
           <div class="row">
-            <div class="mx-auto col-auto mt-4">
+            <div class="mx-auto col-auto my-3">
               <button type="submit" class="btn btn-success">Зарегистрироваться</button>
             </div>
           </div>
