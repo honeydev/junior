@@ -3,33 +3,18 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="card mx-auto mt-5 col-6 offset-3">
+  <div class="row justify-content-center">
+    <div class="card mt-4 col-lg-6 col-11">
       <div class="row card-header">
         <div class="mx-auto col-auto">
           <div class="row">ПРОФИЛЬ</div>
           <div class="row mx-auto">{{ auth.user.login }}</div>
         </div>
       </div>
-      {% if form.errors %}
-        <div class="alert alert-danger" style="margin-top: 1em;">
-          <ul style="margin: 0;">
-            {% for field in form.errors %}
-              {% for error in form.errors[field] %}
-                <li><b>{{ form[field].label.text }}:</b> {{ error }}</li>                
-              {% endfor %}
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
 
-      {% if info %}
-        <div class="alert alert-info">
-          {{ info }}
-        </div>
-      {% endif %}
+      {% include 'components/form_error.jinja2' %}
 
-      <form class="mx-auto col-10 mt-3 mb-3" action="{{ url_for('auth.profile') }}" method="post">
+      <form class="form-horizontal" action="{{ url_for('auth.profile') }}" method="post">
       {{ form.csrf_token }}
         {% for field in form %}
           <div class="form-group">
