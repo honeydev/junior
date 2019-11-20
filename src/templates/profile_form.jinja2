@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="card mt-5 col-6 offset-3">
+    <div class="card mx-auto mt-5 col-6 offset-3">
       <div class="row card-header">
         <div class="mx-auto col-auto">
           <div class="row">ПРОФИЛЬ</div>
@@ -12,25 +12,29 @@
         </div>
       </div>
       {% if form.errors %}
-        {% for field, errors in form.errors.items() %}
-          <div class="alert alert-error">
-            {{ form[field].label }}: {{ ', '.join(errors) }}
-          </div>
-        {% endfor %}
+        <div class="alert alert-danger" style="margin-top: 1em;">
+          <ul style="margin: 0;">
+            {% for field in form.errors %}
+              {% for error in form.errors[field] %}
+                <li><b>{{ form[field].label.text }}:</b> {{ error }}</li>                
+              {% endfor %}
+            {% endfor %}
+          </ul>
+        </div>
       {% endif %}
 
       {% if info %}
-        <div class="alert alert-error">
+        <div class="alert alert-info">
           {{ info }}
         </div>
       {% endif %}
 
-      <form class="form-horizontal mb-5" action="{{ url_for('auth.profile') }}" method="post">
+      <form class="mx-auto col-10 mt-3 mb-3" action="{{ url_for('auth.profile') }}" method="post">
       {{ form.csrf_token }}
         {% for field in form %}
-          <div class="form-group row">
-            <div class="col-5 mt-3 text-right">{{ field.label }}</div>
-            <div class="col-2 mt-3">{{ field(placeholder=field.data) }}</div>
+          <div class="form-group">
+            {{ field.label }}
+            {{ field(class_='form-control') }}
           </div>
         {% endfor %}
 

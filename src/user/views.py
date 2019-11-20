@@ -95,7 +95,7 @@ class Profile(BaseView):
     def post(self):
         form = self.form(request.form)
         if not form.validate():
-            return render_template(self.template, **{'form': form})
+            return render_template(self.template_name, **{'form': form}, **self.context)
         User.query.filter_by(login=session['auth'].user.login).update({
             'email': request.form.get('email'),
             'firstname': request.form.get('firstname'),

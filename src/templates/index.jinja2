@@ -8,7 +8,13 @@
           <h3>{{ chapter.name }}</h3>
         </div>
       </div>
-      {% include 'components/questions_block.jinja2' %}
+      <div class="row">
+        {% for question in chapter.questions %}
+          <div class="col-lg-6 col-12 mt-4">
+            {% include 'components/question_card.jinja2' %}
+          </div>
+        {% endfor %}
+      </div>      
     {% endfor %}
   </div>
 </div>
