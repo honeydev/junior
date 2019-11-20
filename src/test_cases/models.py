@@ -30,6 +30,7 @@ class TestQuestion(db.Model):
 
 
 class TestQuestionUserRelation(db.Model):
+    """Relation with User and TestQuestion."""
 
     __tablename__ = 'test_questions_users_relations'
 

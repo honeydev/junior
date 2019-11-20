@@ -3,7 +3,7 @@ from marshmallow import Schema, fields
 from src.test_cases.constants import AnswerTypes
 
 
-class UserSchema(Schema):
+class UserTestCaseSchema(Schema):
 
     id = fields.Int(dump_only=True)  # noqa: A003
     question_relation = fields.Nested('TestQuestionUserRelation', many=True)

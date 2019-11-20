@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, redirect, render_template, url_for
 
 from src.qa.models import Question
-from src.test_cases import TestCase
+from src.test_cases import TestCase, TestQuestionUserRelation
 from src.test_cases.services import TestCaseService
 from src.user.decorators import login_required_user
 from src.views import BaseView
@@ -33,8 +33,17 @@ class TestCaseJsonView(BaseView):
 
 class FinalizeTestQuestion(BaseView):
 
-    def put(self, question_id: str):
-        pass
+    @login_required_user
+    def put(self, user, test_question_id: str):
+        relation = TestQuestionUserRelation.query.filter(
+            TestQuestionUserRelation.test_question_id == test_question_id,
+            TestQuestionUserRelation.user_id == user.id,
+        ).first()
+
+        relation.completed = True
+        relation.save()
+
+        return jsonify({'success': True}), 200
 
 
 bp.add_url_rule(
@@ -49,6 +58,14 @@ bp.add_url_rule(
     '/api/testcase/<question_id>',
     view_func=TestCaseJsonView.as_view(
         name='test_case_json',
+        template_name='',
+    ),
+)
+
+bp.add_url_rule(
+    '/api/testcase/finalize-question/<test_question_id>',
+    view_func=FinalizeTestQuestion.as_view(
+        name='finalize_question',
         template_name='',
     ),
 )

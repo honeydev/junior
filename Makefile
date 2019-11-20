@@ -8,7 +8,7 @@ lint:
 	flake8 --config=setup.cfg
 
 test:
-	pytest tests
+	pytest tests --disable-warnings
 
 run:
 	flask db upgrade
