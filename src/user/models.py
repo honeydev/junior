@@ -1,6 +1,9 @@
+from time import time
+import jwt
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from src.extensions import db
+from flask import current_app as junior_app
 
 
 class User(db.Model):  # noqa: WPS230
@@ -53,3 +56,30 @@ class User(db.Model):  # noqa: WPS230
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def get_token_for_mail_aproved(self, expires_in=600):
+        """ Функция генерации токена для подтверждения
+        регистрации пользователя через электронную почту
+        expires_in - время действия токена в секундах"""
+        return jwt.encode({
+            'user_id': self.id,
+            'exp': time() + expires_in
+            },
+            junior_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+
+    @staticmethod
+    def verify_token_for_mail_aproved(token):
+        """ Функция для проверки токена подтверждения пользователя
+        через электронную почту"""
+        try:
+            id = jwt.decode(token, junior_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['user_id']
+        except:
+            return
+        try:
+            user = User.query.get(id)
+            user.is_oauth = True
+        except:
+            return
+        return user
+
