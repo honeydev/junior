@@ -41,7 +41,7 @@ class Registration(MethodView):
         if User.query.filter_by(login=login).first():
             return render_template(
                 self.template,
-                **{'form': form, 'info': 'Логин уже занят'},
+                **{'form': form, 'errors': ['Логин уже занят']},
             )
 
         User.save(user)
@@ -70,9 +70,13 @@ class Login(MethodView):
         user = User.query.filter_by(
             login=login,
         ).first()
+
         if user and User.check_password(user, password):
             session['auth'] = SessionAuth(True, user)
-        return redirect('/')
+            return redirect(url_for('index.index'))
+
+        return render_template(self.template, **{'form': form,
+                                                 'errors': ['Неверный логин или пароль!']})
 
 
 class Profile(BaseView):
@@ -96,7 +100,7 @@ class Profile(BaseView):
     def post(self):
         form = self.form(request.form)
         if not form.validate():
-            return render_template(self.template, **{'form': form})
+            return render_template(self.template_name, **{'form': form}, **self.context)
         User.query.filter_by(login=session['auth'].user.login).update({
             'email': request.form.get('email'),
             'firstname': request.form.get('firstname'),

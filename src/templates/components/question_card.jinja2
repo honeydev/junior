@@ -7,11 +7,7 @@
       </a>
     </span>
   </div>
-  {% if question.text | length > 60 %}
-    <div class="card-body">{{ question.text[:60] | safe }}...</div>
-  {% else %}
-    <div class="card-body">{{ question.text | safe }}</div>
-  {% endif %}
+    <div class="card-body">{{ question.text | safe | truncate(60) }}</div>
   <a href="{{ url_for('answers.answer', question_id=question.id) }}"
      class="btn"
      style="background-color: #9e779eb0">

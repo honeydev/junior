@@ -7,6 +7,7 @@ from sqlalchemy import null
 from src.qa.uttils import select_chapters_with_splited_questions
 from src.user import User
 from src.uttils import split_sequence
+from src.qa.models import Chapter
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -35,8 +36,7 @@ class IndexPage(BaseView):
 
         self.context.update(
             dict(
-                chapters=select_chapters_with_splited_questions(
-                    split_sequence),
+                chapters=Chapter.query.all(),
             ),
         )
 
