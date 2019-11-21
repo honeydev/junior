@@ -5,7 +5,8 @@ from flask_dance.contrib.github import github
 from werkzeug.datastructures import MultiDict
 
 from src.user.auth import SessionAuth
-from src.user.forms import LoginForm, ProfileForm, RegistrationForm, RegistrationOAuthForm
+from src.user.forms import (LoginForm, ProfileForm, RegistrationForm,
+                            RegistrationOAuthForm)
 from src.user.models import User
 from src.views import BaseView
 
