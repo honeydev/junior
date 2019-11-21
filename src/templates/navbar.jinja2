@@ -4,7 +4,7 @@
     <img height="50" width="50" src="{{ url_for('static', filename='logo.png') }}" class="text-light img-fluid" alt="Responsive image">
   </div>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">  
+    <ul class="navbar-nav mr-auto">
       <li class="nav-item active text-light">
         <a class="nav-link text-light" href="{{ url_for('index.index') }}">Минимум<span class="sr-only">(current)</span></a>
       </li>
@@ -18,9 +18,10 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Вы вошли как {{ auth.user.login }}
+              <img src="{{ avatar }}">
             </a>
             <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
-                <a class="nav-link text-light" href="{{ url_for('auth.profile') }}">Профиль</a>
+              <a class="nav-link text-light" href="{{ url_for('auth.profile') }}">Профиль</a>
               <a class="nav-link text-light" href="{{ url_for('auth.logout') }}">Выход</a>
             </div>
           </li>

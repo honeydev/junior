@@ -15,6 +15,7 @@ class User(db.Model):  # noqa: WPS230
             firstname: str = '',
             middlename: str = '',
             lastname: str = '',
+            image: bytes = '',
             is_oauth: bool = False,
             is_superuser: bool = False,
     ):
@@ -24,6 +25,7 @@ class User(db.Model):  # noqa: WPS230
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
+        self.image = image
         self.is_oauth = is_oauth
         self.is_superuser = is_superuser
 
@@ -34,6 +36,7 @@ class User(db.Model):  # noqa: WPS230
     firstname = db.Column(db.String(), nullable=True)
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
+    image = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False, nullable=False)
     db.relationship(  # noqa: WPS604

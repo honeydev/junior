@@ -1,7 +1,11 @@
+from hashlib import md5
+
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
+from sqlalchemy import null
 
 from src.qa.uttils import select_chapters_with_splited_questions
+from src.user import User
 from src.uttils import split_sequence
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
@@ -16,8 +20,16 @@ class BaseView(MethodView):
         }
         self.template_name: str = template_name
 
+    def avatar(self, size, image_str):
+        digest = md5(image_str.encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{0}?d=identicon&s={1}'.format(
+            digest, size)
+
 
 class IndexPage(BaseView):
+
+    def __init__(self, template_name):
+        super().__init__(template_name)
 
     def get(self):
 
@@ -27,6 +39,19 @@ class IndexPage(BaseView):
                     split_sequence),
             ),
         )
+
+        if self.context['auth']:
+            user_email = self.context['auth'].user.email
+            user_image = self.context['auth'].user.image
+            if user_image is null:
+                avatar_str = user_email
+                User.query.filter_by(id=self.context['auth'].user.id).update(
+                    {'image': user_email},
+                )
+            else:
+                avatar_str = user_image
+            self.context['avatar'] = self.avatar(48, avatar_str)
+
         return render_template(self.template_name, **self.context)
 
 

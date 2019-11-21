@@ -27,6 +27,7 @@ class Registration(MethodView):
         firstname = request.form.get('firstname')
         middlename = request.form.get('middlename')
         lastname = request.form.get('lastname')
+        image = request.form.get('email')
         pass_hash = User.hash_password(password)
         user = User(
             login=login,
@@ -35,6 +36,7 @@ class Registration(MethodView):
             firstname=firstname,
             middlename=middlename,
             lastname=lastname,
+            image=image,
         )
         if User.query.filter_by(login=login).first():
             return render_template(
@@ -76,16 +78,18 @@ class Login(MethodView):
 class Profile(BaseView):
     def __init__(self, template_name):
         super().__init__(template_name)
+        self.user = session['auth'].user
         self.form = ProfileForm
 
     def get(self):
-        user = User.query.filter_by(login=session['auth'].user.login).first()
         user_data = MultiDict([
-            ('email', user.email),
-            ('firstname', user.firstname),
-            ('middlename', user.middlename),
-            ('lastname', user.lastname),
+            ('email', self.user.email),
+            ('firstname', self.user.firstname),
+            ('middlename', self.user.middlename),
+            ('lastname', self.user.lastname),
         ])
+        self.context['avatar'] = BaseView.avatar(self, 48, self.user.image)
+        self.context['avatar_full'] = BaseView.avatar(self, 128, self.user.image)
         self.context['form'] = self.form(user_data)
         return render_template(self.template_name, **self.context)
 
