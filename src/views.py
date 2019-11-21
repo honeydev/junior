@@ -4,10 +4,8 @@ from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
 from sqlalchemy import null
 
-from src.qa.uttils import select_chapters_with_splited_questions
-from src.user import User
-from src.uttils import split_sequence
 from src.qa.models import Chapter
+from src.user import User
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
