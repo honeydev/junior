@@ -72,4 +72,6 @@ class GithubAuth(BaseAuth):
     @classmethod
     def create(cls, github_profile: dict) -> BaseAuth:
         user = get_or_create_user_through_github(github_profile)
-        return cls(True, user, github_profile)
+        if user:
+            return cls(True, user, github_profile)
+        return cls(False)

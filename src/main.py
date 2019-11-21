@@ -88,10 +88,10 @@ def register_shellcontext(app):
 
 
 def register_github_oauth(app):
-    app.config["GITHUB_OAUTH_CLIENT_ID"] = os.environ.get("GITHUB_OAUTH_CLIENT_ID")
-    app.config["GITHUB_OAUTH_CLIENT_SECRET"] = os.environ.get("GITHUB_OAUTH_CLIENT_SECRET")
-    github_bp = make_github_blueprint()
-    app.register_blueprint(github_bp, url_prefix="/login")
+    app.config['GITHUB_OAUTH_CLIENT_ID'] = os.environ.get('GITHUB_OAUTH_CLIENT_ID')
+    app.config['GITHUB_OAUTH_CLIENT_SECRET'] = os.environ.get('GITHUB_OAUTH_CLIENT_SECRET')
+    github_bp = make_github_blueprint(scope='read:user,user:email', redirect_to='auth.registration_oauth')
+    app.register_blueprint(github_bp, url_prefix='/login')
 
 
 def register_before_hooks(app):
