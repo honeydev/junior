@@ -2,6 +2,16 @@ from src.base.base_models import BaseDateTimeModel
 from src.extensions import db
 
 
+class Section(db.Model):
+    __tablename__ = 'sections'
+    __table_args__ = {'extend_existing': True}
+
+    id = db.Column(db.Integer(), primary_key=True)  # noqa: A003
+    name = db.Column(db.Text(), nullable=False)
+    order_number = db.Column(db.Integer, nullable=False)
+    chapters = db.relationship('Chapter', back_populates='section')
+
+
 class Chapter(db.Model):
     __tablename__ = 'chapters'
     __table_args__ = {'extend_existing': True}
@@ -10,6 +20,9 @@ class Chapter(db.Model):
     name = db.Column(db.Text(), nullable=False)
     order_number = db.Column(db.Integer, nullable=False)
     questions = db.relationship('Question', back_populates='chapter')
+    section_id = db.Column(db.Integer, db.ForeignKey('sections.id'))
+    section = db.relationship(
+        'Section', back_populates='chapters')
 
 
 class Question(BaseDateTimeModel):
