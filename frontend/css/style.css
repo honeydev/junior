@@ -1,0 +1,7 @@
+.questionCard {
+    min-height: 200px;
+}
+
+.testCaseProgress {
+    border-radius: unset;
+}

@@ -557,6 +557,14 @@ gitdb2 = ">=2.0.0"
 
 [[package]]
 category = "main"
+description = "WSGI HTTP Server for UNIX"
+name = "gunicorn"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*"
+version = "19.9.0"
+
+[[package]]
+category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
 name = "idna"
 optional = false
@@ -647,6 +655,14 @@ python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*"
 version = "1.1.1"
 
 [[package]]
+category = "main"
+description = "A lightweight library for converting complex datatypes to and from native Python datatypes."
+name = "marshmallow"
+optional = false
+python-versions = ">=3.5"
+version = "3.2.1"
+
+[[package]]
 category = "dev"
 description = "McCabe checker, plugin for flake8"
 name = "mccabe"
@@ -661,14 +677,6 @@ name = "more-itertools"
 optional = false
 python-versions = ">=3.4"
 version = "7.2.0"
-
-[[package]]
-category = "dev"
-description = "nose extends unittest to make testing easier"
-name = "nose"
-optional = false
-python-versions = "*"
-version = "1.3.7"
 
 [[package]]
 category = "main"
@@ -977,6 +985,14 @@ version = "1.3"
 
 [[package]]
 category = "dev"
+description = "Python Library for Tom's Obvious, Minimal Language"
+name = "toml"
+optional = false
+python-versions = "*"
+version = "0.10.0"
+
+[[package]]
+category = "dev"
 description = "Type Hints for Python"
 name = "typing"
 optional = false
@@ -1083,7 +1099,7 @@ version = "0.6.0"
 more-itertools = "*"
 
 [metadata]
-content-hash = "ad1e5e3b6dd4c61e84f25802280b0fca8d057cfe0ea379c15cedd46f3d4ae7a0"
+content-hash = "e471f1d90f53c5518b52289698711992f2dc626ff915460a3ec765daf4175d2c"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -1137,6 +1153,7 @@ flask-sqlalchemy = ["0078d8663330dc05a74bc72b3b6ddc441b9a744e2f56fe60af1a5bfc813
 flask-testing = ["dc076623d7d850653a018cb64f500948334c8aeb6b10a5a842bf1bcfb98122bc"]
 gitdb2 = ["83361131a1836661a155172932a13c08bda2db3674e4caa32368aa6eb02f38c2", "e3a0141c5f2a3f635c7209d56c496ebe1ad35da82fe4d3ec4aaa36278d70648a"]
 gitpython = ["947cc75913e7b6da108458136607e2ee0e40c20be1e12d4284e7c6c12956c276", "d2f4945f8260f6981d724f5957bc076398ada55cb5d25aaee10108bcdc894100"]
+gunicorn = ["aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471", "fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"]
 idna = ["c357b3f628cf53ae2c4c05627ecc484553142ca23264e593d327bcde5e9c3407", "ea8b7f6188e6fa117537c3df7da9fc686d485087abf6ac197f9c46432f7e4a3c"]
 importlib-metadata = ["aa18d7378b00b40847790e7c27e11673d7fed219354109d0e7b9e5b25dc3ad26", "d5f18a79777f3aa179c145737780282e27b508fc8fd688cb17c7a813e8bd39af"]
 isort = ["54da7e92468955c4fceacd0c86bd0ec997b0e1ee80d97f67c35a78b719dccab1", "6e811fcb295968434526407adb8796944f1988c5b65e8139058f2014cbe100fd"]
@@ -1146,9 +1163,9 @@ jsonschema = ["5f9c0a719ca2ce14c5de2fd350a64fd2d13e8539db29836a86adc990bb1a068f"
 mako = ["a36919599a9b7dc5d86a7a8988f23a9a3a3d083070023bab23d64f7f1d1e0a4b"]
 mando = ["4ce09faec7e5192ffc3c57830e26acba0fd6cd11e1ee81af0d4df0657463bd1c", "79feb19dc0f097daa64a1243db578e7674909b75f88ac2220f1c065c10a0d960"]
 markupsafe = ["00bc623926325b26bb9605ae9eae8a215691f33cae5df11ca5424f06f2d1f473", "09027a7803a62ca78792ad89403b1b7a73a01c8cb65909cd876f7fcebd79b161", "09c4b7f37d6c648cb13f9230d847adf22f8171b1ccc4d5682398e77f40309235", "1027c282dad077d0bae18be6794e6b6b8c91d58ed8a8d89a89d59693b9131db5", "24982cc2533820871eba85ba648cd53d8623687ff11cbb805be4ff7b4c971aff", "29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b", "43a55c2930bbc139570ac2452adf3d70cdbb3cfe5912c71cdce1c2c6bbd9c5d1", "46c99d2de99945ec5cb54f23c8cd5689f6d7177305ebff350a58ce5f8de1669e", "500d4957e52ddc3351cabf489e79c91c17f6e0899158447047588650b5e69183", "535f6fc4d397c1563d08b88e485c3496cf5784e927af890fb3c3aac7f933ec66", "62fe6c95e3ec8a7fad637b7f3d372c15ec1caa01ab47926cfdf7a75b40e0eac1", "6dd73240d2af64df90aa7c4e7481e23825ea70af4b4922f8ede5b9e35f78a3b1", "717ba8fe3ae9cc0006d7c451f0bb265ee07739daf76355d06366154ee68d221e", "79855e1c5b8da654cf486b830bd42c06e8780cea587384cf6545b7d9ac013a0b", "7c1699dfe0cf8ff607dbdcc1e9b9af1755371f92a68f706051cc8c37d447c905", "88e5fcfb52ee7b911e8bb6d6aa2fd21fbecc674eadd44118a9cc3863f938e735", "8defac2f2ccd6805ebf65f5eeb132adcf2ab57aa11fdf4c0dd5169a004710e7d", "98c7086708b163d425c67c7a91bad6e466bb99d797aa64f965e9d25c12111a5e", "9add70b36c5666a2ed02b43b335fe19002ee5235efd4b8a89bfcf9005bebac0d", "9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c", "ade5e387d2ad0d7ebf59146cc00c8044acbd863725f887353a10df825fc8ae21", "b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2", "b1282f8c00509d99fef04d8ba936b156d419be841854fe901d8ae224c59f0be5", "b2051432115498d3562c084a49bba65d97cf251f5a331c64a12ee7e04dacc51b", "ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6", "c8716a48d94b06bb3b2524c2b77e055fb313aeb4ea620c8dd03a105574ba704f", "cd5df75523866410809ca100dc9681e301e3c27567cf498077e8551b6d20e42f", "e249096428b3ae81b08327a63a485ad0878de3fb939049038579ac0ef61e17e7"]
+marshmallow = ["077b4612f5d3b9333b736fdc6b963d2b46d409070f44ff3e6c4109645c673e83", "9a2f3e8ea5f530a9664e882d7d04b58650f46190178b2264c72b7d20399d28f0"]
 mccabe = ["ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42", "dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"]
 more-itertools = ["409cd48d4db7052af495b09dec721011634af3753ae1ef92d2b32f73a745f832", "92b8c4b06dac4f0611c0729b2f2ede52b2e1bac1ab48f089c7ddc12e26bb60c4"]
-nose = ["9ff7c6cc443f8c51994b34a667bbcf45afd6d945be7477b52e97516fd17c53ac", "dadcddc0aefbf99eea214e0f1232b94f2fa9bd98fa8353711dacb112bfcbbb2a", "f1bffef9cbc82628f6e7d7b40d7e255aefaa1adb6a1b1d26c69a8b79e6208a98"]
 oauthlib = ["bee41cc35fcca6e988463cacc3bcb8a96224f470ca547e697b604cc697b2f889", "df884cd6cbe20e32633f1db1072e9356f53638e4361bef4e8b03c9127c9328ea"]
 packaging = ["28b924174df7a2fa32c1953825ff29c61e2f5e082343165438812f00d3a7fc47", "d9551545c6d761f3def1677baf08ab2a3ca17c56879e70fecba2fc4dde4ed108"]
 pbr = ["2c8e420cd4ed4cec4e7999ee47409e876af575d4c35a45840d59e8b5f3155ab8", "b32c8ccaac7b1a20c0ce00ce317642e6cf231cf038f9875e0280e28af5bf7ac9"]
@@ -1180,6 +1197,7 @@ sqlalchemy = ["2f8ff566a4d3a92246d367f2e9cd6ed3edeef670dcd6dda6dfdc9efed88bcd80"
 stevedore = ["01d9f4beecf0fbd070ddb18e5efb10567801ba7ef3ddab0074f54e3cd4e91730", "e0739f9739a681c7a1fda76a102b65295e96a144ccdb552f2ae03c5f0abe8a14"]
 testfixtures = ["665a298976c8d77f311b65c46f16b7cda7229a47dff5ad7c822e5b3371a439e2", "9d230c5c80746f9f86a16a1f751a5cf5d8e317d4cc48243a19fb180d22303bce"]
 text-unidecode = ["1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8", "bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"]
+toml = ["229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c", "235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e", "f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"]
 typing = ["91dfe6f3f706ee8cc32d38edbbf304e9b7583fb37108fef38229617f8b3eba23", "c8cabb5ab8945cd2f54917be357d134db9cc1eb039e59d1606dc1e60cb1d9d36", "f38d83c5a7a7086543a0f649564d661859c5146a85775ab90c0d2f93ffaa9714"]
 typing-extensions = ["2ed632b30bb54fc3941c382decfd0ee4148f5c591651c9272473fea2c6397d95", "b1edbbf0652660e32ae780ac9433f4231e7339c7f9a8057d0f042fcbcea49b87", "d8179012ec2c620d3791ca6fe2bf7979d979acdbef1fca0bc56b37411db682ed"]
 urllib3 = ["3de946ffbed6e6746608990594d08faac602528ac7015ac28d33cee6a45b7398", "9a107b99a5393caf59c7aa3c1249c16e6879447533d0887f4336dde834c7be86"]

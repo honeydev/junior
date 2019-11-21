@@ -6,13 +6,15 @@ freeze:
 
 lint:
 	flake8 --config=setup.cfg
+	python scripts/check_freeze.py
+
 
 test:
-	nosetests
+	pytest tests
 
 run:
 	flask db upgrade
-	flask run --host=0.0.0.0 --port=${PORT}
+	bin/start-nginx gunicorn -c config/gunicorn.py app:app
 
 post_run:
 	yarn global add @vue/cli

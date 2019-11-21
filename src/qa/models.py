@@ -26,18 +26,18 @@ class Question(BaseDateTimeModel):
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapters.id'))
     chapter = db.relationship(
         'Chapter', back_populates='questions')
+    test_case = db.relationship(
+        'TestCase', back_populates='question', uselist=False)
 
-    def __repr__(self):
-        return '<id {0}>'.format(self.id)
+    def __str__(self):
+        return f'Вопрос #{self.order_number} {self.text}'
 
 
 class Answer(BaseDateTimeModel):
     __tablename__ = 'answers'
     __table_args__ = {'extend_existing': True}
 
-    def __init__(self, question):
-        self.question = question
-
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     text = db.Column(db.Text(), nullable=False)
-    question = db.Column(db.Integer, db.ForeignKey('questions.id'))
+    is_approve = db.Column(db.Boolean, default=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'))

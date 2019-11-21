@@ -1,0 +1,37 @@
+{% extends 'base.jinja2' %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<div class="container p-4">
+  <div class="row justify-content-center">
+    <div class="card col-lg-6 col-12">
+      <div class="row card-header">
+        <div class="mx-auto col-auto">
+          <div class="row">ПРОФИЛЬ</div>
+          <div class="row mx-auto">{{ auth.user.login }}</div>
+        </div>
+      </div>
+
+      {% include 'components/form_error.jinja2' %}
+
+      <form class="form-horizontal" action="{{ url_for('auth.profile') }}" method="post">
+        <div class="form-group">
+          {{ form.csrf_token }}
+          {% for field in form %}
+            <div class="form-group">
+              {{ field.label }}
+              {{ field(class_='form-control') }}
+            </div>
+          {% endfor %}
+
+          <div class="row">
+            <div class="mx-auto col-auto my-3">
+              <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

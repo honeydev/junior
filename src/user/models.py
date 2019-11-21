@@ -16,6 +16,7 @@ class User(db.Model):  # noqa: WPS230
             middlename: str = '',
             lastname: str = '',
             is_oauth: bool = False,
+            is_superuser: bool = False,
     ):
         self.login = login
         self.password = password
@@ -24,6 +25,7 @@ class User(db.Model):  # noqa: WPS230
         self.middlename = middlename
         self.lastname = lastname
         self.is_oauth = is_oauth
+        self.is_superuser = is_superuser
 
     id = db.Column(db.Integer, primary_key=True)  # noqa: A003
     login = db.Column(db.String(), unique=True)
@@ -33,8 +35,13 @@ class User(db.Model):  # noqa: WPS230
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
+    is_superuser = db.Column(db.Boolean, default=False, nullable=False)
     db.relationship(  # noqa: WPS604
         'User', backref='users', lazy='dynamic',
+    )
+    question_relation = db.relationship(
+        'TestQuestionUserRelation',
+        back_populates='user',
     )
 
     def __repr__(self):

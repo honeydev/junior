@@ -3,6 +3,7 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_sqlalchemy import Model, SQLAlchemy
 from flask_session import Session
+from src.admin_forms import CustomAdminView
 
 
 class CRUDMixin(Model):
@@ -35,5 +36,7 @@ class CRUDMixin(Model):
 bcrypt = Bcrypt()
 db = SQLAlchemy(model_class=CRUDMixin)
 migrate = Migrate()
-admin = Admin(name='junnior', template_mode='bootstrap3')
+admin = Admin(
+    name='junior', template_mode='bootstrap3', index_view=CustomAdminView(),
+)
 sess = Session()

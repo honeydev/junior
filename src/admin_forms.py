@@ -1,3 +1,7 @@
+from http import HTTPStatus
+
+from flask import abort, session
+from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from wtforms import TextAreaField
 from wtforms.widgets import TextArea
@@ -16,9 +20,20 @@ class CKTextAreaField(TextAreaField):
     widget = CKTextAreaWidget()
 
 
-class QuestionWYSIWYG(ModelView):
-    extra_js = ['//cdn.ckeditor.com/4.6.0/standard/ckeditor.js']
+class QAWYSIWYG(ModelView):
+    extra_js = ['https://cdn.ckeditor.com/4.13.0/standard/ckeditor.js']
 
     form_overrides = {
         'text': CKTextAreaField,
     }
+
+
+class CustomAdminView(AdminIndexView):
+    @expose('/')
+    def index(self):
+        sess = session.get('auth')
+        user = getattr(sess, 'auth_user', None)
+        if user and sess and user.is_superuser:
+            return super(CustomAdminView, self).index()  # noqa WPS608
+        else:
+            abort(int(HTTPStatus.LOCKED))

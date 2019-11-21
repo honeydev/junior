@@ -35,10 +35,14 @@ class TestQuestionsView(BaseTest):
     def test(self):
         response = self.client.get(url_for('.index'))
         parsed_response: str = response.data.decode('utf-8')
+        max_index_page_len = 40
 
         for chapter in self.chapters:
             self.assertIn(chapter.name, parsed_response)
 
         for question in self.questions:
-            self.assertIn(question.text, parsed_response)
+            if len(question.text) > max_index_page_len:
+                self.assertIn(question.text[:max_index_page_len], parsed_response)
+            else:
+                self.assertIn(question.text, parsed_response)
             self.assertIn(str(question.order_number), parsed_response)

@@ -8,12 +8,14 @@ from flask_dance.contrib.github import make_github_blueprint
 from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
-from src.admin_forms import QuestionWYSIWYG
-from src.commands import load_chapters_questions
+from src.admin_forms import QAWYSIWYG
+from src.commands import create_admin_user, load_chapters_questions
 from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
-from src.qa.views import bp as faq_bp
+from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
+from src.test_cases import TestAnswer, TestCase, TestQuestion
+from src.test_cases.views import bp as test_cases_bp
 from src.user import User
 from src.user.auth import auth_hook
 from src.views import bp as index_bp
@@ -35,7 +37,7 @@ def create_app(config=DevelopConfig):
     register_sessions(app)
     register_github_oauth(app)
     register_before_hooks(app)
-    register_commadns(app)
+    register_commands(app)
     return app
 
 
@@ -50,8 +52,11 @@ def register_extensions(app):
 def register_adminpanel(app):
     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
     admin.add_view(ModelView(User, db.session))
-    admin.add_view(ModelView(Answer, db.session))
-    admin.add_view(QuestionWYSIWYG(Question, db.session))
+    admin.add_view(QAWYSIWYG(TestCase, db.session))
+    admin.add_view(QAWYSIWYG(TestQuestion, db.session))
+    admin.add_view(QAWYSIWYG(TestAnswer, db.session))
+    admin.add_view(QAWYSIWYG(Answer, db.session))
+    admin.add_view(QAWYSIWYG(Question, db.session))
 
 
 def register_sessions(app):
@@ -65,7 +70,8 @@ def register_sessions(app):
 def register_blueprints(app):
     app.register_blueprint(user.views.bp)
     app.register_blueprint(index_bp)
-    app.register_blueprint(faq_bp)
+    app.register_blueprint(qa_bp)
+    app.register_blueprint(test_cases_bp)
 
 
 def register_shellcontext(app):
@@ -92,6 +98,6 @@ def register_before_hooks(app):
     app.before_request(auth_hook)
 
 
-def register_commadns(app):
-
+def register_commands(app):
     app.cli.add_command(load_chapters_questions)
+    app.cli.add_command(create_admin_user)
