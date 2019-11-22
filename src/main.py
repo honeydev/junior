@@ -3,6 +3,7 @@
 import os
 
 from flask import Flask
+from flask_mail import Mail
 from flask_admin.contrib.sqla import ModelView
 from flask_dance.contrib.github import make_github_blueprint
 from flask_sessionstore import SqlAlchemySessionInterface
@@ -38,6 +39,8 @@ def create_app(config=DevelopConfig):
     register_github_oauth(app)
     register_before_hooks(app)
     register_commands(app)
+    register_mail_settings(app)
+    register_secret(app)
     return app
 
 
@@ -101,3 +104,18 @@ def register_before_hooks(app):
 def register_commands(app):
     app.cli.add_command(load_chapters_questions)
     app.cli.add_command(create_admin_user)
+
+
+def register_mail_settings(app):
+    mail = Mail(app)
+    app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER")
+    app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT"))
+    app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS")
+    app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+    app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+    app.config["ADMINS"] = os.environ.get("ADMINS")
+    return mail
+
+
+def register_secret(app):
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
