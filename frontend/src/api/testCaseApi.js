@@ -10,14 +10,14 @@ class TestCaseApi {
 
     static finalizeTestQuestion (component, testCaseQuestionId) {
         debugger
-        // Axios.put(
-            // `/api/testcase/finalize-question/${testCaseQuestionId}`, {
-            //     'test_case_question_id': testCaseQuestionId
-            // })
-            // .then(response => {
-            //     console.log(response)
-            //     component.handleFinalizeResponse(response)
-            // });
+            // Axios.put(
+            //     `/api/testcase/finalize-question/${testCaseQuestionId}`, {
+            //         'test_case_question_id': testCaseQuestionId
+            //     })
+            //     .then(response => {
+            //         console.log(response)
+            //         component.handleFinalizeResponse(response)
+            //     });
     }
 }
 

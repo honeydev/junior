@@ -49,24 +49,33 @@ export default {
 
             this.rightAnswer = answerIsRight(this.rightAnswers, choicedId);
             this.afterClick = true;
-
+            debugger;
             if (this.rightAnswer) {
                 this.successQuestions.push(this);
                 this.questions.filter(question => question.id != this.id);
                 testCaseApi.finalizeTestQuestion(this, this.id);
             } else {
-                debugger
-                eventBus.$emit('click-next', this, this.rightAnswers);
-                this.afterClick = false;
                 this.rightAnswer = false;
             }
+
+            setTimeout(() => {
+                // this.active = false;
+                this.afterClick = false;
+                this.clickNext();
+            }, 1000);
+        },
+        clickNext() {
+            eventBus.$emit('click-next', this, this.rightAnswers);
+
         },
         handleFinalizeResponse(response) {
-            if (response.data.success) {
-                eventBus.$emit('click-next', this, this.rightAnswers);
-                this.afterClick = false;
-                this.rightAnswer = false;
-            }
+
+        }
+    },
+    watch: {
+        activeComponentId(newComponentId) {
+            debugger
+            this.active = Number(this.id) === Number(newComponentId);
         }
     },
     computed: {

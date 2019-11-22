@@ -5,7 +5,8 @@ const stateStorage = {
         questionsParts: 0,
         afterClick: false,
         rightAnswer: false,
-        completed: false
+        completed: false,
+        activeComponentId: null
     }
 };
 export default stateStorage;

@@ -43,7 +43,6 @@ export default {
     created: function () {
         TestCaseApi.getTestCase(this, getQuestionIdByUrl());
         eventBus.$on('click-next', questionComponent => {
-            debugger
             if (this.completed) {
                 return;
             }
@@ -52,9 +51,11 @@ export default {
                 return Number(question.id) === Number(questionComponent.id);
             });
 
-            this.questions[currentIndex]['active'] = false;
+
             const nextIndex = (currentIndex + 1 < this.$children.length) ? currentIndex + 1 : 0;
-            this.questions[nextIndex]['active'] = true;
+            if (currentIndex !== nextIndex) {
+                this.activeComponentId = this.questions[nextIndex].id;
+            }
         });
     },
     methods: {
@@ -66,6 +67,8 @@ export default {
 
                 const head = _.head(this.questions);
                 head['active'] = true;
+                this.activeComponentId = head.id;
+
                 const tail = _.tail(this.questions).map(question => {
                     question['active'] = false;
                     return question;
@@ -73,7 +76,7 @@ export default {
                 this.questions = [head].concat(tail);
             }
         }
-    },  
+    },
     components: {
         'radiusQuestion': RadiusQuestion,
         'checkboxQuestion': CheckboxQuestion,
