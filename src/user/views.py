@@ -3,6 +3,7 @@ from flask import (Blueprint, flash, redirect, render_template, request,
 from flask.views import MethodView
 from werkzeug.datastructures import MultiDict
 
+from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
 from src.user.forms import LoginForm, ProfileForm, RegistrationForm
 from src.user.models import User
@@ -49,7 +50,7 @@ class Registration(MethodView):
                 **{'form': form, 'info': 'Email уже занят'},
             )
         User.save(user)
-        if user.send_mail_for_aprove():
+        if send_mail_for_aprove(user):
             flash('Вам на почту отправлена ссылка для подтверждения регистрации')
         else:
             flash('Сбой отправки письма')
