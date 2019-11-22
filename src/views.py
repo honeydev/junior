@@ -34,7 +34,7 @@ class IndexPage(BaseView):
 
         self.context.update(
             dict(
-                chapters=Chapter.query.all(),
+                chapters=Chapter.query.filter(Chapter.section_id == 1),
             ),
         )
 

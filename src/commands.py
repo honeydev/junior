@@ -9,12 +9,28 @@ from src.uttils import load_fixture
 
 @click.command()
 @with_appcontext
-def load_chapters_questions():
-    Section.query.delete()
+def db_clear_questions():
+    """
+    Clear Sections, Chapters, Questions
+    """
+    Answer.query.delete()
     Question.query.delete()
     Chapter.query.delete()
-    Answer.query.delete()
-    fixtures: dict = load_fixture('chapters-questions.yml')
+    Section.query.delete()
+
+    db.session.commit()
+
+    print('DB cleared successfully')
+
+
+@click.command()
+@with_appcontext
+def load_minimum_questions():
+    """
+    Load Minimum, related Chapters and Questions
+    """
+
+    fixtures: dict = load_fixture('minimum-questions.yml')
     db.session.add_all(
         Chapter(**chapter_fixture)
         for chapter_fixture in fixtures['chapters']
@@ -31,7 +47,34 @@ def load_chapters_questions():
 
     db.session.commit()
 
-    print('Sections, chapters and questions successful load in database.')  # noqa TOO1
+    print('Minimum: chapters and questions successful load in database.')  # noqa TOO1
+
+
+@click.command()
+@with_appcontext
+def load_bars_questions():
+    """
+    Load Bars, related Chapters and Questions
+    """
+
+    fixtures: dict = load_fixture('bars-questions.yml')
+    db.session.add_all(
+        Chapter(**chapter_fixture)
+        for chapter_fixture in fixtures['chapters']
+    )
+    db.session.add_all(
+        Question(**question_fixture)
+        for question_fixture in fixtures['questions']
+    )
+
+    db.session.add_all(
+        Section(**section_fixture)
+        for section_fixture in fixtures['sections']
+    )
+
+    db.session.commit()
+
+    print('Bars: chapters and questions successful load in database.')  # noqa TOO1
 
 
 @click.option('-l', '--login')
