@@ -3,6 +3,8 @@ sections:
     name: 'Барс'
     order_number: 2
     id: 2
+
+chapters:
   -
     name: 'Базы данных'
     order_number: 1
