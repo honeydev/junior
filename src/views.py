@@ -53,6 +53,34 @@ class IndexPage(BaseView):
         return render_template(self.template_name, **self.context)
 
 
+class BarsIndexPage(BaseView):
+
+    def __init__(self, template_name):
+        super().__init__(template_name)
+
+    def get(self):
+
+        self.context.update(
+            dict(
+                chapters=Chapter.query.filter(Chapter.section_id == 2),
+            ),
+        )
+
+        if self.context['auth']:
+            user_email = self.context['auth'].user.email
+            user_image = self.context['auth'].user.image
+            if user_image is null:
+                avatar_str = user_email
+                User.query.filter_by(id=self.context['auth'].user.id).update(
+                    {'image': user_email},
+                )
+            else:
+                avatar_str = user_image
+            self.context['avatar'] = self.avatar(48, avatar_str)
+
+        return render_template(self.template_name, **self.context)
+
+
 class NotFoundPage(BaseView):
 
     def get(self):
@@ -62,6 +90,11 @@ class NotFoundPage(BaseView):
 bp.add_url_rule(
     '/',
     view_func=IndexPage.as_view(name='index', template_name='index.jinja2'),
+)
+
+bp.add_url_rule(
+    '/bars',
+    view_func=BarsIndexPage.as_view(name='bars_index', template_name='index.jinja2'),
 )
 
 bp.add_url_rule(

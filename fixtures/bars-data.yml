@@ -1,29 +1,8 @@
 sections:
   -
-    name: 'Минимум'
-    order_number: 1
-    id: 1
-  -
     name: 'Барс'
     order_number: 2
     id: 2
-
-chapters:
-  -
-    name: 'ООП'
-    order_number: 1
-    section_id: 1
-    id: 1
-  -
-    name: 'Python'
-    order_number: 2
-    section_id: 1
-    id: 2
-  -
-    name: 'Django'
-    order_number: 3
-    section_id: 1
-    id: 3
   -
     name: 'Базы данных'
     order_number: 1
@@ -50,100 +29,129 @@ chapters:
     section_id: 2
     id: 8
 
+
 questions:
   -
-    text: 'Что такое полиморфизм и как его можно реализовать в Python?'
+    text: "Что такое нормализация данных?"
     order_number: 1
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Что лучше: наследование или композиция (агрегация)?'
+    text: "Что такое денормализация? Когда ее применяют?"
     order_number: 2
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Что такое интерфейс?'
+    text: "Что такое индексы, зачем они нужны и как они работают?"
     order_number: 3
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Есть ли интерфейсы в питоне?'
+    text: "Что такое Транзакции и как они работают?"
     order_number: 4
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Что такое DI и IoC?'
+    text: "Что такое SAVEPOINT?"
     order_number: 5
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Слабая связность, примеры в питоне'
+    text: "Что такое хранимые процедуры?"
     order_number: 6
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Множественное наследование, хорошо или плохо?'
+    text: "Что такое триггеры?"
     order_number: 7
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Отличие классов нового стиля от классов старого стиля в питоне'
+    text: "Какие виды JOIN бывают?"
     order_number: 8
-    chapter_id: 1
+    chapter_id: 4
   -
-    text: 'Зачем нужна инкапсуляция и как можно ее достичь в питоне. Какие способы наиболее предпочтительные?'
+    text: "Что такое ООП?"
+    order_number: 1
+    chapter_id: 5
+  -
+    text: "Что такое инкапсуляция?"
+    order_number: 2
+    chapter_id: 5
+  -
+    text: "Что такое абстрактный класс и интерфейс. Как они работают в питоне?"
+    order_number: 3
+    chapter_id: 5
+  -
+    text: "Миксины?"
+    order_number: 4
+    chapter_id: 5
+  -
+    text: "Множественное наследование. MRO С3"
+    order_number: 5
+    chapter_id: 5
+  -
+    text: "Паттерны. Синглтоны, абстрактные фабрики и т.п."
+    order_number: 6
+    chapter_id: 5
+  -
+    text: "SOLID"
+    order_number: 7
+    chapter_id: 5
+  -
+    text: "Какие типы данных есть в стандартном питоне?"
+    order_number: 1
+    chapter_id: 6
+  -
+    text: "Какие из них изменяемые, какие неизменяемые?"
+    order_number: 2
+    chapter_id: 6
+  -
+    text: "Какие стандартные функции есть у строки?"
+    order_number: 3
+    chapter_id: 6
+  -
+    text: "Что такое генераторы и как они пишутся?"
+    order_number: 4
+    chapter_id: 6
+  -
+    text: "Написать генератор (см последний раздел)?"
+    order_number: 5
+    chapter_id: 6
+  -
+    text: "Как реализуется инкапсуляция в python. Что значит _ и __ в имени функции?"
+    order_number: 6
+    chapter_id: 6
+  -
+    text: "Что такое дескриптор?"
+    order_number: 7
+    chapter_id: 6
+  -
+    text: "Что такое менеджер контекста?"
+    order_number: 8
+    chapter_id: 6
+  -
+    text: "Как работает try, except, else, finally? Сколько может быть except?"
     order_number: 9
-    chapter_id: 1
+    chapter_id: 6
   -
-    text: 'Понятия конструкторов, деструкторов'
+    text: " Как работает else в for и while?"
     order_number: 10
-    chapter_id: 1
+    chapter_id: 6
   -
-    text: 'Как правильно нужно оформлять импорты? Отличие from от import?'
+    text: " Сложность in в dict, tuple, set, list в О-большое нотации"
+    order_number: 11
+    chapter_id: 6
+  -
+    text: "ORM. Что такое, как работает?"
     order_number: 1
-    chapter_id: 2
+    chapter_id: 7
   -
-    text: 'Что такое декоратор?'
+    text: "Select_related, prefetch_related. Зачем нужны, как работают?"
     order_number: 2
-    chapter_id: 2
+    chapter_id: 7
   -
-    text: 'Чем отличаются декораторы @classmethod и @staticmethod?'
+    text: "что такое model.objects.iterator()?"
     order_number: 3
-    chapter_id: 2
+    chapter_id: 7
   -
-    text: 'Для чего используется декоратор @property'
-    order_number: 4
-    chapter_id: 2
-  -
-    text: 'Что такое «Сборщик мусора» и как он работает?'
-    order_number: 5
-    chapter_id: 2
-  -
-    text: 'Что такое with?'
-    order_number: 6
-    chapter_id: 2
-  -
-    text: 'Что такое iterators, generators, list comprehensions, dict comprehensions?'
-    order_number: 7
-    chapter_id: 2
-  -
-    text: 'Разница range и xrange. Что предпочтительнее?'
-    order_number: 8
-    chapter_id: 2
-  -
-    text: 'Есть некий queryset, как проверить существование хотя бы одной записи в нем?'
+    text: "Как переименовать последний коммит?"
     order_number: 1
-    chapter_id: 3
+    chapter_id: 8
   -
-    text: 'Перечислить ситуации финализации кверисета.'
+    text: "Как переименовать не последний коммит?"
     order_number: 2
-    chapter_id: 3
-  -
-    text: 'Что такое middleware, CBV, context processor?'
-    order_number: 3
-    chapter_id: 3
-  -
-    text: 'Как работают сигналы?'
-    order_number: 4
-    chapter_id: 3
-  -
-    text: 'Как работает кеширование?'
-    order_number: 5
-    chapter_id: 3
-  -
-    text: 'Как проверить, какие запросы уходят на сервер БД?'
-    order_number: 6
-    chapter_id: 3
+    chapter_id: 8
