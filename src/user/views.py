@@ -1,15 +1,91 @@
 from flask import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
 from flask.views import MethodView
+from flask_dance.contrib.github import github
 from werkzeug.datastructures import MultiDict
 
 from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
-from src.user.forms import LoginForm, ProfileForm, RegistrationForm
+from src.user.forms import (LoginForm, ProfileForm, RegistrationForm,
+                            ProfileOAuthForm)
 from src.user.models import User
 from src.views import BaseView
 
 bp = Blueprint('auth', __name__, template_folder='templates')
+
+
+class LoginOAuth(MethodView):
+    """
+    Обрабатывает вход через OAuth.
+
+    Если регистрация не заверешена, то на форму профиля, иначе на заглавную страницу
+    """
+
+    def get(self):
+        if github.authorized and not session['auth'].user.is_oauth:
+            return redirect(url_for('auth.profile_oauth'))
+        return redirect(url_for('index.index'))
+
+
+class ProfileOAuth(BaseView):
+    """Профиль участников, у кого подключён OAuth."""
+
+    def __init__(self, template_name):
+        super().__init__(template_name)
+        self.form = ProfileOAuthForm
+        self.user = session['auth'].user
+
+    def post(self):
+        form = self.form(request.form)
+        if not form.validate():
+            return render_template(self.template_name, **self.context)
+        login = request.form.get('login')
+        email = request.form.get('email')
+        password = request.form.get('password') if request.form.get('password') else False
+        firstname = request.form.get('firstname')
+        middlename = request.form.get('middlename')
+        lastname = request.form.get('lastname')
+        pass_hash = User.hash_password(password).decode() if password else ''
+        user_data = {
+            'login': login,
+            'email': email,
+            'password': pass_hash,
+            'firstname': firstname,
+            'middlename': middlename,
+            'lastname': lastname,
+            'image': email,
+            'is_oauth': True,
+        }
+        # Не проверяем на email, потому что при его совпадении происходит автоматическое
+        # связывание профиля с гитхабом
+        # TODO: сделать привязку/отвязку из профиля
+        if login != self.user.login and User.query.filter_by(login=login).first():
+            return render_template(
+                self.template_name,
+                **{'form': form, 'errors': ['Логин уже занят']},
+            )
+
+        User.query.filter_by(github_id=self.user.github_id).update(user_data)
+        return redirect(url_for('auth.profile_oauth'))
+
+    def get(self):
+        if github.authorized:
+            user_data = MultiDict([
+                ('login', self.user.login),
+                ('email', self.user.email),
+                ('change_password', False),
+                ('firstname', self.user.firstname),
+                ('middlename', self.user.middlename),
+                ('lastname', self.user.lastname),
+            ])
+            # TODO: так быть не должно, нужно получать аватар прозрачно из модели пользователя,
+            # а не возить за собой этот код
+            self.context['avatar'] = BaseView.avatar(self, 48, self.user.image)
+            self.context['avatar_full'] = BaseView.avatar(self, 128, self.user.image)
+            self.context['form'] = self.form(user_data)
+            return render_template(self.template_name, **self.context)
+
+        return redirect(url_for('index.index'))
 
 
 class Registration(MethodView):
@@ -94,6 +170,8 @@ class Profile(BaseView):
         self.form = ProfileForm
 
     def get(self):
+        if self.user.is_oauth:
+            return redirect(url_for('auth.profile_oauth'))
         user_data = MultiDict([
             ('email', self.user.email),
             ('firstname', self.user.firstname),
@@ -146,12 +224,28 @@ bp.add_url_rule(
 )
 
 bp.add_url_rule(
+    '/profile_oauth/',
+    view_func=ProfileOAuth.as_view(
+        name='profile_oauth',
+        template_name='profile_oauth_form.jinja2',
+    ),
+)
+
+bp.add_url_rule(
+    '/login_oauth/',
+    view_func=LoginOAuth.as_view(
+        name='login_oauth',
+    ),
+)
+
+bp.add_url_rule(
     '/registration/',
     view_func=Registration.as_view(
         name='registration',
         template_name='register_form.jinja2',
     ),
 )
+
 bp.add_url_rule(
     '/login/',
     view_func=Login.as_view(
@@ -159,6 +253,7 @@ bp.add_url_rule(
         template_name='login.jinja2',
     ),
 )
+
 bp.add_url_rule(
     '/profile/',
     view_func=Profile.as_view(
