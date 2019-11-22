@@ -5,7 +5,7 @@ from flask.views import MethodView
 from sqlalchemy import null
 
 from src.qa.models import Chapter
-from src.user import User
+from src.user import User, db
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -46,6 +46,7 @@ class IndexPage(BaseView):
                 User.query.filter_by(id=self.context['auth'].user.id).update(
                     {'image': user_email},
                 )
+                db.session.commit()
             else:
                 avatar_str = user_image
             self.context['avatar'] = self.avatar(48, avatar_str)
