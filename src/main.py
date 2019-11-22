@@ -3,9 +3,9 @@
 import os
 
 from flask import Flask
-from flask_mail import Mail
 from flask_admin.contrib.sqla import ModelView
 from flask_dance.contrib.github import make_github_blueprint
+from flask_mail import Mail
 from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
