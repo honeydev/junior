@@ -3,7 +3,7 @@
 
         <div class="row">
             <div class="col">
-                <completedDialog v-if="completed"/>
+                <completedDialog v-if="!questions.length"/>
                 <div v-for="question in questions" v-bind:key="question.id">
                     <radiusQuestion v-if="question.question_type == 'radius'"
                         :id="question.id"
@@ -43,7 +43,7 @@ export default {
     created: function () {
         TestCaseApi.getTestCase(this, getQuestionIdByUrl());
         eventBus.$on('click-next', questionComponent => {
-            
+            debugger
             if (this.completed) {
                 return;
             }
@@ -59,24 +59,21 @@ export default {
     },
     methods: {
         handleTestCaseResponse (apiResponse) {
-            const questions = apiResponse['data'];
-            const head = _.head(questions);
-            head['active'] = true;
-            const tail = _.tail(questions).map(question => {
-                question['active'] = false;
-                return question;
-            });
-            this.questions = [head].concat(tail);
-        }
-    },
-    watch: {
-        successQuestions(newQuestions) {
-            if (newQuestions.length === this.questions.length) {
-                this.questions.map(question => question.active = false)
-                this.completed = true;
+            this.successQuestions = apiResponse['data'].filter(question => question.completed);
+            this.questions = apiResponse['data'].filter(question => !question.completed);
+
+            if (!_.isEmpty(this.questions)) {
+
+                const head = _.head(this.questions);
+                head['active'] = true;
+                const tail = _.tail(this.questions).map(question => {
+                    question['active'] = false;
+                    return question;
+                });
+                this.questions = [head].concat(tail);
             }
         }
-    },
+    },  
     components: {
         'radiusQuestion': RadiusQuestion,
         'checkboxQuestion': CheckboxQuestion,

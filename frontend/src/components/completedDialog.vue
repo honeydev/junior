@@ -4,11 +4,7 @@
         <div class="card-body">
             <div class="card-title">Тест пройден</div>
             <div class="d-flex justify-content-center">
-                <button v-if="unsave" button class="btn btn-warning" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span>{{ waitMessage }}</span>
-                </button>
-                <button v-else :click="redirectOnIndex" class="btn btn-success" type="button">
+                <button :click="redirectOnIndex" class="btn btn-success" type="button">
                     <span>{{ successMessage }}</span>
                 </button>
             </div>
@@ -27,15 +23,9 @@ export default {
     data: () => {
         return {
             ...stateStorage.state,
-            unsave: true,
             waitMessage: 'Идет сохранение данных...',
-            successMessage: 'Тест упешно пройден, вернутся на главную?'
+            successMessage: 'Тест упешно пройден, вернуться на главную?'
         };
-    },
-    created() {
-        eventBus.$on('test-case-saved', () => {
-            this.unsave = false;
-        });
     },
     methods: {
         redirectOnIndex(event) {

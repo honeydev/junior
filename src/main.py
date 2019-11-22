@@ -15,7 +15,7 @@ from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
 from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
-from src.test_cases import TestAnswer, TestCase, TestQuestion
+from src.test_cases import TestAnswer, TestCase, TestQuestion, TestQuestionUserRelation
 from src.test_cases.views import bp as test_cases_bp
 from src.user import User
 from src.user.auth import auth_hook
@@ -60,6 +60,7 @@ def register_adminpanel(app):
     admin.add_view(QAWYSIWYG(TestAnswer, db.session))
     admin.add_view(QAWYSIWYG(Answer, db.session))
     admin.add_view(QAWYSIWYG(Question, db.session))
+    admin.add_view(QAWYSIWYG(TestQuestionUserRelation, db.session))
 
 
 def register_sessions(app):

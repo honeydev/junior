@@ -10,6 +10,7 @@ from tests.test_uttils import load_yaml_fixture
 
 
 class FinalizeTestQuestion(BaseTest):
+    """Test switch test question complete status."""
 
     def setUp(self):
         super().setUp()

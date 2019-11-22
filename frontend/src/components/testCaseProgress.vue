@@ -19,7 +19,8 @@ export default {
     },
     computed: {
         progress () {
-            const progressPart = 100 / stateStorage.state['questions'].length;
+            const progressPart = 100 / 
+                (stateStorage.state['successQuestions'].length + stateStorage.state['questions'].length);
             return String(this.successQuestions.length * progressPart);
         }
     }

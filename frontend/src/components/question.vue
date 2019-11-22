@@ -23,6 +23,7 @@ import ErrorAlert from './errorAlert';
 import SuccessAlert from './successAlert';
 import { answerIsRight } from '../helpers/questionHelpers';
 import stateStorage from '../stateSorage';
+import testCaseApi from '../api/testCaseApi';
 
 export default {
     name: 'Question',
@@ -32,7 +33,7 @@ export default {
         'successAlert': SuccessAlert
     },
     data: () => stateStorage.state,
-    created () {
+    created() {
         this.rightAnswers = this.answers.reduce((acc, el) => {
             if (el.right) {
                 return acc.add(el.id);
@@ -50,14 +51,22 @@ export default {
             this.afterClick = true;
 
             if (this.rightAnswer) {
-                stateStorage.state.successQuestions.push(this);
-            }
-
-            setTimeout(() => {
+                this.successQuestions.push(this);
+                this.questions.filter(question => question.id != this.id);
+                testCaseApi.finalizeTestQuestion(this, this.id);
+            } else {
+                debugger
                 eventBus.$emit('click-next', this, this.rightAnswers);
                 this.afterClick = false;
                 this.rightAnswer = false;
-            }, 1000);
+            }
+        },
+        handleFinalizeResponse(response) {
+            if (response.data.success) {
+                eventBus.$emit('click-next', this, this.rightAnswers);
+                this.afterClick = false;
+                this.rightAnswer = false;
+            }
         }
     },
     computed: {
