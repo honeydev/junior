@@ -8,10 +8,9 @@
       <div class="row card-header">
         <div class="mx-auto col-auto">РЕГИСТРАЦИЯ</div>
       </div>
-      
+      {% if registration_oauth %}{% set info = 'При пустом пароле вход будет возможен только через OAuth.' %}{% endif %}
       {% include 'components/form_error.jinja2' %}
-
-      <form class="form-horizontal" action="{{ url_for('auth.registration') }}" method="post">
+      <form class="form-horizontal" action="{% if registration_oauth %}{{ url_for('auth.registration_oauth') }}{% else %}{{ url_for('auth.registration') }}{% endif %}" method="post">
         <div class="form-group">
           {{ form.csrf_token }}
           {% for form in form %}
@@ -31,7 +30,9 @@
       </form>
       </div>
   </div>
-  {% include 'components/or.jinja2' %}
-  {% include 'components/social_login.jinja2' %} 
+  {% if not registration_oauth %}
+    {% include 'components/or.jinja2' %}
+    {% include 'components/social_login.jinja2' %}
+  {% endif %}
 </div>
 {% endblock %}

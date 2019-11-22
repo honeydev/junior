@@ -1,14 +1,75 @@
 from flask import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
 from flask.views import MethodView
+from flask_dance.contrib.github import github
 from werkzeug.datastructures import MultiDict
 
 from src.user.auth import SessionAuth
-from src.user.forms import LoginForm, ProfileForm, RegistrationForm
+from src.user.forms import LoginForm, ProfileForm, RegistrationForm, RegistrationOAuthForm
 from src.user.models import User
 from src.views import BaseView
 
 bp = Blueprint('auth', __name__, template_folder='templates')
+
+
+class RegistrationOAuth(MethodView):
+    """
+    Обрабатывает вход через OAuth.
+
+    Если is_oauth = False, показывает форму регистрации
+    с возможностью смены логина и факультутивным паролем
+    Иначе редирект на заглавную страницу
+    """
+
+    def __init__(self, template_name):
+        self.template: str = template_name
+        self.form = RegistrationOAuthForm
+
+    def post(self):
+        form = self.form(request.form)
+        if not form.validate():
+            return render_template(self.template, **{'form': form, 'registration_oauth': True})
+        login = request.form.get('login')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        firstname = request.form.get('firstname')
+        middlename = request.form.get('middlename')
+        lastname = request.form.get('lastname')
+        pass_hash = User.hash_password(password).decode() if password else ''
+        user = User(
+            login=login,
+            email=email,
+            password=pass_hash,
+            firstname=firstname,
+            middlename=middlename,
+            lastname=lastname,
+            github_id=session['auth'].user.github_id,
+            is_oauth=True,
+        )
+
+        if User.query.filter_by(login=login).first():
+            return render_template(
+                self.template,
+                **{'form': form, 'errors': ['Логин уже занят'], 'registration_oauth': True},
+            )
+
+        User.save(user)
+        return redirect(url_for('index.index'))
+
+    def get(self):
+        user = session['auth'].user
+
+        if github.authorized and not user.is_oauth:
+            user_data = MultiDict([
+                ('login', user.login),
+                ('email', user.email),
+                ('firstname', user.firstname),
+            ])
+            return render_template(self.template, **{'form': self.form(user_data),
+                                                     'registration_oauth': True,
+                                                     })
+
+        return redirect(url_for('index.index'))
 
 
 class Registration(MethodView):
@@ -145,12 +206,21 @@ bp.add_url_rule(
 )
 
 bp.add_url_rule(
+    '/registration_oauth/',
+    view_func=RegistrationOAuth.as_view(
+        name='registration_oauth',
+        template_name='register_form.jinja2',
+    ),
+)
+
+bp.add_url_rule(
     '/registration/',
     view_func=Registration.as_view(
         name='registration',
         template_name='register_form.jinja2',
     ),
 )
+
 bp.add_url_rule(
     '/login/',
     view_func=Login.as_view(
@@ -158,6 +228,7 @@ bp.add_url_rule(
         template_name='login.jinja2',
     ),
 )
+
 bp.add_url_rule(
     '/profile/',
     view_func=Profile.as_view(
