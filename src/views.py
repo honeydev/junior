@@ -39,11 +39,12 @@ class IndexPage(BaseView):
         )
 
         if self.context['auth']:
-            user_email = self.context['auth'].user.email
-            user_image = self.context['auth'].user.image
+            auth = self.context['auth']
+            user_email = auth.user.email
+            user_image = auth.user.image
             if user_image is null:
                 avatar_str = user_email
-                User.query.filter_by(id=self.context['auth'].user.id).update(
+                User.query.filter_by(id=auth.user.id).update(
                     {'image': user_email},
                 )
             else:
@@ -67,11 +68,12 @@ class BarsIndexPage(BaseView):
         )
 
         if self.context['auth']:
-            user_email = self.context['auth'].user.email
-            user_image = self.context['auth'].user.image
+            auth = self.context['auth']
+            user_email = auth.user.email
+            user_image = auth.user.image
             if user_image is null:
                 avatar_str = user_email
-                User.query.filter_by(id=self.context['auth'].user.id).update(
+                User.query.filter_by(id=auth.user.id).update(
                     {'image': user_email},
                 )
             else:

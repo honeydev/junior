@@ -17,7 +17,7 @@ class TestQuestionsView(BaseTest):
 
     def setUp(self):
         super().setUp()
-        fixtures: list[dict] = load_fixture('chapters-questions.yml')
+        fixtures: list[dict] = load_fixture('minimum-questions.yml')
 
         self.questions: tuple = tuple(
             Question(**question_fixture).save()

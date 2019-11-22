@@ -15,7 +15,7 @@ class TestIndexView(BaseTest):
 
     def setUp(self):
         super().setUp()
-        fixtures: list[dict] = load_fixture('chapters-questions.yml')
+        fixtures: list[dict] = load_fixture('minimum-questions.yml')
 
         self.questions: tuple = tuple(
             Question(**question_fixture).save()
@@ -48,7 +48,7 @@ class TestFetchTestCaseData(BaseTest):
 
     def setUp(self):
         super().setUp()
-        fixtures: list[dict] = load_fixture('chapters-questions.yml')
+        fixtures: list[dict] = load_fixture('minimum-questions.yml')
         test_cases_fixtures: dict = load_yaml_fixture('test_cases.yaml')
 
         self.questions: tuple = tuple(
@@ -105,7 +105,7 @@ class TestTestAnswer(BaseTest):
 
     def setUp(self):
         super().setUp()
-        fixtures: list[dict] = load_fixture('chapters-questions.yml')
+        fixtures: list[dict] = load_fixture('minimum-questions.yml')
         test_cases_fixtures: dict = load_yaml_fixture('test_cases.yaml')
 
         self.questions: tuple = tuple(
