@@ -2,7 +2,6 @@ from hashlib import md5
 
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
-from sqlalchemy import null
 
 from src.qa.models import Chapter
 from src.user import User, db
@@ -21,8 +20,7 @@ class BaseView(MethodView):
 
     def avatar(self, size, image_str):
         digest = md5(image_str.encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{0}?d=identicon&s={1}'.format(
-            digest, size)
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
 
 class IndexPage(BaseView):
@@ -41,7 +39,7 @@ class IndexPage(BaseView):
         if self.context['auth']:
             user_email = self.context['auth'].user.email
             user_image = self.context['auth'].user.image
-            if not user_image:
+            if user_image is None:
                 avatar_str = user_email
                 User.query.filter_by(id=self.context['auth'].user.id).update(
                     {'image': user_email},
