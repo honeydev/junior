@@ -1,6 +1,6 @@
-from flask_mail import Mail, Message
-from flask import render_template
 from flask import current_app as junior_app
+from flask import render_template
+from flask_mail import Mail, Message
 
 
 def send_mail_for_aprove(user):
