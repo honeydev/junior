@@ -7,11 +7,8 @@
     <div class="card col-lg-6 col-12">
       <div class="row card-header">
         <div class="mx-auto col-auto">
-          <div class="row">ПРОФИЛЬ</div>
-            <div class="row">
-              <img src="{{ avatar_full }}">
-            </div>
-          <div class="row mx-auto">{{ auth.user.login }}</div>
+          <div class="text-center">ПРОФИЛЬ</div>
+          <div class="text-center">{{ auth.user.login }}</div>
         </div>
       </div>
 
@@ -19,6 +16,7 @@
 
       <form class="form-horizontal" action="{{ url_for('auth.profile') }}" method="post">
         <div class="form-group">
+          <img class="rounded mx-auto d-block my-3" src="{{ avatar_full }}" />
           {{ form.csrf_token }}
           {% for field in form %}
             <div class="form-group">
