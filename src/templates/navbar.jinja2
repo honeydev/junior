@@ -1,12 +1,13 @@
 {% block content %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark h4">
+    <a href="{{ url_for('index.home') }}">
     <img height="50" width="50" src="{{ url_for('static', filename='logo.png') }}" class="img-fluid" alt="Responsive image">
     <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link text-light px-2" href="{{ url_for('index.index') }}">Минимум<span class="sr-only">(current)</span></a>
+          <a class="nav-link text-light px-2" href="{{ url_for('index.index', section_id='1') }}">Минимум<span class="sr-only">(current)</span></a>
         </li>
       <li class="nav-item active">
-        <a class="nav-link text-light px-2" href="{{ url_for('index.bars_index') }}">Барс<span class="sr-only">(current)</span></a>
+        <a class="nav-link text-light px-2" href="{{ url_for('index.index', section_id='2') }}">Барс<span class="sr-only">(current)</span></a>
       </li>
     </ul>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Навигация">
