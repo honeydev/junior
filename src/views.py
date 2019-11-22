@@ -32,7 +32,7 @@ class HomePage(BaseView):
 
     def get(self):
 
-        return render_template(self.template_name)
+        return render_template(self.template_name, **self.context)
 
 
 class IndexPage(BaseView):
@@ -53,7 +53,7 @@ class IndexPage(BaseView):
             auth = self.context['auth']
             user_email = auth.user.email
             user_image = auth.user.image
-            if user_image is null:
+            if not user_image:
                 avatar_str = user_email
                 User.query.filter_by(id=auth.user.id).update(
                     {'image': user_email},
