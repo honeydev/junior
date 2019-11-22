@@ -1,8 +1,6 @@
-from flask import (Blueprint, redirect, render_template, request, session,
-                   url_for, flash)
-from flask import current_app as junior_app
+from flask import (Blueprint, flash, redirect, render_template, request,
+                   session, url_for)
 from flask.views import MethodView
-from flask_mail import Message, Mail
 from werkzeug.datastructures import MultiDict
 
 from src.user.auth import SessionAuth
@@ -10,8 +8,8 @@ from src.user.forms import LoginForm, ProfileForm, RegistrationForm
 from src.user.models import User
 from src.views import BaseView
 
-
 bp = Blueprint('auth', __name__, template_folder='templates')
+
 
 class Registration(MethodView):
 
@@ -48,25 +46,11 @@ class Registration(MethodView):
                 self.template,
                 **{'form': form, 'info': 'Email уже занят'},
             )
-        msg = Message('Подтвердите регистрацию на JUNIOR, пройдя по ссылке',
-                      sender=junior_app.config['ADMINS'][0],
-                      recipients=[email]
-                      )
         User.save(user)
-        token = user.get_token_for_mail_aproved()
-        msg.html = render_template('email_aprove.html',
-                                   user=user, token=token)
-        mail = Mail(junior_app)
-        print('----------------------------')
-        print(junior_app.config["MAIL_SERVER"])
-        print(junior_app.config["MAIL_PORT"])
-        print(junior_app.config["MAIL_USE_TLS"])
-        print(junior_app.config["MAIL_USERNAME"])
-        print(junior_app.config["MAIL_PASSWORD"])
-        print(junior_app.config["ADMINS"])
-        mail.send(msg)
-
-        flash('Вам на почту отправлена ссылка для подтверждения регистрации')
+        if user.send_mail_for_aprove():
+            flash('Вам на почту отправлена ссылка для подтверждения регистрации')
+        else:
+            flash('Сбой отправки письма')
         return redirect(url_for('auth.login'))
 
     def get(self):
@@ -93,8 +77,8 @@ class Login(MethodView):
             login=login,
         ).first()
         if user and User.check_password(user, password):
-            if not user.is_oauth:
-                flash("Завершите регистрацию, пройдя по ссылке, отправленной на почту")
+            if not user.is_aproved:
+                flash('Завершите регистрацию, пройдя по ссылке, отправленной на почту')
                 return redirect(url_for('auth.login'))
             session['auth'] = SessionAuth(True, user)
         return redirect('/')
@@ -137,12 +121,13 @@ class Logout(MethodView):
 
 
 class EmailAprove(MethodView):
-    """ Функция проверки ссылки, по которой переходит
-    пользователь, завершая регистрацию """
+    """Функция проверки ссылки.
+
+    по ней переходит пользователь, завершая регистрацию
+    """
 
     def get(self, token):
         user = User.verify_token_for_mail_aproved(token)
-        print(f'Проверен токен {token} для пользователя {user}')
         if not user:
             return redirect(url_for('index.index'))
         return redirect(url_for('auth.login'))
