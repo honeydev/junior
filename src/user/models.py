@@ -2,9 +2,8 @@ from time import time
 
 import jwt
 from flask import current_app as junior_app
-from flask import flash, redirect, render_template, url_for
+from flask import flash, redirect, url_for
 from flask_bcrypt import check_password_hash, generate_password_hash
-from flask_mail import Mail, Message
 
 from src.extensions import db
 
@@ -59,22 +58,6 @@ class User(db.Model):  # noqa: WPS230
 
     def __repr__(self):
         return '<id {0}>'.format(self.id)
-
-    def send_mail_for_aprove(self):
-        msg = Message(
-            'Подтвердите регистрацию на JUNIOR, пройдя по ссылке',
-            sender=junior_app.config['ADMINS'][0],
-            recipients=[self.email],
-        )
-
-        msg.html = render_template(
-            'email_aprove.html',
-            user=self,
-            token=self.get_token_for_mail_aproved(),
-        )
-        mail = Mail(junior_app)
-        mail.send(msg)
-        return True
 
     @classmethod
     def hash_password(cls, password: str):
