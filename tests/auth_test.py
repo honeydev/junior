@@ -17,6 +17,8 @@ class TestRegistrationView(BaseTest):
         factory: Generator = Faker()
         username: str = factory.user_name()
         password: str = factory.password()
+        while len(password) < 6:
+            password = factory.password()
         password_confirmation: str = password
         email: str = factory.email()
         first_name: str = factory.first_name()
@@ -53,7 +55,11 @@ class TestGithubAuthWithExistUser(BaseTest):
     def setUp(self):
         super().setUp()
         fixture: dict = load_yaml_fixture('auth_test_existed_github_user.yaml')
-        self.user: User = User(email=fixture['email'], login=fixture['login'])
+        self.user: User = User(
+            email=fixture['email'],
+            login=fixture['login'],
+            github_id=fixture['github_id'],
+        )
         self.user.id = fixture['id']
         self.user.save()
 
@@ -61,6 +67,7 @@ class TestGithubAuthWithExistUser(BaseTest):
         github_auth: GithubAuth = GithubAuth.create({
             'email': self.user.email,
             'login': self.user.login,
+            'id': self.user.github_id,
         })
 
         self.assertTrue(github_auth.auth_user.email, self.user.email)
