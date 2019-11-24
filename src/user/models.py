@@ -56,8 +56,8 @@ class User(db.Model):  # noqa: WPS230
         back_populates='user',
     )
 
-    def __repr__(self):
-        return '<id {0}>'.format(self.id)
+    def __str__(self):
+        return '{0} <id {1}>'.format(self.login, self.id)
 
     @classmethod
     def hash_password(cls, password: str):

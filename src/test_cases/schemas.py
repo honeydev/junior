@@ -3,12 +3,16 @@ from marshmallow import Schema, fields
 from src.test_cases.constants import AnswerTypes
 
 
-class TestCaseSchema(Schema):
-    """TestCase model serializer."""
+class UserTestCaseSchema(Schema):
 
     id = fields.Int(dump_only=True)  # noqa: A003
-    question_id = fields.Int()
-    test_questions = fields.Nested('TestQuestionSchema', many=True)
+    question_relation = fields.Nested('TestQuestionUserRelation', many=True)
+
+
+class TestQuestionUserRelation(Schema):
+    id = fields.Int(dump_only=True)  # noqa: A003
+    completed = fields.Boolean()
+    test_question = fields.Nested('TestQuestionSchema')
 
 
 class TestQuestionSchema(Schema):

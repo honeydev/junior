@@ -2,7 +2,6 @@ from hashlib import md5
 
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
-from sqlalchemy import null
 
 from src.qa.models import Chapter
 from src.user import User
