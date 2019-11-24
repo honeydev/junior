@@ -22,8 +22,8 @@ class BaseAuth:
 
     def __init__(self, auth: bool, user: User = None, ouath_data: dict = None):
         self.auth: bool = auth
-        self.user: User = user
         self.ouath_data: dict = ouath_data
+        self._user: User = user
 
     def __bool__(self) -> bool:
         return self.auth
@@ -31,12 +31,12 @@ class BaseAuth:
     def logout(self) -> None:
         session['auth'] = SessionAuth(False)
 
+    @property
+    def user(self) -> User:
+        return User.query.get(self._user.id)
+
 
 class SessionAuth(BaseAuth):
-
-    @property
-    def auth_user(self) -> User:
-        return self.user
 
     @property
     def is_oauth(self) -> bool:
@@ -44,10 +44,6 @@ class SessionAuth(BaseAuth):
 
 
 class GithubAuth(BaseAuth):
-
-    @property
-    def auth_user(self) -> User:
-        return self.user
 
     @property
     def is_oauth(self) -> bool:

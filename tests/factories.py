@@ -16,6 +16,7 @@ def create_user(save=True):
         firstname=factory.first_name(),
         middlename=factory.name(),
         lastname=factory.last_name(),
+        is_aproved=True,
     )
 
     if save:
