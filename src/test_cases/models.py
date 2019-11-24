@@ -11,6 +11,9 @@ class TestCase(db.Model):
     question = db.relationship('Question', back_populates='test_case')
     test_questions = db.relationship('TestQuestion', back_populates='test_case')
 
+    def __str__(self):
+        return f'Тесты для {self.question}'
+
 
 class TestQuestion(db.Model):
     """Question for test case."""
@@ -29,8 +32,8 @@ class TestQuestion(db.Model):
     answers = db.relationship('TestAnswer', back_populates='question')
 
     def __str__(self):
-        slise_size = 30
-        return f'{self.text[:slise_size]}'
+        slise_size = 50
+        return f'{self.text[:slise_size]}, тест кейс: {self.test_case}'
 
 
 class TestQuestionUserRelation(db.Model):

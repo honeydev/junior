@@ -16,7 +16,10 @@ class TestCaseService:
         self.create_missing_relations()
         schema = UserTestCaseSchema()
 
-        return flat_user_test_case(schema.dump(self.user))
+        return tuple(filter(
+            lambda question: question['test_case_id'] == self.test_case.id,
+            flat_user_test_case(schema.dump(self.user)),
+        ))
 
     def create_missing_relations(self):
 
