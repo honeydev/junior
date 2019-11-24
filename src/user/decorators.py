@@ -3,8 +3,6 @@ from http import HTTPStatus
 
 from flask import abort, session
 
-from src.user.models import User
-
 
 def login_required_user(wrapped_callable):
     """Login required decorator, add user obj in func."""
@@ -13,7 +11,7 @@ def login_required_user(wrapped_callable):
         auth = session.get('auth', False)
         if not auth:
             abort(int(HTTPStatus.UNAUTHORIZED))
-        return wrapped_callable(*args, user=User.query.get(auth.user.id), **kwargs)
+        return wrapped_callable(*args, user=auth.user, **kwargs)
     return decorated_function
 
 
