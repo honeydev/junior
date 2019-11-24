@@ -5,9 +5,9 @@ def flat_user_test_case(user_test_case: dict) -> tuple:
         {
             **{
                 'completed': question_relation['completed'],
-                'id': question_relation['id']
+                'id': question_relation['id'],
             },
-            **question_relation['test_question']
+            **question_relation['test_question'],
         }
         for question_relation in user_test_case['question_relation']
     )

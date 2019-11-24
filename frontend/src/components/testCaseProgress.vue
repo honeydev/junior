@@ -1,5 +1,5 @@
 <template>
-    <div class="progress testCaseProgress">
+    <div v-if="existQuestions" class="progress testCaseProgress">
         <div
             class="progress-bar"
             role="progressbar"
@@ -10,19 +10,23 @@
 
 <script>
 
+import _ from 'lodash';
 import stateStorage from '../stateSorage';
 
 export default {
-    'name': 'TestCaseProgress',
-    data () {
-        return stateStorage.state;
+  'name': 'TestCaseProgress',
+  data () {
+    return stateStorage.state;
+  },
+  computed: {
+    progress () {
+      const progressPart = 100 /
+        (stateStorage.state['completedQuestions'].length + stateStorage.state['notCompletedQuestions'].length);
+      return String(this.completedQuestions.length * progressPart);
     },
-    computed: {
-        progress () {
-            const progressPart = 100 / 
-                (stateStorage.state['successQuestions'].length + stateStorage.state['questions'].length);
-            return String(this.successQuestions.length * progressPart);
-        }
+    existQuestions () {
+      return !_.isEmpty(this.completedQuestions) || !_.isEmpty(this.notCompletedQuestions);
     }
+  }
 };
 </script>

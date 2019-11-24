@@ -29,7 +29,8 @@ class TestQuestion(db.Model):
     answers = db.relationship('TestAnswer', back_populates='question')
 
     def __str__(self):
-        return f'{self.text[:30]}'
+        slise_size = 30
+        return f'{self.text[:slise_size]}'
 
 
 class TestQuestionUserRelation(db.Model):

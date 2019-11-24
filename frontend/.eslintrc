@@ -1,6 +1,7 @@
 {
     "rules": {
         "semi": [2, "always"],
-        "indent": ["error", 4]
+        "indent": ["error", 2],
+        "no-debugger": "error"
     }
 }
