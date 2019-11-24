@@ -45,7 +45,7 @@ class TestGithubAuthCreateNewUser(BaseTest):
     def test(self):
         github_profile: dict = get_github_profile_mock()
         github_auth: GithubAuth = GithubAuth.create(github_profile)
-        user: User = github_auth.auth_user
+        user: User = github_auth.user
         self.assertEqual(user.email, github_profile['email'])
         self.assertEqual(user.login, github_profile['login'])
 
@@ -70,6 +70,6 @@ class TestGithubAuthWithExistUser(BaseTest):
             'id': self.user.github_id,
         })
 
-        self.assertTrue(github_auth.auth_user.email, self.user.email)
-        self.assertTrue(github_auth.auth_user.login, self.user.login)
-        self.assertTrue(github_auth.auth_user.id, self.user.id)
+        self.assertTrue(github_auth.user.email, self.user.email)
+        self.assertTrue(github_auth.user.login, self.user.login)
+        self.assertTrue(github_auth.user.id, self.user.id)

@@ -32,7 +32,7 @@ class CustomAdminView(AdminIndexView):
     @expose('/')
     def index(self):
         sess = session.get('auth')
-        user = getattr(sess, 'auth_user', None)
+        user = getattr(sess, 'user', None)
         if user and sess and user.is_superuser:
             return super(CustomAdminView, self).index()  # noqa WPS608
         else:

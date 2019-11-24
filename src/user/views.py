@@ -152,9 +152,11 @@ class Login(MethodView):
 
         login = request.form['login']
         password = request.form['password']
+
         user = User.query.filter_by(
             login=login,
         ).first()
+
         if user and User.check_password(user, password):
             if not user.is_aproved:
                 flash('Завершите регистрацию, пройдя по ссылке, отправленной на почту')
