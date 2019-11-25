@@ -5,7 +5,8 @@ from werkzeug.datastructures import MultiDict
 
 from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
-from src.user.forms import LoginForm, ProfileForm, RegistrationForm
+from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
+                            RegistrationForm)
 from src.user.models import User
 from src.views import BaseView
 
