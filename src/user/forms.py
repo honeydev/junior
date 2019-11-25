@@ -1,34 +1,18 @@
-from wtforms import Form, PasswordField, StringField, validators
+from wtforms import (BooleanField, Form, PasswordField, SelectField,
+                     StringField, validators)
 
 
-class LoginForm(Form):
+class BaseForm(Form):
+    class Meta:
+        locales = ['ru']
+
+
+class LoginForm(BaseForm):
     login = StringField('Логин', [
-        validators.input_required(
-            message='Поле логин обязательно для заполнения.',
-        ),
+        validators.input_required(),
         validators.length(
             min=3,
             max=15,
-            message='Длина логина от %(min)d до %(max)d символов.',
-        ),
-    ])
-    password = PasswordField('Пароль', [
-        validators.data_required(message='Поле обязательно для заполнения.'),
-        validators.length(
-            min=6,
-            max=15,
-            message='Длина пароля от %(min)d до %(max)d символов.',
-        ),
-    ])
-
-
-class RegistrationForm(Form):
-    login = StringField('Логин', [
-        validators.input_required(message='Поле обязательно для заполнения.'),
-        validators.length(
-            min=3,
-            max=15,
-            message='Длина логина от %(min)d до %(max)d символов.',
         ),
     ])
     password = PasswordField('Пароль', [
@@ -36,20 +20,35 @@ class RegistrationForm(Form):
         validators.length(
             min=6,
             max=15,
-            message='Длина пароля от %(min)d до %(max)d символов.',
+        ),
+    ])
+
+
+class RegistrationForm(BaseForm):
+    login = StringField('Логин', [
+        validators.input_required(),
+        validators.length(
+            min=3,
+            max=15,
+        ),
+    ])
+    password = PasswordField('Пароль', [
+        validators.data_required(),
+        validators.length(
+            min=6,
+            max=15,
         ),
     ])
     password_confirmation = PasswordField('Подтверждение пароля', [
-        validators.data_required(message='Поле обязательно для заполнения.'),
+        validators.data_required(),
         validators.equal_to('password', message='Пароли должны совпадать.'),
     ])
     email = StringField('Email адрес', [
-        validators.email(message='Значение не является почтовым адресом.'),
-        validators.data_required(message='Поле обязательно.'),
+        validators.email(),
+        validators.data_required(),
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     lastname = StringField('Фамилия', [
@@ -57,7 +56,6 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     firstname = StringField('Имя', [
@@ -65,7 +63,6 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     middlename = StringField('Отчество', [
@@ -73,19 +70,34 @@ class RegistrationForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
 
 
-class ProfileForm(Form):
+class ProfileOAuthForm(BaseForm):
+    login = StringField('Логин', [
+        validators.input_required(),
+        validators.length(
+            min=3,
+            max=15,
+        ),
+    ])
+    change_password = BooleanField('Сменить/установить пароль')
+    password = PasswordField('Пароль', [
+        validators.optional(),
+        validators.length(
+            min=6,
+            max=15,
+        ),
+        validators.equal_to('password', message='Пароли должны совпадать.'),
+    ])
+    password_confirmation = PasswordField('Подтверждение пароля')
     email = StringField('Email адрес', [
-        validators.email(message='Значение не является почтовым адресом.'),
-        validators.data_required(message='Поле обязательно.'),
+        validators.email(),
+        validators.data_required(),
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     lastname = StringField('Фамилия', [
@@ -93,7 +105,6 @@ class ProfileForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     firstname = StringField('Имя', [
@@ -101,7 +112,6 @@ class ProfileForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
     ])
     middlename = StringField('Отчество', [
@@ -109,6 +119,44 @@ class ProfileForm(Form):
         validators.length(
             min=4,
             max=30,
-            message='Длина поля от %(min)d до %(max)d символов.',
         ),
+    ])
+
+
+class ProfileForm(BaseForm):
+    email = StringField('Email адрес', [
+        validators.email(),
+        validators.data_required(),
+        validators.length(
+            min=4,
+            max=30,
+        ),
+    ])
+    lastname = StringField('Фамилия', [
+        validators.optional(),
+        validators.length(
+            min=4,
+            max=30,
+        ),
+    ])
+    firstname = StringField('Имя', [
+        validators.optional(),
+        validators.length(
+            min=4,
+            max=30,
+        ),
+    ])
+    middlename = StringField('Отчество', [
+        validators.optional(),
+        validators.length(
+            min=4,
+            max=30,
+        ),
+    ])
+
+
+class ChangeAvatarForm(Form):
+    chosen_avatar = SelectField('Ваш аватар', choices=[
+        ('gravatar', 'обьчный'),
+        ('face', 'правдоподобный'),
     ])
