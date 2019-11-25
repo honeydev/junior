@@ -19,6 +19,15 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = 'fogstream.khb@gmail.com'
+    MAIL_PASSWORD = '123456789'
+    ADMINS = ['admin@gmail.com']
+
+    SECRET_KEY = 'mysupersecretkey'
+
 
 class ProductionConfig(Config):
     DEBUG = False
