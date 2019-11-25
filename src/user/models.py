@@ -75,11 +75,11 @@ class User(db.Model):  # noqa: WPS230
         else:
             image_str = self.image
         digest = md5(image_str.encode('utf-8')).hexdigest()
-        link_str = f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+        image_str = f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
         if not self.gravatar:
-            link_str = f'https://api.adorable.io/avatars/{size}/{digest}.png'
+            image_str = f'https://api.adorable.io/avatars/{size}/{digest}.png'
 
-        return link_str
+        return image_str
 
     def __repr__(self):
         return '<id {0}>'.format(self.id)
