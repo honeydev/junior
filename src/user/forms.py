@@ -1,4 +1,4 @@
-from wtforms import Form, PasswordField, SelectField, StringField, validators
+from wtforms import Form, PasswordField, SelectField, StringField, validators, BooleanField
 
 
 class LoginForm(Form):
@@ -119,3 +119,4 @@ class ChangeAvatarForm(Form):
         ('gravatar', 'обычный'),
         ('face', 'правдоподобный'),
     ])
+    default_avatar = BooleanField('Аватар по умолчанию')

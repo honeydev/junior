@@ -2,6 +2,20 @@
 {% block header %}
 {% endblock %}
 {% block content %}
+
+    <script>
+        var new_img_str;
+
+        function new_image() {
+            let ava = document.getElementById('img_avatar');
+            let seed = Math.random().toString(36).slice(-8);
+            let new_url = 'https://api.adorable.io/avatars/' + 128 + '/' + seed + '.png';
+            new_img_str = new_url;
+            ava.setAttribute('src', new_url);
+            return new_img_str
+        }
+    </script>
+
 <div class="container p-4">
   <div class="row justify-content-center">
     <div class="card col-lg-6 col-12">
@@ -21,6 +35,8 @@
             </div>
           {% endfor %}
 
+
+
           <div class="row">
             <div class="mx-auto col-auto my-3">
               <button type="submit" class="btn btn-success">Сохранить</button>
@@ -28,6 +44,16 @@
           </div>
         </div>
       </form>
+
+      <div class="image">
+		<img src='' id='img_avatar' width='128'>
+	  </div>
+
+          <div class="row">
+            <div class="mx-auto col-auto my-3">
+              <button type="submit" class="btn btn-success" onclick="new_image();">Random</button>
+            </div>
+          </div>
     </div>
   </div>
 </div>
