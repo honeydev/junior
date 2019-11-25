@@ -58,10 +58,9 @@ class User(db.Model):  # noqa: WPS230
         back_populates='user',
     )
 
-
-
     def __str__(self):
         return '{0} <id {1}>'.format(self.login, self.id)
+
     def avatar(self, size):
 
         if self.image is None:
