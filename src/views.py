@@ -4,7 +4,7 @@ from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
 
 from src.qa.models import Chapter
-from src.user import User
+from src.user import User, db
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -20,8 +20,7 @@ class BaseView(MethodView):
 
     def avatar(self, size, image_str):
         digest = md5(image_str.encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{0}?d=identicon&s={1}'.format(
-            digest, size)
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
 
 class IndexPage(BaseView):
@@ -45,6 +44,7 @@ class IndexPage(BaseView):
                 User.query.filter_by(id=self.context['auth'].user.id).update(
                     {'image': user_email},
                 )
+                db.session.commit()
             else:
                 avatar_str = user_image
             self.context['avatar'] = self.avatar(48, avatar_str)

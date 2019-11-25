@@ -5,7 +5,8 @@ from werkzeug.datastructures import MultiDict
 
 from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
-from src.user.forms import LoginForm, ProfileForm, RegistrationForm
+from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
+                            RegistrationForm)
 from src.user.models import User
 from src.views import BaseView
 
@@ -102,8 +103,6 @@ class Profile(BaseView):
             ('middlename', self.user.middlename),
             ('lastname', self.user.lastname),
         ])
-        self.context['avatar'] = BaseView.avatar(self, 48, self.user.image)
-        self.context['avatar_full'] = BaseView.avatar(self, 128, self.user.image)
         self.context['form'] = self.form(user_data)
         return render_template(self.template_name, **self.context)
 
@@ -140,6 +139,20 @@ class EmailAprove(MethodView):
         return redirect(url_for('auth.login'))
 
 
+class ChangeAvatar(BaseView):
+    def __init__(self, template_name):
+        super().__init__(template_name)
+        self.user = session['auth'].user
+        self.form = ChangeAvatarForm
+
+    def get(self):
+        self.context['form'] = self.form()
+        return render_template(self.template_name, **self.context)
+
+    def post(self):
+        return redirect(url_for('auth.change_avatar'))
+
+
 bp.add_url_rule(
     '/logout/',
     view_func=Logout.as_view(
@@ -173,5 +186,12 @@ bp.add_url_rule(
     '/email_aprove/<token>',
     view_func=EmailAprove.as_view(
         name='email_aprove',
+    ),
+)
+bp.add_url_rule(
+    '/change_avatar/',
+    view_func=ChangeAvatar.as_view(
+        name='change_avatar',
+        template_name='change_avatar.jinja2',
     ),
 )
