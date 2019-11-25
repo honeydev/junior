@@ -111,19 +111,19 @@ def register_commands(app):
 def register_mail_settings(app):
     mail = Mail(app)
     app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER",
-                                               app.config["MAIL_SERVER"])
+                                               'smtp.googlemail.com')
     app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT",
-                                                 app.config["MAIL_PORT"]))
+                                                 587))
     app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS",
-                                                app.config["MAIL_USE_TLS"])
+                                                True)
     app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME",
-                                                 app.config["MAIL_USERNAME"])
+                                                 'fogstream.khb@gmail.com')
     app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD",
-                                                 app.config["MAIL_PASSWORD"])
-    app.config["ADMINS"] = os.environ.get("ADMINS", app.config["ADMINS"])
+                                                 '123456789')
+    app.config["ADMINS"] = os.environ.get("ADMINS", ['admin@gmail.com'])
     return mail
 
 
 def register_secret(app):
     app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY",
-                                              app.config["SECRET_KEY"])
+                                              'mysupersecretkey')
