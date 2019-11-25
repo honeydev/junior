@@ -49,7 +49,10 @@ class LoginOAuth(MethodView):
             if session.get('oauth_link', False):
                 github_id = github.get('user').json().get('id')
                 if User.query.filter_by(github_id=str(github_id)).first():
-                    flash('Данный аккаунт GitHub уже привязан к другому аккаунту на данном сайте.', 'error')
+                    flash(
+                        'Данный аккаунт GitHub уже привязан к другому аккаунту на данном сайте.',
+                        'error',
+                    )
                     return redirect(url_for('auth.profile'))
                 User.query.filter_by(login=user.login).update({
                     'github_id': github_id,
