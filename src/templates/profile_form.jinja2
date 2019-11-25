@@ -8,8 +8,9 @@
       <div class="row card-header">
         <div class="mx-auto col-auto">
           <div class="row">ПРОФИЛЬ</div>
-            <div class="row">
-              <img src="{{ avatar_full }}">
+          <div class="row">
+            <img src="{{ auth.user.avatar(128) }}">
+
             </div>
           <div class="row mx-auto">{{ auth.user.login }}</div>
         </div>
