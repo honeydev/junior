@@ -156,7 +156,13 @@ class ChangeAvatar(BaseView):
 
     def get(self):
         if request.form.get('default_avatar'):
-            pass
+            User.query.filter_by(login=session['auth'].user.login).update({
+                'image': self.user.email,
+            })
+        if request.form.get('new_img_str'):
+            User.query.filter_by(login=session['auth'].user.login).update({
+                'image': request.form.get('new_img_str'),
+            })
 
         self.context['form'] = self.form()
         return render_template(self.template_name, **self.context)
