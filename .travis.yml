@@ -4,6 +4,13 @@ python:
   - 3.7.4
 env:
   - FLASK_APP=app.py
+  - MAIL_SERVER=smtp.googlemail.com
+  - MAIL_PORT=587
+  - MAIL_USE_TLS=True
+  - MAIL_USERNAME=username@gmail.com
+  - MAIL_PASSWORD=password
+  - ADMINS=['admin1@mail.ru','admin2@mail.ru',]
+  - SECRET_KEY=your_super_secret_key
 
 before_install:
   - pip install poetry
