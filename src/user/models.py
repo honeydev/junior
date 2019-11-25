@@ -1,3 +1,5 @@
+from hashlib import md5
+
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from src.extensions import db
@@ -46,6 +48,18 @@ class User(db.Model):  # noqa: WPS230
         'TestQuestionUserRelation',
         back_populates='user',
     )
+
+    def avatar(self, size):
+
+        if self.image is None:
+            image_str = self.email
+            User.query.filter_by(id=self.context['auth'].user.id).update({'image': self.email})
+            db.session.commit()
+        else:
+            image_str = self.image
+        digest = md5(image_str.encode('utf-8')).hexdigest()
+
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
 
     def __repr__(self):
         return '<id {0}>'.format(self.id)
