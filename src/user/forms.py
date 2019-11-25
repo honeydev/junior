@@ -116,6 +116,6 @@ class ProfileForm(Form):
 
 class ChangeAvatarForm(Form):
     chosen_avatar = SelectField('Ваш аватар', choices=[
-        ('gravatar', 'обьчный'),
+        ('gravatar', 'обычный'),
         ('face', 'правдоподобный'),
     ])

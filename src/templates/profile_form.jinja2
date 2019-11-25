@@ -10,7 +10,7 @@
           <div class="row">ПРОФИЛЬ</div>
           <div class="row">
             <img src="{{ auth.user.avatar(128) }}">
-            <form method="LINK" action="http://codehelper.ru">
+            <form method="LINK" action="{{ url_for('auth.change_avatar') }}">
               <button type="submit" class="btn btn-success">Сменить аватар</button>
             </form>
           </div>
