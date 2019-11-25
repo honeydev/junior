@@ -1,0 +1,49 @@
+{% extends 'base.jinja2' %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<div class="container p-4">
+  <div class="row justify-content-center">
+    <div class="card col-lg-6 col-12">
+      <div class="row card-header">
+        <div class="mx-auto col-auto">
+          <div class="text-center">ПРОФИЛЬ</div>
+        </div>
+      </div>
+      <div class="alert alert-info col my-1">
+        При пустом пароле вход возможен только через OAuth.
+      </div>
+        
+      {% include 'components/form_error.jinja2' %}
+
+      <form class="form-horizontal" action="{{ url_for('auth.profile_oauth') }}" method="post">
+        <div class="form-group">
+          <img class="rounded mx-auto d-block my-3" src="{{ auth.user.avatar(128) }}" />
+          {{ form.csrf_token }}
+          {% for field in form %}
+            <div class="row">
+              <div class="mx-auto col-11 mt-3">
+                {% if field.type == 'BooleanField' %}
+                <div class="form-check">
+                  {{ field(class_='form-check-input', placeholder = field.label.text) }}
+                  {{ field.label(class_='form-check-label', placeholder = field.label.text) }}
+                </div>
+                {% else %}
+                  {{ field(class_='form-control', placeholder = field.label.text) }}
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+
+          <div class="row">
+            <div class="mx-auto col-auto my-3">
+              <a href="{{ url_for('auth.delink_oauth') }}" class="btn btn-info">Отвязать от GitHub</a>
+              <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
