@@ -7,14 +7,8 @@
     <div class="card col-lg-6 col-12">
       <div class="row card-header">
         <div class="mx-auto col-auto">
-          <div class="row">ПРОФИЛЬ</div>
-          <div class="row">
-            <img src="{{ auth.user.avatar(128) }}">
-            <form method="LINK" action="http://codehelper.ru">
-              <button type="submit" class="btn btn-success">Сменить аватар</button>
-            </form>
-          </div>
-          <div class="row mx-auto">{{ auth.user.login }}</div>
+          <div class="text-center">ПРОФИЛЬ</div>
+          <div class="text-center">{{ auth.user.login }}</div>
         </div>
       </div>
 
@@ -22,6 +16,8 @@
 
       <form class="form-horizontal" action="{{ url_for('auth.profile') }}" method="post">
         <div class="form-group">
+          <img class="rounded mx-auto d-block my-3" src="{{ auth.user.avatar(128) }}" />
+          <a href="{{ url_for('auth.change_avatar') }}" class="btn btn-success btn-sm">Сменить аватар</a>
           {{ form.csrf_token }}
           {% for field in form %}
             <div class="form-group">
@@ -32,7 +28,7 @@
 
           <div class="row">
             <div class="mx-auto col-auto my-3">
-              <a href="{{ url_for('auth.link_oauth') }}" class="btn btn-info">Привязать к GitHub</a>
+              <a href="{{ url_for('auth.link_oauth') }}" class="btn btn-outline-dark">Привязать к GitHub</a>
               <button type="submit" class="btn btn-success">Сохранить</button>
             </div>
           </div>

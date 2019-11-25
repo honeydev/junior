@@ -19,6 +19,7 @@
       <form class="form-horizontal" action="{{ url_for('auth.profile_oauth') }}" method="post">
         <div class="form-group">
           <img class="rounded mx-auto d-block my-3" src="{{ auth.user.avatar(128) }}" />
+          <a href="{{ url_for('auth.change_avatar') }}" class="btn btn-success btn-sm">Сменить аватар</a>
           {{ form.csrf_token }}
           {% for field in form %}
             <div class="row">
@@ -37,7 +38,7 @@
 
           <div class="row">
             <div class="mx-auto col-auto my-3">
-              <a href="{{ url_for('auth.delink_oauth') }}" class="btn btn-info">Отвязать от GitHub</a>
+              <a href="{{ url_for('auth.delink_oauth') }}" class="btn btn-outline-dark">Отвязать от GitHub</a>
               <button type="submit" class="btn btn-success">Сохранить</button>
             </div>
           </div>

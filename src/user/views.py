@@ -5,12 +5,12 @@ from werkzeug.datastructures import MultiDict
 
 from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
+from src.user.decorators import login_required
 from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
                             RegistrationForm)
-from src.user.decorators import login_required
-from src.user.forms import LoginForm, ProfileForm, RegistrationForm
 from src.user.models import User
-from src.user.views_oauth import DeLinkOAuth, LinkOAuth, LoginOAuth, ProfileOAuth
+from src.user.views_oauth import (DeLinkOAuth, LinkOAuth, LoginOAuth,
+                                  ProfileOAuth)
 from src.views import BaseView
 
 bp = Blueprint('auth', __name__, template_folder='templates')
