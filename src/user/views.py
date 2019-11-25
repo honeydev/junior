@@ -187,3 +187,10 @@ bp.add_url_rule(
         name='email_aprove',
     ),
 )
+bp.add_url_rule(
+    '/change_avatar/',
+    view_func=ChangeAvatar.as_view(
+        name='change_avatar',
+        template_name='change_avatar.jinja2',
+    ),
+)
