@@ -1,32 +1,30 @@
 <template>
-    <section class="container">
-
-        <div class="row">
-            <div class="col">
-                <completedDialog v-if="completed"/>
-                <div v-for="question in questions" v-bind:key="question.id">
-                    <radiusQuestion v-if="question.question_type == 'radius'"
-                        :id="question.id"
-                        :question_type=question.question_type
-                        :text=question.text
-                        :answers=question.answers
-                        :active=question.active
-                    />
-                    <checkboxQuestion v-else-if="question.question_type == 'check_box'"
-                        :id="question.id"
-                        :question_type=question.question_type
-                        :text=question.text
-                        :answers=question.answers
-                        :active=question.active
-                    />
-                </div>
-            </div>
+  <section class="container">
+    <div class="row">
+      <div class="col">
+        <completedDialog v-if="isCompleted"/>
+        <div v-for="question in notCompletedQuestions" v-bind:key="question.id">
+          <radiusQuestion
+            v-if="question.question_type == 'radius'"
+            :id="question.id"
+            :question_type="question.question_type"
+            :text="question.text"
+            :answers="question.answers"
+          />
+          <checkboxQuestion
+            v-else-if="question.question_type == 'check_box'"
+            :id="question.id"
+            :question_type="question.question_type"
+            :text="question.text"
+            :answers="question.answers"
+          />
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 </template>
 
 <script>
-
 import TestCaseApi from '../api/testCaseApi';
 import _ from 'lodash';
 
@@ -38,50 +36,53 @@ import stateStorage from '../stateSorage';
 import CompletedDialog from './completedDialog';
 
 export default {
-    name: 'TestCase',
-    data: () => stateStorage.state,
-    created: function () {
-        TestCaseApi.getTestCase(this, getQuestionIdByUrl());
-        eventBus.$on('click-next', questionComponent => {
-            
-            if (this.completed) {
-                return;
-            }
+  name: 'TestCase',
+  data: () => stateStorage.state,
+  created: function () {
+    TestCaseApi.getTestCase(this, getQuestionIdByUrl());
+    eventBus.$on('click-next', (questionComponent, asyncAction) => {
+      if (questionComponent.rightAnswer) {
+        this.completedQuestions.push(this.notCompletedQuestions.shift());
+      } else {
+        this.notCompletedQuestions.push(this.notCompletedQuestions.shift());
+      }
 
-            const currentIndex = _.findIndex(this.questions, question => {
-                return Number(question.id) === Number(questionComponent.id);
-            });
+      asyncAction(() => {
+        this.activeComponentId = _.head(this.notCompletedQuestions).id;
+      });
+    });
+  },
+  methods: {
+    handleTestCaseResponse (apiResponse) {
+      this.completedQuestions = apiResponse['data'].filter(
+        question => question.completed
+      );
+      this.notCompletedQuestions = apiResponse['data'].filter(
+        question => !question.completed
+      );
 
-            this.questions[currentIndex]['active'] = false;
-            const nextIndex = (currentIndex + 1 < this.$children.length) ? currentIndex + 1 : 0;
-            this.questions[nextIndex]['active'] = true;
+      if (!_.isEmpty(this.notCompletedQuestions)) {
+        const head = _.head(this.notCompletedQuestions);
+        head['active'] = true;
+        this.activeComponentId = head.id;
+
+        const tail = _.tail(this.notCompletedQuestions).map(question => {
+          question['active'] = false;
+          return question;
         });
-    },
-    methods: {
-        handleTestCaseResponse (apiResponse) {
-            const questions = apiResponse['data']['test_questions'];
-            const head = _.head(questions);
-            head['active'] = true;
-            const tail = _.tail(questions).map(question => {
-                question['active'] = false;
-                return question;
-            });
-            this.questions = [head].concat(tail);
-        }
-    },
-    watch: {
-        successQuestions(newQuestions) {
-            if (newQuestions.length === this.questions.length) {
-                this.questions.map(question => question.active = false)
-                this.completed = true;
-            }
-        }
-    },
-    components: {
-        'radiusQuestion': RadiusQuestion,
-        'checkboxQuestion': CheckboxQuestion,
-        'completedDialog': CompletedDialog
+        this.notCompletedQuestions = [head].concat(tail);
+      }
     }
+  },
+  computed: {
+    isCompleted () {
+      return _.isEmpty(this.notCompletedQuestions) && !_.isEmpty(this.completedQuestions);
+    }
+  },
+  components: {
+    radiusQuestion: RadiusQuestion,
+    checkboxQuestion: CheckboxQuestion,
+    completedDialog: CompletedDialog
+  }
 };
-
 </script>

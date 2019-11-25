@@ -10,7 +10,7 @@ lint:
 
 
 test:
-	pytest tests
+	pytest tests --disable-warnings
 
 run:
 	flask db upgrade
