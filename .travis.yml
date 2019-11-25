@@ -13,7 +13,5 @@ install:
   - make install
 
 script:
-  - flask load-section-questions bars
-  - flask load-section-questions minimum
   - make lint
   - make test
