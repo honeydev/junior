@@ -8,6 +8,12 @@
       <div class="row card-header">
         <div class="mx-auto col-auto">
           <div class="row">ПРОФИЛЬ</div>
+          <div class="row">
+            <img src="{{ auth.user.avatar(128) }}">
+            <form method="LINK" action="http://codehelper.ru">
+              <button type="submit" class="btn btn-success">Сменить аватар</button>
+            </form>
+          </div>
           <div class="row mx-auto">{{ auth.user.login }}</div>
         </div>
       </div>

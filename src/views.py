@@ -18,13 +18,16 @@ class BaseView(MethodView):
 
 class IndexPage(BaseView):
 
-    def get(self):
+    def __init__(self, template_name):
+        super().__init__(template_name)
 
+    def get(self):
         self.context.update(
             dict(
                 chapters=Chapter.query.all(),
             ),
         )
+
         return render_template(self.template_name, **self.context)
 
 

@@ -5,6 +5,7 @@ import os
 from flask import Flask
 from flask_admin.contrib.sqla import ModelView
 from flask_dance.contrib.github import make_github_blueprint
+from flask_mail import Mail
 from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
@@ -14,7 +15,8 @@ from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
 from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
-from src.test_cases import TestAnswer, TestCase, TestQuestion
+from src.test_cases import (TestAnswer, TestCase, TestQuestion,
+                            TestQuestionUserRelation)
 from src.test_cases.views import bp as test_cases_bp
 from src.user import User
 from src.user.auth import auth_hook
@@ -38,6 +40,8 @@ def create_app(config=DevelopConfig):
     register_github_oauth(app)
     register_before_hooks(app)
     register_commands(app)
+    register_mail_settings(app)
+    register_secret(app)
     return app
 
 
@@ -57,6 +61,7 @@ def register_adminpanel(app):
     admin.add_view(QAWYSIWYG(TestAnswer, db.session))
     admin.add_view(QAWYSIWYG(Answer, db.session))
     admin.add_view(QAWYSIWYG(Question, db.session))
+    admin.add_view(QAWYSIWYG(TestQuestionUserRelation, db.session))
 
 
 def register_sessions(app):
@@ -101,3 +106,24 @@ def register_before_hooks(app):
 def register_commands(app):
     app.cli.add_command(load_chapters_questions)
     app.cli.add_command(create_admin_user)
+
+
+def register_mail_settings(app):
+    mail = Mail(app)
+    app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER",
+                                               'smtp.googlemail.com')
+    app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT",
+                                                 587))
+    app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS",
+                                                True)
+    app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME",
+                                                 'fogstream.khb@gmail.com')
+    app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD",
+                                                 '123456789')
+    app.config["ADMINS"] = os.environ.get("ADMINS", ['admin@gmail.com'])
+    return mail
+
+
+def register_secret(app):
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY",
+                                              'mysupersecretkey')

@@ -1,16 +1,55 @@
+sections:
+  -
+    name: 'Минимум'
+    order_number: 1
+    id: 1
+  -
+    name: 'Барс'
+    order_number: 2
+    id: 2
+
 chapters:
   -
     name: 'ООП'
     order_number: 1
+    section_id: 1
     id: 1
   -
     name: 'Python'
     order_number: 2
+    section_id: 1
     id: 2
   -
     name: 'Django'
     order_number: 3
+    section_id: 1
     id: 3
+  -
+    name: 'Базы данных'
+    order_number: 1
+    section_id: 2
+    id: 4
+  -
+    name: 'Python'
+    order_number: 2
+    section_id: 2
+    id: 5
+  -
+    name: 'Django'
+    order_number: 3
+    section_id: 2
+    id: 6
+  -
+    name: 'Git'
+    order_number: 4
+    section_id: 2
+    id: 7
+  -
+    name: 'ООП'
+    order_number: 5
+    section_id: 2
+    id: 8
+
 questions:
   -
     text: 'Что такое полиморфизм и как его можно реализовать в Python?'

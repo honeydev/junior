@@ -7,15 +7,15 @@ import TestCase from './components/testCase';
 import TestCaseProgress from './components/testCaseProgress';
 
 window.onload = () => {
-    new Vue().$mount('#app');
+  new Vue().$mount('#app');
 
-    if (document.getElementById('testCase')) {
-        new Vue({
-            render: h => h(TestCase)
-        }).$mount('#testCase');
+  if (document.getElementById('testCase')) {
+    new Vue({
+      render: h => h(TestCase)
+    }).$mount('#testCase');
 
-        new Vue({
-            render: h => h(TestCaseProgress)
-        }).$mount('#testCaseProgress');
-    }
+    new Vue({
+      render: h => h(TestCaseProgress)
+    }).$mount('#testCaseProgress');
+  }
 };

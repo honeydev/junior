@@ -1,4 +1,4 @@
-from wtforms import Form, PasswordField, StringField, validators
+from wtforms import Form, PasswordField, SelectField, StringField, validators
 
 
 class LoginForm(Form):
@@ -111,4 +111,11 @@ class ProfileForm(Form):
             max=30,
             message='Длина поля от %(min)d до %(max)d символов.',
         ),
+    ])
+
+
+class ChangeAvatarForm(Form):
+    chosen_avatar = SelectField('Ваш аватар', choices=[
+        ('gravatar', 'обьчный'),
+        ('face', 'правдоподобный'),
     ])
