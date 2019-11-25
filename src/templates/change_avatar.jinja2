@@ -8,8 +8,10 @@
 
       {% include 'components/form_error.jinja2' %}
 
+      <div class="mx-auto col-auto">
+        <div class="row">СМЕНИТЬ АВАТАР</div>
+      </div>
       <form class="form-horizontal" action="{{ url_for('auth.change_avatar') }}" method="post">
-      <div class="row">СМЕНИТЬ АВАТАР</div>
         <div class="form-group">
           {{ form.csrf_token }}
           {% for field in form %}
