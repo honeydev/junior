@@ -52,7 +52,7 @@ class IndexPage(BaseView):
             auth = self.context['auth']
             user_email = auth.user.email
             user_image = auth.user.image
-            if not user_image:
+            if user_image is None:
                 avatar_str = user_email
                 User.query.filter_by(id=auth.user.id).update(
                     {'image': user_email},
