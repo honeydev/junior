@@ -155,6 +155,9 @@ class ChangeAvatar(BaseView):
         self.form = ChangeAvatarForm
 
     def get(self):
+        if request.form.get('default_avatar'):
+            pass
+
         self.context['form'] = self.form()
         return render_template(self.template_name, **self.context)
 
