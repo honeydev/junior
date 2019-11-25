@@ -64,6 +64,7 @@ def create_admin_user(login, password, email):
         email=email,
         password=password.decode(),
         is_superuser=True,
+        is_aproved=True,
     )
     User.save(user)
 
