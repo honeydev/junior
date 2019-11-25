@@ -22,6 +22,7 @@ class User(db.Model):  # noqa: WPS230
             middlename: str = '',
             lastname: str = '',
             image: bytes = '',
+            github_id: str = None,
             is_oauth: bool = False,
             is_superuser: bool = False,
             is_aproved: bool = False,
@@ -33,6 +34,7 @@ class User(db.Model):  # noqa: WPS230
         self.middlename = middlename
         self.lastname = lastname
         self.image = image
+        self.github_id = github_id
         self.is_oauth = is_oauth
         self.is_superuser = is_superuser
         self.is_aproved = is_aproved
@@ -45,9 +47,10 @@ class User(db.Model):  # noqa: WPS230
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
     image = db.Column(db.String(), nullable=True)
+    github_id = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False, nullable=False)
-    is_aproved = db.Column(db.Boolean, default=False, nullable=False)
+    is_aproved = db.Column(db.Boolean, default=False, nullable=True)
 
     db.relationship(  # noqa: WPS604
         'User', backref='users', lazy='dynamic',
@@ -80,6 +83,8 @@ class User(db.Model):  # noqa: WPS230
         return generate_password_hash(password=password)
 
     def check_password(self, password):
+        if not self.password:
+            return False
         return check_password_hash(self.password, password)
 
     def get_token_for_mail_aproved(self, expires_in=600):

@@ -5,9 +5,12 @@ from werkzeug.datastructures import MultiDict
 
 from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
+from src.user.decorators import login_required
 from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
                             RegistrationForm)
 from src.user.models import User
+from src.user.views_oauth import (DeLinkOAuth, LinkOAuth, LoginOAuth,
+                                  ProfileOAuth)
 from src.views import BaseView
 
 bp = Blueprint('auth', __name__, template_folder='templates')
@@ -41,20 +44,22 @@ class Registration(MethodView):
             image=image,
         )
         if User.query.filter_by(login=login).first():
+            flash('Логин уже занят.', 'error')
             return render_template(
                 self.template,
-                **{'form': form, 'info': 'Логин уже занят'},
+                **{'form': form},
             )
         if User.query.filter_by(email=email).first():
+            flash('Такой e-mail уже привязан к другому аккаунту.', 'error')
             return render_template(
                 self.template,
-                **{'form': form, 'info': 'Email уже занят'},
+                **{'form': form},
             )
         User.save(user)
         if send_mail_for_aprove(user):
-            flash('Вам на почту отправлена ссылка для подтверждения регистрации')
+            flash('Вам на почту отправлена ссылка для подтверждения регистрации', 'info')
         else:
-            flash('Сбой отправки письма')
+            flash('Сбой отправки письма', 'error')
         return redirect(url_for('auth.login'))
 
     def get(self):
@@ -84,10 +89,12 @@ class Login(MethodView):
 
         if user and User.check_password(user, password):
             if not user.is_aproved:
-                flash('Завершите регистрацию, пройдя по ссылке, отправленной на почту')
+                flash('Завершите регистрацию, пройдя по ссылке, отправленной на почту', 'error')
                 return redirect(url_for('auth.login'))
             session['auth'] = SessionAuth(True, user)
-        return redirect('/')
+            return redirect(url_for('index.index'))
+        flash('Неверный логин или пароль!', 'error')
+        return render_template(self.template, **{'form': form})
 
 
 class Profile(BaseView):
@@ -97,6 +104,8 @@ class Profile(BaseView):
         self.form = ProfileForm
 
     def get(self):
+        if self.user.is_oauth:
+            return redirect(url_for('auth.profile_oauth'))
         user_data = MultiDict([
             ('email', self.user.email),
             ('firstname', self.user.firstname),
@@ -155,8 +164,37 @@ class ChangeAvatar(BaseView):
 
 bp.add_url_rule(
     '/logout/',
-    view_func=Logout.as_view(
+    view_func=login_required(Logout.as_view(
         name='logout',
+    )),
+)
+
+bp.add_url_rule(
+    '/link_oauth/',
+    view_func=login_required(LinkOAuth.as_view(
+        name='link_oauth',
+    )),
+)
+
+bp.add_url_rule(
+    '/delink_oauth/',
+    view_func=login_required(DeLinkOAuth.as_view(
+        name='delink_oauth',
+    )),
+)
+
+bp.add_url_rule(
+    '/profile_oauth/',
+    view_func=login_required(ProfileOAuth.as_view(
+        name='profile_oauth',
+        template_name='profile_oauth_form.jinja2',
+    )),
+)
+
+bp.add_url_rule(
+    '/login_oauth/',
+    view_func=LoginOAuth.as_view(
+        name='login_oauth',
     ),
 )
 
@@ -167,6 +205,7 @@ bp.add_url_rule(
         template_name='register_form.jinja2',
     ),
 )
+
 bp.add_url_rule(
     '/login/',
     view_func=Login.as_view(
@@ -174,12 +213,13 @@ bp.add_url_rule(
         template_name='login.jinja2',
     ),
 )
+
 bp.add_url_rule(
     '/profile/',
-    view_func=Profile.as_view(
+    view_func=login_required(Profile.as_view(
         name='profile',
         template_name='profile_form.jinja2',
-    ),
+    )),
 )
 
 bp.add_url_rule(
