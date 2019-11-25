@@ -92,10 +92,6 @@ class Profile(BaseView):
             ('middlename', self.user.middlename),
             ('lastname', self.user.lastname),
         ])
-        if not self.user.image:
-            avatar_str = self.user.email
-        self.context['avatar'] = BaseView.avatar(self, 48, avatar_str)
-        self.context['avatar_full'] = BaseView.avatar(self, 128, avatar_str)
         self.context['form'] = self.form(user_data)
         return render_template(self.template_name, **self.context)
 
