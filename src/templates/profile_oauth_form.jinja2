@@ -8,13 +8,15 @@
       <div class="row card-header">
         <div class="mx-auto col-auto">
           <div class="text-center">ПРОФИЛЬ</div>
-          <div class="text-center">{{ auth.user.login }}</div>
         </div>
       </div>
-
+      <div class="alert alert-info col my-1">
+        При пустом пароле вход возможен только через OAuth.
+      </div>
+        
       {% include 'components/form_error.jinja2' %}
 
-      <form class="form-horizontal" action="{{ url_for('auth.profile') }}" method="post">
+      <form class="form-horizontal" action="{{ url_for('auth.profile_oauth') }}" method="post">
         <div class="form-group">
           <div class="row">
             <div class="mx-auto col-auto">
@@ -24,15 +26,23 @@
           </div>
           {{ form.csrf_token }}
           {% for field in form %}
-            <div class="form-group">
-              {{ field.label }}
-              {{ field(class_='form-control') }}
+            <div class="row">
+              <div class="mx-auto col-11 mt-3">
+                {% if field.type == 'BooleanField' %}
+                <div class="form-check">
+                  {{ field(class_='form-check-input', placeholder = field.label.text) }}
+                  {{ field.label(class_='form-check-label', placeholder = field.label.text) }}
+                </div>
+                {% else %}
+                  {{ field(class_='form-control', placeholder = field.label.text) }}
+                {% endif %}
+              </div>
             </div>
           {% endfor %}
 
           <div class="row">
             <div class="mx-auto col-auto my-3">
-              <a href="{{ url_for('auth.link_oauth') }}" class="btn btn-outline-dark">Привязать к GitHub</a>
+              <a href="{{ url_for('auth.delink_oauth') }}" class="btn btn-outline-dark">Отвязать от GitHub</a>
               <button type="submit" class="btn btn-success">Сохранить</button>
             </div>
           </div>

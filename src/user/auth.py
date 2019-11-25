@@ -12,7 +12,7 @@ def auth_hook() -> None:
 
     current_session: SessionAuth or bool = session.get('auth', False)
 
-    if github.authorized:
+    if github.authorized and not session.get('oauth_link', False):
         session['auth'] = GithubAuth.create(github.get('user').json())
     else:
         current_session or session.update(dict(auth=SessionAuth(False)))  # noqa WPS428

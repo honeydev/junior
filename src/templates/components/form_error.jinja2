@@ -1,6 +1,6 @@
-      {% if form.errors or errors %}
+      {% if form.errors or get_flashed_messages(category_filter=["error"]) %}
         <div class="alert alert-danger col my-1">
-            {% for error in errors %}
+            {% for error in get_flashed_messages(category_filter=["error"]) %}
               <p class="m-0">{{ error }}</p>
             {% endfor %}
             {% for field in form.errors %}
@@ -10,8 +10,12 @@
             {% endfor %}
         </div>
       {% endif %}
-      {% if info %}
-        <div class="alert alert-info">
-          {{ info }}
-        </div>
-      {% endif %}
+      {% with messages = get_flashed_messages(category_filter=["info"]) %}
+          {% if messages %}
+            <div class="alert alert-info col my-1">
+            {% for message in messages %}
+              <p class="m-0">{{ message }}</p>
+            {% endfor %}
+            </div>
+          {% endif %}
+      {% endwith %}
