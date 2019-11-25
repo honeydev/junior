@@ -125,4 +125,5 @@ def register_mail_settings(app):
 
 
 def register_secret(app):
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY",
+                                              'mysupersecretkey')
