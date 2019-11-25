@@ -18,7 +18,7 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Вы вошли как {{ auth.user.login }}
-          <img src="{{ avatar }}">
+          <img src="{{ auth.user.avatar(48) }}">
           </a>
           <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
             <a class="dropdown-item text-light" href="{{ url_for('auth.profile') }}">Профиль</a>
