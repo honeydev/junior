@@ -1,4 +1,5 @@
-from flask import flash, redirect, render_template, request, session, url_for
+from flask import (current_app, flash, redirect, render_template, request,
+                   session, url_for)
 from flask.views import MethodView
 from flask_dance.contrib.github import github
 from werkzeug.datastructures import MultiDict
@@ -20,7 +21,12 @@ class DeLinkOAuth(MethodView):
                 'is_oauth': False,
                 'is_aproved': True,
             })
+            try:
+                del current_app.blueprints['github'].token # noqa WPS420
+            except KeyError:
+                pass # noqa WPS420 (при авторизации через сайт, токена гитхаба нет)
             return redirect(url_for('auth.profile'))
+
         flash('Для отвязки аккаунта у вас должен быть установлен пароль.', 'error')
         return redirect(url_for('auth.profile_oauth'))
 
