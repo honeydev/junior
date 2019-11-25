@@ -1,3 +1,4 @@
+from hashlib import md5
 from time import time
 
 import jwt
@@ -58,6 +59,21 @@ class User(db.Model):  # noqa: WPS230
 
     def __str__(self):
         return '{0} <id {1}>'.format(self.login, self.id)
+
+    def avatar(self, size):
+
+        if self.image is None:
+            image_str = self.email
+            User.query.filter_by(id=self.context['auth'].user.id).update({'image': self.email})
+            db.session.commit()
+        else:
+            image_str = self.image
+        digest = md5(image_str.encode('utf-8')).hexdigest()
+
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+
+    def __repr__(self):
+        return '<id {0}>'.format(self.id)
 
     @classmethod
     def hash_password(cls, password: str):
