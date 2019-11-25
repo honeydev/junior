@@ -1,4 +1,3 @@
-from wtforms import Form, PasswordField, SelectField, StringField, validators, BooleanField
 from wtforms import (BooleanField, Form, PasswordField, SelectField,
                      StringField, validators)
 
