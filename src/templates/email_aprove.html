@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение регистрации на Junior</title>
+</head>
+<body>
+    <p>Уважаемый {{ user.lastname }} {{ user.firstname }},</p>
+    <p>
+        Чтобы подтвердить регистрацию на Junior
+        <a href="{{ url_for('auth.email_aprove', token=token, _external=True) }}">
+            кликните по ссылке
+        </a>.
+    </p>
+<p>Кроме того, вы можете вставить следующую ссылку в адресную строку браузера:</p>
+<p>{{ url_for('auth.email_aprove', token=token, _external=True) }}</p>
+<p>Если вы не регистрировались на Junior, просто проигнорируйте это сообщение.</p>
+<p>С Уважением, <br> Разработчики Junior</p>
+<p></p>
+
+</body>
+</html>

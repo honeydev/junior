@@ -1,8 +1,9 @@
 from flask import Blueprint, jsonify, redirect, render_template, url_for
 
 from src.qa.models import Question
-from src.test_cases import TestAnswer, TestCase
-from src.test_cases.serializers import TestCaseAnswerSchema, TestCaseSchema
+from src.test_cases import TestCase, TestQuestionUserRelation
+from src.test_cases.services import TestCaseService
+from src.user.decorators import login_required_user
 from src.views import BaseView
 
 bp = Blueprint('test_cases', __name__, template_folder='templates')
@@ -19,29 +20,30 @@ class TestCaseIndexView(BaseView):
 
 class TestCaseJsonView(BaseView):
 
-    def get(self, question_id: str) -> tuple:
-        schema: TestCaseSchema = TestCaseSchema()
+    @login_required_user
+    def get(self, user, question_id: str) -> tuple:
 
-        return jsonify(
-            schema.dump(
-                TestCase.query.filter(TestCase.question_id == int(question_id)).first(),
-            ),
-        ), 200
+        service = TestCaseService(
+            user,
+            TestCase.query.filter(TestCase.question_id == int(question_id)).first(),
+        )
+
+        return jsonify(service.load_user_case()), 200
 
 
-class TestAnswerView(BaseView):
+class FinalizeTestQuestion(BaseView):
 
-    def get(self, answer_id: str) -> tuple:
-        schema: TestCaseAnswerSchema = TestCaseAnswerSchema()
+    @login_required_user
+    def put(self, user, test_question_id: str):
+        relation = TestQuestionUserRelation.query.filter(
+            TestQuestionUserRelation.test_question_id == test_question_id,
+            TestQuestionUserRelation.user_id == user.id,
+        ).first()
 
-        test_answer: TestAnswer = TestAnswer.query.get(int(answer_id))
+        relation.completed = True
+        relation.save()
 
-        if test_answer:
-            return jsonify(
-                schema.dump(test_answer),
-            ), 200
-
-        return jsonify({'error': 'answer not found'}), 404
+        return jsonify({'success': True}), 200
 
 
 bp.add_url_rule(
@@ -61,9 +63,9 @@ bp.add_url_rule(
 )
 
 bp.add_url_rule(
-    '/api/testanswer/<answer_id>',
-    view_func=TestAnswerView.as_view(
-        name='test_answer',
+    '/api/testcase/finalize-question/<test_question_id>',
+    view_func=FinalizeTestQuestion.as_view(
+        name='finalize_question',
         template_name='',
     ),
 )

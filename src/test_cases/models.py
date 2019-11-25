@@ -11,6 +11,9 @@ class TestCase(db.Model):
     question = db.relationship('Question', back_populates='test_case')
     test_questions = db.relationship('TestQuestion', back_populates='test_case')
 
+    def __str__(self):
+        return f'Тесты для {self.question}'
+
 
 class TestQuestion(db.Model):
     """Question for test case."""
@@ -28,8 +31,13 @@ class TestQuestion(db.Model):
     )
     answers = db.relationship('TestAnswer', back_populates='question')
 
+    def __str__(self):
+        slise_size = 50
+        return f'{self.text[:slise_size]}, тест кейс: {self.test_case}'
+
 
 class TestQuestionUserRelation(db.Model):
+    """Relation with User and TestQuestion."""
 
     __tablename__ = 'test_questions_users_relations'
 
@@ -48,6 +56,9 @@ class TestQuestionUserRelation(db.Model):
         'User',
         back_populates='question_relation',
     )
+
+    def __str__(self):
+        return f'Связь пользователя {self.user} и вопроса {self.test_question}'
 
 
 class TestAnswer(db.Model):
