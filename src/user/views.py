@@ -138,6 +138,20 @@ class EmailAprove(MethodView):
         return redirect(url_for('auth.login'))
 
 
+class ChangeAvatar(BaseView):
+    def __init__(self, template_name):
+        super().__init__(template_name)
+        self.user = session['auth'].user
+        self.form = ChangeAvatarForm
+
+    def get(self):
+        self.context['form'] = self.form()
+        return render_template(self.template_name, **self.context)
+
+    def post(self):
+        return redirect(url_for('auth.change_avatar'))
+
+
 bp.add_url_rule(
     '/logout/',
     view_func=Logout.as_view(
