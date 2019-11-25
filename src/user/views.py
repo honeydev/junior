@@ -124,7 +124,7 @@ class Logout(MethodView):
     def get(self):
         auth = session.get('auth')
         auth.logout()
-        return redirect(url_for('index.index'))
+        return redirect(url_for('index.home'))
 
 
 class EmailAprove(MethodView):
