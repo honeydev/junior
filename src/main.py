@@ -2,11 +2,12 @@
 
 import os
 
-from flask import Flask
+from flask import Flask, url_for
 from flask_admin.contrib.sqla import ModelView
 from flask_dance.contrib.github import make_github_blueprint
 from flask_mail import Mail
 from flask_sessionstore import SqlAlchemySessionInterface
+from flask_admin.menu import MenuLink
 
 from src import user
 from src.admin_forms import QAWYSIWYG
@@ -62,6 +63,7 @@ def register_adminpanel(app):
     admin.add_view(QAWYSIWYG(Answer, db.session))
     admin.add_view(QAWYSIWYG(Question, db.session))
     admin.add_view(QAWYSIWYG(TestQuestionUserRelation, db.session))
+    admin.add_link(MenuLink(name='Back Home', url='/'))
 
 
 def register_sessions(app):
