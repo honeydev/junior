@@ -79,7 +79,7 @@ class User(db.Model):  # noqa: WPS230
             digest = md5(image_str.encode('utf-8')).hexdigest()
             image_str = f'{Config.GRAVATAR_API}{digest}?d=identicon&s={size}'
         else:
-            image_str = f'https://api.adorable.io/avatars/{size}/{self.image}.png'
+            image_str = f'{Config.FACE_API}{size}/{self.image}.png'
 
         return image_str
 
