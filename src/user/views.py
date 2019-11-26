@@ -159,6 +159,7 @@ class ChangeAvatar(BaseView):
         if request.form.get('default_avatar'):
             User.query.filter_by(login=session['auth'].user.login).update({
                 'image': self.user.email,
+                'gravatar': True,
             })
             db.session.commit()
 
@@ -166,11 +167,15 @@ class ChangeAvatar(BaseView):
         return render_template(self.template_name, **self.context)
 
     def post(self):
+        is_gravatar = True
+        if request.form.get('chosen_avatar') == 'face':
+            is_gravatar = False
         User.query.filter_by(login=session['auth'].user.login).update({
             'image': request.form.get('avatar_img_str'),
-            'gravatar': False,
+            'gravatar': is_gravatar,
         })
         db.session.commit()
+
         return redirect(url_for('auth.change_avatar'))
 
 
