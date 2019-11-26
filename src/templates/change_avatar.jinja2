@@ -3,11 +3,12 @@
 {% endblock %}
 {% block content %}
   <script>
+
       function new_image() {
-          const size = 128
+          const size = 128;
           let ava = document.getElementById('img_avatar');
           let random_str = Math.random().toString(36).slice(-8);
-          var new_url;
+          let new_url;
           document.getElementById('avatar_img_str').value = random_str;
           if (document.getElementById('chosen_avatar').value == 'face') {
               new_url = '{{faceApi}}' + size + '/' + random_str + '.png';
