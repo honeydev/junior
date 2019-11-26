@@ -18,6 +18,8 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    FACE_API = 'https://api.adorable.io/avatars/'
+    GRAVATAR_API = 'https://www.gravatar.com/avatar/'
 
 
 class ProductionConfig(Config):
