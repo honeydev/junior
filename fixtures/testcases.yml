@@ -1,0 +1,18 @@
+testcase:
+  -
+    id: 0
+    question_id: 1
+
+testqestion:
+  -
+    id: 0
+    test_case_id: 0
+    text: 'Что такое полиморфизм и как его можно реализовать в Python?'
+    question_type: 0
+
+testanswers:
+  -
+    id: 0
+    text: 'Возможность обработки разных типов данных, т. е. принадлежащих к разным классам, с помощью "одно и той же" функции, или метода'
+    question_id: 0
+    right: True

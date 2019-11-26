@@ -3,6 +3,7 @@ from flask.cli import with_appcontext
 
 from src.extensions import db
 from src.qa.models import Answer, Chapter, Question, Section
+from src.test_cases.models import TestAnswer, TestCase, TestQuestion
 from src.user import User
 from src.uttils import load_fixture
 
@@ -32,6 +33,28 @@ def load_chapters_questions():
     db.session.commit()
 
     print('Sections, chapters and questions successful load in database.')  # noqa TOO1
+
+
+@click.command()
+@with_appcontext
+def load_testcases():
+    fixtures: dict = load_fixture('testcases.yml')
+    db.session.add_all(
+        TestCase(**chapter_fixture)
+        for chapter_fixture in fixtures['testcase']
+    )
+    db.session.add_all(
+        TestQuestion(**chapter_fixture)
+        for chapter_fixture in fixtures['testqestion']
+    )
+    db.session.add_all(
+        TestAnswer(**chapter_fixture)
+        for chapter_fixture in fixtures['testanswers']
+    )
+
+    db.session.commit()
+
+    print('Testcases successful load in database.')  # noqa TOO1
 
 
 @click.option('-l', '--login')

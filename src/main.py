@@ -10,7 +10,7 @@ from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
 from src.admin_forms import QAWYSIWYG
-from src.commands import create_admin_user, load_chapters_questions
+from src.commands import create_admin_user, load_chapters_questions, load_testcases
 from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
 from src.qa.views import bp as qa_bp
@@ -105,6 +105,7 @@ def register_before_hooks(app):
 
 def register_commands(app):
     app.cli.add_command(load_chapters_questions)
+    app.cli.add_command(load_testcases)
     app.cli.add_command(create_admin_user)
 
 

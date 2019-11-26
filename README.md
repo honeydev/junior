@@ -12,3 +12,7 @@
 ## Администрирование:
 `flask create-admin-user --login=admin --password=admin1234 --email=admin@admin.ru
 ` <br>
+
+## Загрузка фикстур
+`flask load-chapters-questions` - загрузка фикстур вопросов <br>
+`flask load-testcases` - загрузка фикстур тестов вопросов<br>
