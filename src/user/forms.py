@@ -161,3 +161,4 @@ class ChangeAvatarForm(Form):
         ('face', 'правдоподобный'),
     ])
     default_avatar = BooleanField('Аватар по умолчанию')
+    avatar_img_str = StringField('')
