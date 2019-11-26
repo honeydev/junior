@@ -2,59 +2,58 @@
 {% block header %}
 {% endblock %}
 {% block content %}
+  <script>
 
-    <script>
-        var new_img_str;
+      function new_image() {
+          let ava = document.getElementById('img_avatar');
+          let seed = Math.random().toString(36).slice(-8);
+          let new_url = 'https://api.adorable.io/avatars/' + 128 + '/' + seed + '.png';
+          document.getElementById('avatar_img_str').value = seed;
+          ava.setAttribute('src', new_url);
+      }
+  </script>
 
-        function new_image() {
-            let ava = document.getElementById('img_avatar');
-            let seed = Math.random().toString(36).slice(-8);
-            let new_url = 'https://api.adorable.io/avatars/' + 128 + '/' + seed + '.png';
-            new_img_str = new_url;
-            ava.setAttribute('src', new_url);
-            return new_img_str
-        }
-    </script>
+  <div class="container p-4">
+    <div class="row justify-content-center">
+      <div class="card col-lg-6 col-12">
 
-<div class="container p-4">
-  <div class="row justify-content-center">
-    <div class="card col-lg-6 col-12">
+        {% include 'components/form_error.jinja2' %}
 
-      {% include 'components/form_error.jinja2' %}
+        <div class="mx-auto col-auto">
+          <div class="row">СМЕНИТЬ АВАТАР</div>
+        </div>
+        <div class="image">
+          <img src='{{ auth.user.avatar(128) }}' id='img_avatar' width='128'>
+        </div>
 
-      <div class="mx-auto col-auto">
-        <div class="row">СМЕНИТЬ АВАТАР</div>
-      </div>
-      <form class="form-horizontal" action="{{ url_for('auth.change_avatar') }}" method="post">
-        <div class="form-group">
-          {{ form.csrf_token }}
-          {% for field in form %}
-            <div class="form-group">
-              {{ field.label }}
-              {{ field(class_='form-control') }}
-            </div>
-          {% endfor %}
-
-
-
-          <div class="row">
-            <div class="mx-auto col-auto my-3">
-              <button type="submit" class="btn btn-success">Сохранить</button>
-            </div>
+        <div class="row">
+          <div class="mx-auto col-auto my-3">
+            <button type="submit" class="btn btn-success" onclick="new_image();">Random</button>
           </div>
         </div>
-      </form>
 
-      <div class="image">
-		<img src='' id='img_avatar' width='128'>
-	  </div>
+        <form class="form-horizontal" action="{{ url_for('auth.change_avatar') }}" method="post" name="form">
+          <div class="form-group">
+            {{ form.csrf_token }}
+            {% for field in form %}
+              <div class="form-group">
+                {{ field.label }}
+                {{ field(class_='form-control') }}
+              </div>
+            {% endfor %}
 
-          <div class="row">
-            <div class="mx-auto col-auto my-3">
-              <button type="submit" class="btn btn-success" onclick="new_image();">Random</button>
+
+
+            <div class="row">
+              <div class="mx-auto col-auto my-3">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+              </div>
             </div>
           </div>
+        </form>
+
+
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}
