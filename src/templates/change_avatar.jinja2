@@ -2,24 +2,6 @@
 {% block header %}
 {% endblock %}
 {% block content %}
-  <script>
-
-      function new_image() {
-          const size = 128;
-          let ava = document.getElementById('img_avatar');
-          let random_str = Math.random().toString(36).slice(-8);
-          let new_url;
-          document.getElementById('avatar_img_str').value = random_str;
-          if (document.getElementById('chosen_avatar').value == 'face') {
-              new_url = `{{ faceApi }}${size}/${random_str}.png`;
-          }
-          if (document.getElementById('chosen_avatar').value == 'gravatar') {
-              new_url = `{{ gravatarApi }}${random_str}?d=identicon&s=${size}`;
-          }
-          ava.setAttribute('src', new_url);
-      }
-
-  </script>
 
   <div class="container p-4">
     <div class="row justify-content-center">
@@ -37,7 +19,7 @@
         </div>
         <div class="row">
           <div class="mx-auto col-auto my-3">
-            <button type="submit" class="btn btn-success" onclick="new_image();">Random</button>
+            <button type="submit" class="btn btn-success" id="random_btn">Random</button>
           </div>
         </div>
 
@@ -61,4 +43,26 @@
       </div>
     </div>
   </div>
+
+  <script>
+
+      const new_image = () => {
+          const size = 128;
+          let ava = document.getElementById('img_avatar');
+          let random_str = Math.random().toString(36).slice(-8);
+          let new_url;
+          document.getElementById('avatar_img_str').value = random_str;
+          if (document.getElementById('chosen_avatar').value == 'face') {
+              new_url = `{{ faceApi }}${size}/${random_str}.png`;
+          }
+          if (document.getElementById('chosen_avatar').value == 'gravatar') {
+              new_url = `{{ gravatarApi }}${random_str}?d=identicon&s=${size}`;
+          }
+          ava.setAttribute('src', new_url);
+      }
+      const el = document.getElementById('random_btn');
+      el.addEventListener('click', new_image);
+
+  </script>
+
 {% endblock %}
