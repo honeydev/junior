@@ -11,10 +11,10 @@
           let new_url;
           document.getElementById('avatar_img_str').value = random_str;
           if (document.getElementById('chosen_avatar').value == 'face') {
-              new_url = '{{faceApi}}' + size + '/' + random_str + '.png';
+              new_url = `{{ faceApi }}${size}/${random_str}.png`;
           }
           if (document.getElementById('chosen_avatar').value == 'gravatar') {
-              new_url = '{{ gravatarApi }}' + random_str + '?d=identicon&s=' + size;
+              new_url = `{{ gravatarApi }}${random_str}?d=identicon&s=${size}`;
           }
           ava.setAttribute('src', new_url);
       }
