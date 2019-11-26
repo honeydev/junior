@@ -4,15 +4,16 @@
 {% block content %}
   <script>
       function new_image() {
+          const size = 128
           let ava = document.getElementById('img_avatar');
-          let seed = Math.random().toString(36).slice(-8);
+          let random_str = Math.random().toString(36).slice(-8);
           var new_url;
-          document.getElementById('avatar_img_str').value = seed;
+          document.getElementById('avatar_img_str').value = random_str;
           if (document.getElementById('chosen_avatar').value == 'face') {
-              new_url = 'https://api.adorable.io/avatars/' + 128 + '/' + seed + '.png';
+              new_url = '{{faceApi}}' + size + '/' + random_str + '.png';
           }
           if (document.getElementById('chosen_avatar').value == 'gravatar') {
-              new_url = 'https://www.gravatar.com/avatar/' + seed + '?d=identicon&s=' + 128;
+              new_url = '{{ gravatarApi }}' + random_str + '?d=identicon&s=' + size;
           }
           ava.setAttribute('src', new_url);
       }
