@@ -3,7 +3,7 @@ from time import time
 
 import jwt
 from flask import current_app as junior_app
-from flask import flash, redirect, url_for
+from flask import flash, redirect, session, url_for
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from src.extensions import db
@@ -70,14 +70,15 @@ class User(db.Model):  # noqa: WPS230
 
         if self.image is None:
             image_str = self.email
-            User.query.filter_by(id=self.context['auth'].user.id).update({'image': self.email})
+            User.query.filter_by(id=session['auth'].user.id).update({'image': self.email})
             db.session.commit()
         else:
             image_str = self.image
-        digest = md5(image_str.encode('utf-8')).hexdigest()
-        image_str = f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
-        if not self.gravatar:
-            image_str = f'https://api.adorable.io/avatars/{size}/{digest}.png'
+        if self.gravatar:
+            digest = md5(image_str.encode('utf-8')).hexdigest()
+            image_str = f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+        else:
+            image_str = f'https://api.adorable.io/avatars/{size}/{self.image}.png'
 
         return image_str
 
