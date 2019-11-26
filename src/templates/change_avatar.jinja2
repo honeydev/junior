@@ -3,7 +3,6 @@
 {% endblock %}
 {% block content %}
   <script>
-
       function new_image() {
           let ava = document.getElementById('img_avatar');
           let seed = Math.random().toString(36).slice(-8);
@@ -19,13 +18,14 @@
 
         {% include 'components/form_error.jinja2' %}
 
-        <div class="mx-auto col-auto">
-          <div class="row">СМЕНИТЬ АВАТАР</div>
+        <div class="row mt-3">
+          <div class="mx-auto col-auto">СМЕНИТЬ АВАТАР</div>
         </div>
-        <div class="image">
-          <img src='{{ auth.user.avatar(128) }}' id='img_avatar' width='128'>
+        <div class="row mt-3">
+          <div class="mx-auto col-auto">
+            <img src='{{ auth.user.avatar(128) }}' id='img_avatar' width='128'>
+          </div>
         </div>
-
         <div class="row">
           <div class="mx-auto col-auto my-3">
             <button type="submit" class="btn btn-success" onclick="new_image();">Random</button>
@@ -41,9 +41,6 @@
                 {{ field(class_='form-control') }}
               </div>
             {% endfor %}
-
-
-
             <div class="row">
               <div class="mx-auto col-auto my-3">
                 <button type="submit" class="btn btn-success">Сохранить</button>
@@ -51,7 +48,6 @@
             </div>
           </div>
         </form>
-
 
       </div>
     </div>
