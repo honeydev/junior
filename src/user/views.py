@@ -3,6 +3,7 @@ from flask import (Blueprint, flash, redirect, render_template, request,
 from flask.views import MethodView
 from werkzeug.datastructures import MultiDict
 
+from src.extensions import db
 from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
 from src.user.decorators import login_required
@@ -159,15 +160,17 @@ class ChangeAvatar(BaseView):
             User.query.filter_by(login=session['auth'].user.login).update({
                 'image': self.user.email,
             })
-        if request.form.get('new_img_str'):
-            User.query.filter_by(login=session['auth'].user.login).update({
-                'image': request.form.get('new_img_str'),
-            })
+            db.session.commit()
 
         self.context['form'] = self.form()
         return render_template(self.template_name, **self.context)
 
     def post(self):
+        User.query.filter_by(login=session['auth'].user.login).update({
+            'image': request.form.get('avatar_img_str'),
+            'gravatar': False,
+        })
+        db.session.commit()
         return redirect(url_for('auth.change_avatar'))
 
 
