@@ -69,7 +69,7 @@ class LoginOAuth(MethodView):
                 return redirect(url_for('auth.profile_oauth'))
             if not user.is_oauth:
                 return redirect(url_for('auth.profile_oauth'))
-        return redirect(url_for('index.index', section_id=1))
+        return redirect(url_for('index.home'))
 
 
 class ProfileOAuth(BaseView):
@@ -138,4 +138,4 @@ class ProfileOAuth(BaseView):
             self.context['form'] = self.form(user_data)
             return render_template(self.template_name, **self.context)
 
-        return redirect(url_for('index.index', section_id=1))
+        return redirect(url_for('index.home'))

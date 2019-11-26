@@ -12,6 +12,7 @@ class BaseView(MethodView):
         self.context = {
             'auth': session.get('auth'),
             'app_name': current_app.config['APP_NAME'],
+            'sections': Section.query.all(),
         }
         self.template_name: str = template_name
 

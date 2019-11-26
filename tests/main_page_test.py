@@ -13,7 +13,7 @@ class TestIndexView(BaseTest):
         load_question_structure(self)
 
     def test(self):
-        response = self.client.get(url_for('index.index', section_id=1))
+        response = self.client.get(url_for('index.home'))
         self.assert200(response)
 
 
