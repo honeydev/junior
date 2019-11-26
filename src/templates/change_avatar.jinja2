@@ -6,8 +6,14 @@
       function new_image() {
           let ava = document.getElementById('img_avatar');
           let seed = Math.random().toString(36).slice(-8);
-          let new_url = 'https://api.adorable.io/avatars/' + 128 + '/' + seed + '.png';
+          var new_url;
           document.getElementById('avatar_img_str').value = seed;
+          if (document.getElementById('chosen_avatar').value == 'face') {
+              new_url = 'https://api.adorable.io/avatars/' + 128 + '/' + seed + '.png';
+          }
+          if (document.getElementById('chosen_avatar').value == 'gravatar') {
+              new_url = 'https://www.gravatar.com/avatar/' + seed + '?d=identicon&s=' + 128;
+          }
           ava.setAttribute('src', new_url);
       }
   </script>
