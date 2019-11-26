@@ -2,12 +2,12 @@ from hashlib import md5
 from time import time
 
 import jwt
-from src.settings import Config
 from flask import current_app as junior_app
 from flask import flash, redirect, session, url_for
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from src.extensions import db
+from src.settings import Config
 
 
 class User(db.Model):  # noqa: WPS230
@@ -79,7 +79,7 @@ class User(db.Model):  # noqa: WPS230
             digest = md5(image_str.encode('utf-8')).hexdigest()
             image_str = f'{Config.GRAVATAR_API}{digest}?d=identicon&s={size}'
         else:
-            image_str = f'{Config.FACE_API}{size}/{self.image}.png'
+            image_str = f'https://api.adorable.io/avatars/{size}/{self.image}.png'
 
         return image_str
 
