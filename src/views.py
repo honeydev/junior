@@ -1,7 +1,7 @@
-from flask import Blueprint, current_app, render_template, session, redirect
+from flask import Blueprint, current_app, redirect, render_template, session
 from flask.views import MethodView
 
-from src.qa.models import Chapter, Section, Question
+from src.qa.models import Chapter, Question, Section
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -24,7 +24,7 @@ class HomePage(BaseView):
 
     def get(self):
 
-        return redirect("/1", code=302)
+        return redirect('/1', code=302)
 
 
 class IndexPage(BaseView):

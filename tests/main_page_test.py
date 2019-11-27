@@ -14,7 +14,7 @@ class TestIndexView(BaseTest):
 
     def test(self):
         response = self.client.get(url_for('index.home'))
-        self.assert200(response)
+        self.assert_redirects(response, url_for('index.index', section_id=1))
 
 
 class TestQuestionsView(BaseTest):
