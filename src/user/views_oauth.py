@@ -1,9 +1,9 @@
-from flask import (current_app, flash, redirect, render_template, request,
-                   session, url_for)
+from flask import flash, redirect, render_template, request, session, url_for
 from flask.views import MethodView
 from flask_dance.contrib.github import github
 from werkzeug.datastructures import MultiDict
 
+from src.user.auth import SessionAuth
 from src.user.forms import ProfileOAuthForm
 from src.user.models import User
 from src.views import BaseView
@@ -21,10 +21,11 @@ class DeLinkOAuth(MethodView):
                 'is_oauth': False,
                 'is_aproved': True,
             })
-            try:
-                del current_app.blueprints['github'].token # noqa WPS420
-            except KeyError:
-                pass # noqa WPS420 (при авторизации через сайт, токена гитхаба нет)
+
+            session.get('auth').logout()
+            session['auth'] = SessionAuth(True, user)
+
+            flash('Ваш аккаунт был отвязан от GitHub.', 'info')
             return redirect(url_for('auth.profile'))
 
         flash('Для отвязки аккаунта у вас должен быть установлен пароль.', 'error')
@@ -46,13 +47,16 @@ class LoginOAuth(MethodView):
     Если регистрация не заверешена, то на форму профиля, иначе на заглавную страницу
     Тут же обрабатываем привязку к существующему аккаунту по кнопке с профиля
 
-    oauth_link - задаётся в LinkOAuth(), даёт понять, что будет привязка
+    session:
+        oauth_link - задаётся в LinkOAuth(), даёт понять, что будет привязка
+        new_oauth - задаётся в get_or_create_user_through_oauth()
+        даёт понять, что свежая привязка и первый раз показывает страницу профиля
     """
 
     def get(self):
-        user = session['auth'].user
-        if github.authorized:
-            if session.get('oauth_link', False):
+        if session['auth']:
+            user = session['auth'].user
+            if github.authorized and session.get('oauth_link', False):
                 github_id = github.get('user').json().get('id')
                 if User.query.filter_by(github_id=str(github_id)).first():
                     flash(
@@ -60,15 +64,21 @@ class LoginOAuth(MethodView):
                         'error',
                     )
                     return redirect(url_for('auth.profile'))
+
                 User.query.filter_by(login=user.login).update({
                     'github_id': github_id,
                     'is_oauth': True,
                     'is_aproved': True,
                 })
+
                 session['oauth_link'] = False
+                flash('Ваш аккаунт был привязан к GitHub.', 'info')
                 return redirect(url_for('auth.profile_oauth'))
-            if not user.is_oauth:
+
+            elif session.get('new_oauth', False):
+                session['new_oauth'] = False
                 return redirect(url_for('auth.profile_oauth'))
+
         return redirect(url_for('index.home'))
 
 

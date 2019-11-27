@@ -5,7 +5,7 @@ from flask import session
 from flask_dance.contrib.github import github
 
 from src.user.models import User
-from src.user.uttils import get_or_create_user_through_github
+from src.user.uttils import get_or_create_user_through_oauth
 
 
 def auth_hook() -> None:
@@ -68,5 +68,7 @@ class GithubAuth(BaseAuth):
 
     @classmethod
     def create(cls, github_profile: dict) -> BaseAuth:
-        user = get_or_create_user_through_github(github_profile)
-        return cls(True, user, github_profile)
+        user = get_or_create_user_through_oauth(github_profile, 'github')
+        if user:
+            return cls(True, user, github_profile)
+        return cls(False)
