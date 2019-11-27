@@ -92,7 +92,7 @@ class Login(MethodView):
                 flash('Завершите регистрацию, пройдя по ссылке, отправленной на почту', 'error')
                 return redirect(url_for('auth.login'))
             session['auth'] = SessionAuth(True, user)
-            return redirect(url_for('index.index'))
+            return redirect(url_for('index.home'))
         flash('Неверный логин или пароль!', 'error')
         return render_template(self.template, **{'form': form})
 
@@ -132,7 +132,7 @@ class Logout(MethodView):
     def get(self):
         auth = session.get('auth')
         auth.logout()
-        return redirect(url_for('index.index'))
+        return redirect(url_for('index.home'))
 
 
 class EmailAprove(MethodView):
@@ -144,7 +144,7 @@ class EmailAprove(MethodView):
     def get(self, token):
         user = User.verify_token_for_mail_aproved(token)
         if not user:
-            return redirect(url_for('index.index'))
+            return redirect(url_for('index.home'))
         return redirect(url_for('auth.login'))
 
 
