@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
 
-from src.qa.models import Chapter, Section
+from src.qa.models import Chapter, Section, Question
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -40,6 +40,16 @@ class IndexPage(BaseView):
                 chapters=Chapter.query.filter(Chapter.section_id == section.id),
             ),
         )
+        if self.context.get('auth'):
+            self.context.update(
+                dict(
+                    passed=dict(
+                        Question.query.join('test_case', 'test_questions', 'user_relation')
+                        .filter_by(completed=True, user_id=self.context.get('auth').user.id)
+                        .values('question_id', 'completed'),
+                    ),
+                ),
+            )
 
         return render_template(self.template_name, **self.context)
 
