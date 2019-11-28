@@ -5,7 +5,7 @@ from werkzeug.datastructures import MultiDict
 
 from src.extensions import db
 from src.mailers.send_mail import send_mail_for_aprove
-from src.settings import Config
+# from src.settings import Config
 from src.user.auth import SessionAuth
 from src.user.decorators import login_required
 from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
@@ -157,23 +157,39 @@ class ChangeAvatar(BaseView):
         self.form = ChangeAvatarForm
 
     def get(self):
-        if request.form.get('default_avatar'):
-            User.query.filter_by(login=session['auth'].user.login).update({
-                'image': self.user.email,
-                'gravatar': True,
-            })
-            db.session.commit()
-        self.context['faceApi'] = Config.FACE_API
-        self.context['gravatarApi'] = Config.GRAVATAR_API
+        # if request.form.get('default_avatar'):
+        #     User.query.filter_by(login=session['auth'].user.login).update({
+        #         'image': self.user.email,
+        #         'gravatar': True,
+        #     })
+        #     db.session.commit()
+        self.context['ml'] = self.user.email + '\n' + self.user.image
+        # self.context['gravatarApi'] = Config.GRAVATAR_API
         self.context['form'] = self.form()
         return render_template(self.template_name, **self.context)
 
     def post(self):
-        is_gravatar = True
+        new_img = self.user.image
+        if request.form.get('avatar_img_str'):
+            new_img = request.form.get('avatar_img_str')
         if request.form.get('chosen_avatar') == 'face':
             is_gravatar = False
+            User.query.filter_by(login=session['auth'].user.login).update({
+                'gravatar': is_gravatar,
+            })
+            db.session.commit()
         User.query.filter_by(login=session['auth'].user.login).update({
             'image': request.form.get('avatar_img_str'),
+            #     'gravatar': is_gravatar,
+        })
+        db.session.commit()
+
+        # default avatar
+        if request.form.get('default_avatar'):
+            is_gravatar = True
+            new_img = self.user.email
+        User.query.filter_by(login=session['auth'].user.login).update({
+            'image': new_img,
             'gravatar': is_gravatar,
         })
         db.session.commit()
