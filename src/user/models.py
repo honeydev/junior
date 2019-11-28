@@ -1,3 +1,4 @@
+from hashlib import md5
 from time import time
 
 import jwt
@@ -21,6 +22,7 @@ class User(db.Model):  # noqa: WPS230
             middlename: str = '',
             lastname: str = '',
             image: bytes = '',
+            github_id: str = None,
             is_oauth: bool = False,
             is_superuser: bool = False,
             is_aproved: bool = False,
@@ -32,6 +34,7 @@ class User(db.Model):  # noqa: WPS230
         self.middlename = middlename
         self.lastname = lastname
         self.image = image
+        self.github_id = github_id
         self.is_oauth = is_oauth
         self.is_superuser = is_superuser
         self.is_aproved = is_aproved
@@ -44,9 +47,10 @@ class User(db.Model):  # noqa: WPS230
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
     image = db.Column(db.String(), nullable=True)
+    github_id = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False, nullable=False)
-    is_aproved = db.Column(db.Boolean, default=False, nullable=False)
+    is_aproved = db.Column(db.Boolean, default=False, nullable=True)
 
     db.relationship(  # noqa: WPS604
         'User', backref='users', lazy='dynamic',
@@ -59,11 +63,28 @@ class User(db.Model):  # noqa: WPS230
     def __str__(self):
         return '{0} <id {1}>'.format(self.login, self.id)
 
+    def avatar(self, size):
+
+        if self.image is None:
+            image_str = self.email
+            User.query.filter_by(id=self.context['auth'].user.id).update({'image': self.email})
+            db.session.commit()
+        else:
+            image_str = self.image
+        digest = md5(image_str.encode('utf-8')).hexdigest()
+
+        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+
+    def __repr__(self):
+        return '<id {0}>'.format(self.id)
+
     @classmethod
     def hash_password(cls, password: str):
         return generate_password_hash(password=password)
 
     def check_password(self, password):
+        if not self.password:
+            return False
         return check_password_hash(self.password, password)
 
     def get_token_for_mail_aproved(self, expires_in=600):

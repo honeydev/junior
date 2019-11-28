@@ -1,10 +1,7 @@
-from hashlib import md5
-
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
 
-from src.qa.models import Chapter
-from src.user import User
+from src.qa.models import Chapter, Question, Section
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -15,13 +12,19 @@ class BaseView(MethodView):
         self.context = {
             'auth': session.get('auth'),
             'app_name': current_app.config['APP_NAME'],
+            'sections': Section.query.all(),
         }
         self.template_name: str = template_name
 
-    def avatar(self, size, image_str):
-        digest = md5(image_str.encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{0}?d=identicon&s={1}'.format(
-            digest, size)
+
+class HomePage(BaseView):
+
+    def __init__(self, template_name):
+        super().__init__(template_name)
+
+    def get(self):
+
+        return render_template(self.template_name, **self.context)
 
 
 class IndexPage(BaseView):
@@ -29,25 +32,24 @@ class IndexPage(BaseView):
     def __init__(self, template_name):
         super().__init__(template_name)
 
-    def get(self):
+    def get(self, section_id: int):
+        section = Section.query.get(section_id)
 
         self.context.update(
             dict(
-                chapters=Chapter.query.all(),
+                chapters=Chapter.query.filter(Chapter.section_id == section.id),
             ),
         )
-
-        if self.context['auth']:
-            user_email = self.context['auth'].user.email
-            user_image = self.context['auth'].user.image
-            if user_image is None:
-                avatar_str = user_email
-                User.query.filter_by(id=self.context['auth'].user.id).update(
-                    {'image': user_email},
-                )
-            else:
-                avatar_str = user_image
-            self.context['avatar'] = self.avatar(48, avatar_str)
+        if self.context.get('auth'):
+            self.context.update(
+                dict(
+                    passed=dict(
+                        Question.query.join('test_case', 'test_questions', 'user_relation')
+                        .filter_by(completed=True, user_id=self.context.get('auth').user.id)
+                        .values('question_id', 'completed'),
+                    ),
+                ),
+            )
 
         return render_template(self.template_name, **self.context)
 
@@ -60,6 +62,12 @@ class NotFoundPage(BaseView):
 
 bp.add_url_rule(
     '/',
+    view_func=HomePage.as_view(name='home', template_name='home.jinja2'),
+)
+
+
+bp.add_url_rule(
+    '/<int:section_id>',
     view_func=IndexPage.as_view(name='index', template_name='index.jinja2'),
 )
 
