@@ -5,7 +5,6 @@ from werkzeug.datastructures import MultiDict
 
 from src.extensions import db
 from src.mailers.send_mail import send_mail_for_aprove
-# from src.settings import Config
 from src.user.auth import SessionAuth
 from src.user.decorators import login_required
 from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
@@ -157,7 +156,6 @@ class ChangeAvatar(BaseView):
         self.form = ChangeAvatarForm
 
     def get(self):
-        # self.context['gravatarApi'] = Config.GRAVATAR_API
         self.context['form'] = self.form()
         return render_template(self.template_name, **self.context)
 
