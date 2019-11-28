@@ -1,3 +1,4 @@
+import os
 from hashlib import md5
 from time import time
 
@@ -7,7 +8,6 @@ from flask import flash, redirect, session, url_for
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from src.extensions import db
-from src.settings import Config
 
 
 class User(db.Model):  # noqa: WPS230
@@ -77,9 +77,9 @@ class User(db.Model):  # noqa: WPS230
             image_str = self.image
         if self.gravatar:
             digest = md5(image_str.encode('utf-8')).hexdigest()
-            image_str = f'{Config.GRAVATAR_API}{digest}?d=identicon&s={size}'
+            image_str = f'{os.getenv("GRAVATAR_API")}{digest}?d=identicon&s={size}'
         else:
-            image_str = f'{Config.FACE_API}{size}/{self.image}.png'
+            image_str = f'{os.getenv("FACE_API")}{size}/{self.image}.png'
 
         return image_str
 
