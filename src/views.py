@@ -1,7 +1,7 @@
 from flask import Blueprint, current_app, render_template, session
 from flask.views import MethodView
 
-from src.qa.models import Chapter, Section, Question
+from src.qa.models import Chapter, Question, Section
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
