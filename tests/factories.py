@@ -9,8 +9,9 @@ factory = Faker()
 def create_user(save=True):
 
     password = factory.password(10)
+    username = factory.password(10)
     user = User(
-        login=factory.user_name(),
+        login=username,
         email=factory.email(),
         password=User.hash_password(password),
         firstname=factory.first_name(),
