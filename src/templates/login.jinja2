@@ -12,6 +12,7 @@
 
       {% include 'components/form_error.jinja2' %}
 
+      <a href="{{ url_for('auth.resend_email') }}" class="btn btn-outline-dark">Отправить ссылку для завершения регистрации повторно</a>
       <form class="form-horizontal" action="{{ url_for('auth.login') }}" method="post">
         <div class="form-group">
           {% for form in form %}
