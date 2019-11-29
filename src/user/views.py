@@ -9,7 +9,7 @@ from src.user.auth import SessionAuth
 from src.user.decorators import login_required
 from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
                             RegistrationForm, ResendEmailForm)
-from src.user.models import User, AvatarType
+from src.user.models import User
 from src.user.views_oauth import (DeLinkOAuth, LinkOAuth, LoginOAuth,
                                   ProfileOAuth)
 from src.views import BaseView
@@ -208,7 +208,7 @@ class ChangeAvatar(BaseView):
         # если аватар по умолчанию -
         # подтягивается граватар по email пользователя
         if request.form.get('default_avatar'):
-            avatar_type = AvatarType
+            avatar_type = 'gravatar'
             new_img = self.user.email
         User.query.filter_by(login=session['auth'].user.login).update({
             'image': new_img,

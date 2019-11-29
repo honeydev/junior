@@ -7,14 +7,15 @@ import jwt
 from flask import current_app as junior_app
 from flask import flash, redirect, session, url_for
 from flask_bcrypt import check_password_hash, generate_password_hash
+from sqlalchemy.dialects.postgresql import ENUM
 
 from src.extensions import db
 
 
-class AvatarType(enum.Enum):
-    gravatar = 'gravatar'
-    face = 'face'
-    false = False
+# class AvatarType(enum.Enum):
+#     gravatar = 'gravatar'
+#     face = 'face'
+#     # false = False
 
 
 class User(db.Model):  # noqa: WPS230
@@ -56,13 +57,19 @@ class User(db.Model):  # noqa: WPS230
     firstname = db.Column(db.String(), nullable=True)
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
-    image = db.Column(db.String(), nullable=True)
+    image = db.Column(db.String(), default=email, nullable=True)
     # gravatar = db.Column(db.Boolean(), default=True, nullable=True)
-    gravatar = db.Column(
-        db.Enum(AvatarType),
-        default=AvatarType.gravatar,
-        nullable=True,
+    avatar_types = (
+        'gravatar',
+        'face',
     )
+    avatar_types_enum = ENUM(*avatar_types, name="avatar_types")
+    gravatar = db.Column(avatar_types_enum, default='gravatar', nullable=True)
+    # gravatar = db.Column(
+    #     db.Enum(AvatarType),
+    #     default=AvatarType.gravatar,
+    #     nullable=True,
+    # )
 
     github_id = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
