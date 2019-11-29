@@ -69,6 +69,8 @@ class User(db.Model):  # noqa: WPS230
 
     def avatar(self, size):
 
+        # если нет строки с картинкой, используется email
+        # и обновляется БД - теперь в картинке email
         if self.image is None:
             image_str = self.email
             User.query.filter_by(id=session['auth'].user.id).update({'image': self.email})
