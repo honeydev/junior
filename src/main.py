@@ -10,7 +10,7 @@ from flask_mail import Mail
 from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
-from src.admin_forms import QAWYSIWYG
+from src.admin_forms import QAWYSIWYG, TestQuestionView
 from src.commands import (clear_questions, create_admin_user,
                           load_section_questions)
 from src.extensions import admin, bcrypt, db, migrate, sess
@@ -59,7 +59,7 @@ def register_adminpanel(app):
     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
     admin.add_view(ModelView(User, db.session))
     admin.add_view(QAWYSIWYG(TestCase, db.session))
-    admin.add_view(QAWYSIWYG(TestQuestion, db.session))
+    admin.add_view(TestQuestionView(TestQuestion, db.session))
     admin.add_view(QAWYSIWYG(TestAnswer, db.session))
     admin.add_view(QAWYSIWYG(Answer, db.session))
     admin.add_view(QAWYSIWYG(Question, db.session))

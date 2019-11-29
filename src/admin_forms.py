@@ -26,6 +26,16 @@ class QAWYSIWYG(ModelView):
     form_overrides = {
         'text': CKTextAreaField,
     }
+    form_excluded_columns = ['test_questions', 'user_relation', 'answers']
+
+
+class TestQuestionView(QAWYSIWYG):
+    form_choices = {
+        'question_type': [
+            ('0', 'RADIUS'),
+            ('1', 'CHECK_BOX'),
+        ],
+    }
 
 
 class CustomAdminView(AdminIndexView):
