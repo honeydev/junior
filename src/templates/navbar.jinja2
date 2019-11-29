@@ -18,24 +18,22 @@
       <div class="collapse navbar-collapse ml-auto" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
           {% if auth %}
-            {% if auth.user.is_superuser %}
-              <li class="nav-item">
-                <a class="nav-link text-light" href="{{ url_for('admin.index') }}">Админ-панель</a>
-              </li>
-            {% endif %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle text-light" href="#" role="button"
                  data-toggle="dropdown"
                  aria-haspopup="true" aria-expanded="false">
-                Вы вошли как {{ auth.user.login }}
-                <img src="{{ auth.user.avatar(48) }}">
+                <img class="rounded-circle" height="50" width="50" src="{{ auth.user.avatar(48) }}" alt="">
+                {{ auth.user.login }}
               </a>
               <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
+                {% if auth.user.is_superuser %}
+                  <a class="dropdown-item text-light" href="{{ url_for('admin.index') }}">Админ-панель</a>
+                {% endif %}
                 <a class="dropdown-item text-light" href="{{ url_for('auth.profile') }}">Профиль</a>
+                <div class="dropdown-divider"></div>
                 <a class="dropdown-item text-light" href="{{ url_for('auth.logout') }}">Выход</a>
               </div>
             </li>
-            <li><img class="rounded-circle" height="50" width="50" src="{{ avatar }}" alt=""></li>
           {% else %}
             <li class="nav-item active">
               <a class="nav-link text-light" href="{{ url_for('auth.login') }}" methods="get">Вход</a>
