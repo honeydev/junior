@@ -9,7 +9,7 @@ from src.user.auth import SessionAuth
 from src.user.decorators import login_required
 from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
                             RegistrationForm, ResendEmailForm)
-from src.user.models import User
+from src.user.models import User, AvatarType
 from src.user.views_oauth import (DeLinkOAuth, LinkOAuth, LoginOAuth,
                                   ProfileOAuth)
 from src.views import BaseView
@@ -197,10 +197,10 @@ class ChangeAvatar(BaseView):
 
     def post(self):
         # выбор типа аватарки - граватар или рожица
-        if request.form.get('chosen_avatar') == 'gravatar':
-            is_gravatar = True
-        if request.form.get('chosen_avatar') == 'face':
-            is_gravatar = False
+        # if request.form.get('chosen_avatar') == 'gravatar':
+        avatar_type = request.form.get('chosen_avatar')
+        # if request.form.get('chosen_avatar') == 'face':
+        #     is_gravatar = False
         new_img = self.user.image
         if request.form.get('avatar_img_str'):
             new_img = request.form.get('avatar_img_str')
@@ -208,11 +208,11 @@ class ChangeAvatar(BaseView):
         # если аватар по умолчанию -
         # подтягивается граватар по email пользователя
         if request.form.get('default_avatar'):
-            is_gravatar = True
+            avatar_type = AvatarType
             new_img = self.user.email
         User.query.filter_by(login=session['auth'].user.login).update({
             'image': new_img,
-            'gravatar': is_gravatar,
+            'gravatar': avatar_type,
         })
         db.session.commit()
 
