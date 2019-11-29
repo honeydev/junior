@@ -23,8 +23,8 @@ class HomePage(BaseView):
         super().__init__(template_name)
 
     def get(self):
-
-        return redirect('/1', code=302)
+        section = Section.query.order_by('order_number').first()
+        return redirect(f'/{section.id}', code=302)
 
 
 class IndexPage(BaseView):
