@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     redirectOnIndex (event) {
-      window.location.href = '/';
+      window.location.href = '/1';
     }
   }
 };

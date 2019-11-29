@@ -2,9 +2,9 @@
   <div class="card-header h5">
     <span>#{{ question.order_number }}</span>
     <span>
-      <a href="{{ url_for('test_cases.test_case_index', question_id=question.id) }}">
       {% if auth.user %}
         {% if question.test_case %}
+          <a href="{{ url_for('test_cases.test_case_index', question_id=question.id) }}">
           {% if passed.get(question.id) %}
             <span class="float-right badge badge-success">Тест</span>
           {% else %}
