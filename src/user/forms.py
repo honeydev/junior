@@ -8,13 +8,17 @@ class BaseForm(Form):
 
 
 class LoginForm(BaseForm):
-    login = StringField('Логин', [
-        validators.input_required(),
-        validators.length(
-            min=3,
-            max=15,
-        ),
-    ])
+    login = StringField(
+        'Логин',
+        [
+            validators.input_required(),
+            validators.length(
+                min=3,
+                max=15,
+            ),
+        ],
+        render_kw={'autofocus': ''},
+    )
     password = PasswordField('Пароль', [
         validators.data_required(),
         validators.length(
@@ -25,13 +29,17 @@ class LoginForm(BaseForm):
 
 
 class RegistrationForm(BaseForm):
-    login = StringField('Логин', [
-        validators.input_required(),
-        validators.length(
-            min=3,
-            max=15,
-        ),
-    ])
+    login = StringField(
+        'Логин',
+        [
+            validators.input_required(),
+            validators.length(
+                min=3,
+                max=15,
+            ),
+        ],
+        render_kw={'autofocus': ''},
+    )
     password = PasswordField('Пароль', [
         validators.data_required(),
         validators.length(
@@ -75,24 +83,32 @@ class RegistrationForm(BaseForm):
 
 
 class ResendEmailForm(BaseForm):
-    email = StringField('Email адрес', [
-        validators.email(),
-        validators.data_required(),
-        validators.length(
-            min=4,
-            max=30,
-        ),
-    ])
+    email = StringField(
+        'Email адрес',
+        [
+            validators.email(),
+            validators.data_required(),
+            validators.length(
+                min=4,
+                max=30,
+            ),
+        ],
+        render_kw={'autofocus': ''},
+    )
 
 
 class ProfileOAuthForm(BaseForm):
-    login = StringField('Логин', [
-        validators.input_required(),
-        validators.length(
-            min=3,
-            max=15,
-        ),
-    ])
+    login = StringField(
+        'Логин',
+        [
+            validators.input_required(),
+            validators.length(
+                min=3,
+                max=15,
+            ),
+        ],
+        render_kw={'autofocus': ''},
+    )
     change_password = BooleanField('Сменить/установить пароль')
     password = PasswordField('Пароль', [
         validators.optional(),
@@ -135,14 +151,18 @@ class ProfileOAuthForm(BaseForm):
 
 
 class ProfileForm(BaseForm):
-    email = StringField('Email адрес', [
-        validators.email(),
-        validators.data_required(),
-        validators.length(
-            min=4,
-            max=100,
-        ),
-    ])
+    email = StringField(
+        'Email адрес',
+        [
+            validators.email(),
+            validators.data_required(),
+            validators.length(
+                min=4,
+                max=100,
+            ),
+        ],
+        render_kw={'autofocus': ''},
+    )
     lastname = StringField('Фамилия', [
         validators.optional(),
         validators.length(
