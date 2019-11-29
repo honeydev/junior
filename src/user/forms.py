@@ -74,6 +74,17 @@ class RegistrationForm(BaseForm):
     ])
 
 
+class ResendEmailForm(BaseForm):
+    email = StringField('Email адрес', [
+        validators.email(),
+        validators.data_required(),
+        validators.length(
+            min=4,
+            max=30,
+        ),
+    ])
+
+
 class ProfileOAuthForm(BaseForm):
     login = StringField('Логин', [
         validators.input_required(),

@@ -2,14 +2,15 @@
 
 import os
 
-from flask import Flask
+from flask import Flask, url_for
 from flask_admin.contrib.sqla import ModelView
+from flask_admin.menu import MenuLink
 from flask_dance.contrib.github import make_github_blueprint
 from flask_mail import Mail
 from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
-from src.admin_forms import QAWYSIWYG
+from src.admin_forms import QAWYSIWYG, TestQuestionView
 from src.commands import create_admin_user, load_chapters_questions
 from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question
@@ -57,11 +58,12 @@ def register_adminpanel(app):
     app.config['FLASK_ADMIN_SWATCH'] = 'darkly'
     admin.add_view(ModelView(User, db.session))
     admin.add_view(QAWYSIWYG(TestCase, db.session))
-    admin.add_view(QAWYSIWYG(TestQuestion, db.session))
+    admin.add_view(TestQuestionView(TestQuestion, db.session))
     admin.add_view(QAWYSIWYG(TestAnswer, db.session))
     admin.add_view(QAWYSIWYG(Answer, db.session))
     admin.add_view(QAWYSIWYG(Question, db.session))
     admin.add_view(QAWYSIWYG(TestQuestionUserRelation, db.session))
+    admin.add_link(MenuLink(name='Back Home', url='/'))
 
 
 def register_sessions(app):
