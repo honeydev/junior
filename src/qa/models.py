@@ -57,3 +57,27 @@ class Answer(BaseDateTimeModel):
     text = db.Column(db.Text(), nullable=False)
     is_approve = db.Column(db.Boolean, default=False)
     question_id = db.Column(db.Integer, db.ForeignKey('questions.id'))
+    likes_count = db.Column(db.Integer, default=0, nullable=False)
+    user_relation = db.relationship(
+        'AnswerUsersRelations',
+        back_populates='answers',
+    )
+
+
+class AnswerUsersRelations(BaseDateTimeModel):
+    __tablename__ = 'answer_users_relations'
+
+    id = db.Column(db.Integer, primary_key=True)  # noqa: A003
+    answer_id = db.Column(
+        db.Integer,
+        db.ForeignKey('answers.id'),
+    )
+    answers = db.relationship(
+        'Answer',
+        back_populates='user_relation',
+    )
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user = db.relationship(
+        'User',
+        back_populates='answer_relation',
+    )
