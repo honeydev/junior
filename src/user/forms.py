@@ -48,27 +48,27 @@ class RegistrationForm(BaseForm):
         validators.data_required(),
         validators.length(
             min=4,
-            max=30,
+            max=100,
         ),
     ])
     lastname = StringField('Фамилия', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
     firstname = StringField('Имя', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
     middlename = StringField('Отчество', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
@@ -108,27 +108,27 @@ class ProfileOAuthForm(BaseForm):
         validators.data_required(),
         validators.length(
             min=4,
-            max=30,
+            max=100,
         ),
     ])
     lastname = StringField('Фамилия', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
     firstname = StringField('Имя', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
     middlename = StringField('Отчество', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
@@ -140,27 +140,27 @@ class ProfileForm(BaseForm):
         validators.data_required(),
         validators.length(
             min=4,
-            max=30,
+            max=100,
         ),
     ])
     lastname = StringField('Фамилия', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
     firstname = StringField('Имя', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
     middlename = StringField('Отчество', [
         validators.optional(),
         validators.length(
-            min=4,
+            min=1,
             max=30,
         ),
     ])
@@ -168,6 +168,8 @@ class ProfileForm(BaseForm):
 
 class ChangeAvatarForm(Form):
     chosen_avatar = SelectField('Ваш аватар', choices=[
-        ('gravatar', 'обьчный'),
+        ('gravatar', 'обычный'),
         ('face', 'правдоподобный'),
     ])
+    default_avatar = BooleanField('Аватар по умолчанию')
+    avatar_img_str = StringField('')

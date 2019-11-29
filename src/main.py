@@ -11,9 +11,10 @@ from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
 from src.admin_forms import QAWYSIWYG, TestQuestionView
-from src.commands import create_admin_user, load_chapters_questions
+from src.commands import (clear_questions, create_admin_user,
+                          load_section_questions)
 from src.extensions import admin, bcrypt, db, migrate, sess
-from src.qa.models import Answer, Question
+from src.qa.models import Answer, Question, Section
 from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
 from src.test_cases import (TestAnswer, TestCase, TestQuestion,
@@ -62,6 +63,7 @@ def register_adminpanel(app):
     admin.add_view(QAWYSIWYG(TestAnswer, db.session))
     admin.add_view(QAWYSIWYG(Answer, db.session))
     admin.add_view(QAWYSIWYG(Question, db.session))
+    admin.add_view(QAWYSIWYG(Section, db.session))
     admin.add_view(QAWYSIWYG(TestQuestionUserRelation, db.session))
     admin.add_link(MenuLink(name='Back Home', url='/'))
 
@@ -106,7 +108,8 @@ def register_before_hooks(app):
 
 
 def register_commands(app):
-    app.cli.add_command(load_chapters_questions)
+    app.cli.add_command(load_section_questions)
+    app.cli.add_command(clear_questions)
     app.cli.add_command(create_admin_user)
 
 

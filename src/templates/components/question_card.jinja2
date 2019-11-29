@@ -2,12 +2,22 @@
   <div class="card-header h5">
     <span>#{{ question.order_number }}</span>
     <span>
-      <a href="{{ url_for('test_cases.test_case_index', question_id=question.id) }}">
-        <span class="float-right badge badge-danger">Тест</span>
+      {% if auth.user %}
+        {% if question.test_case %}
+          <a href="{{ url_for('test_cases.test_case_index', question_id=question.id) }}">
+          {% if passed.get(question.id) %}
+            <span class="float-right badge badge-success">Тест</span>
+          {% else %}
+            <span class="float-right badge badge-danger">Тест</span>
+          {% endif %}
+        {% else %}
+          <span class="float-right badge badge-secondary">Тест</span>
+        {% endif %}
+      {% endif %}
       </a>
     </span>
   </div>
-    <div class="card-body">{{ question.text | safe | truncate(60) }}</div>
+  <div class="card-body">{{ question.text | safe | truncate(60) }}</div>
   <a href="{{ url_for('answers.answer', question_id=question.id) }}"
      class="btn"
      style="background-color: #9e779eb0">

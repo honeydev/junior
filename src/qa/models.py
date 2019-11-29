@@ -11,6 +11,9 @@ class Section(db.Model):
     order_number = db.Column(db.Integer, nullable=False)
     chapters = db.relationship('Chapter', back_populates='section')
 
+    def __str__(self):
+        return self.name
+
 
 class Chapter(db.Model):
     __tablename__ = 'chapters'
