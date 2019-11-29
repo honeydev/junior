@@ -1,0 +1,47 @@
+{% extends 'base.jinja2' %}
+{% block header %}
+{% endblock %}
+{% block content %}
+
+  <div class="container p-4">
+    <div class="row justify-content-center">
+      <div class="card col-lg-6 col-12">
+
+        {% include 'components/form_error.jinja2' %}
+
+        <div class="row mt-3">
+          <div class="mx-auto col-auto">СМЕНИТЬ АВАТАР</div>
+        </div>
+        <div class="row mt-3">
+          <div class="mx-auto col-auto">
+            <img src='{{ auth.user.avatar(128) }}' id='img_avatar' width='128'>
+          </div>
+        </div>
+        <div class="row">
+          <div class="mx-auto col-auto my-3">
+            <button type="submit" class="btn btn-success" id="random_btn">Random</button>
+          </div>
+        </div>
+
+        <form class="form-horizontal" action="{{ url_for('auth.change_avatar') }}" method="post" name="form">
+          <div class="form-group">
+            {{ form.csrf_token }}
+            {% for field in form %}
+              <div class="form-group">
+                {{ field.label }}
+                {{ field(class_='form-control') }}
+              </div>
+            {% endfor %}
+            <div class="row">
+              <div class="mx-auto col-auto my-3">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+              </div>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
