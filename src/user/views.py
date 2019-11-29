@@ -156,7 +156,7 @@ class ChangeAvatar(BaseView):
         self.form = ChangeAvatarForm
 
     def get(self):
-        if self.user.gravatar == True:
+        if self.user.gravatar:
             avatar_type = 'gravatar'
         else:
             avatar_type = 'face'
