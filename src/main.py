@@ -14,7 +14,7 @@ from src.admin_forms import QAWYSIWYG, TestQuestionView
 from src.commands import (clear_questions, create_admin_user,
                           load_section_questions)
 from src.extensions import admin, bcrypt, db, migrate, sess
-from src.qa.models import Answer, Question, Section
+from src.qa.models import Answer, AnswerUsersRelations, Question, Section
 from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
 from src.test_cases import (TestAnswer, TestCase, TestQuestion,
@@ -65,6 +65,7 @@ def register_adminpanel(app):
     admin.add_view(QAWYSIWYG(Question, db.session))
     admin.add_view(QAWYSIWYG(Section, db.session))
     admin.add_view(QAWYSIWYG(TestQuestionUserRelation, db.session))
+    admin.add_view(QAWYSIWYG(AnswerUsersRelations, db.session))
     admin.add_link(MenuLink(name='Back Home', url='/'))
 
 
