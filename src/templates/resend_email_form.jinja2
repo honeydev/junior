@@ -1,0 +1,37 @@
+{% extends 'base.jinja2' %}
+{% block header %}
+{% endblock %}
+{% block content %}
+<div class="container p-4">
+  <div class="row justify-content-center">
+    <div class="card col-lg-6 col-12">
+      <div class="row card-header">
+        <div class="mx-auto col-auto">Повторная отправка письма для подтверждения регистрации</div>
+      </div>
+      
+      {% include 'components/form_error.jinja2' %}
+
+      <form class="form-horizontal" action="{{ url_for('auth.resend_email') }}" method="post">
+        <div class="form-group">
+          {{ form.csrf_token }}
+          {% for form in form %}
+            <div class="row">
+              <div class="mx-auto col-11 mt-3">
+                {{ form(class_='form-control', placeholder = form.label.text) }}
+              </div>
+            </div>
+          {% endfor %}
+
+          <div class="row">
+            <div class="mx-auto col-auto my-3">
+              <button type="submit" class="btn btn-success">Отправить</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      </div>
+  </div>
+  {% include 'components/or.jinja2' %}
+  {% include 'components/social_login.jinja2' %} 
+</div>
+{% endblock %}

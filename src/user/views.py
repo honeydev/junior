@@ -8,7 +8,7 @@ from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
 from src.user.decorators import login_required
 from src.user.forms import (ChangeAvatarForm, LoginForm, ProfileForm,
-                            RegistrationForm)
+                            RegistrationForm, ResendEmailForm)
 from src.user.models import User
 from src.user.views_oauth import (DeLinkOAuth, LinkOAuth, LoginOAuth,
                                   ProfileOAuth)
@@ -149,6 +149,33 @@ class EmailAprove(MethodView):
         return redirect(url_for('auth.login'))
 
 
+class EmailResend(MethodView):
+    """Resend email function."""
+
+    def __init__(self, template_name):
+        self.template: str = template_name
+        self.form = ResendEmailForm
+
+    def post(self):
+        form = self.form(request.form)
+        if not form.validate():
+            return render_template(self.template, **{'form': form})
+        email = request.form.get('email')
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            if send_mail_for_aprove(user):
+                flash('Вам на почту отправлена ссылка для подтверждения регистрации', 'info')
+            else:
+                flash('Сбой отправки письма', 'error')
+        else:
+            flash('Пользователь с таким email не зарегистрирован', 'error')
+        return redirect(url_for('auth.login'))
+
+    def get(self):
+        return render_template(self.template, **{'form': self.form()})
+
+
 class ChangeAvatar(BaseView):
     def __init__(self, template_name):
         super().__init__(template_name)
@@ -156,16 +183,30 @@ class ChangeAvatar(BaseView):
         self.form = ChangeAvatarForm
 
     def get(self):
-        self.context['form'] = self.form()
+        if self.user.gravatar:
+            avatar_type = 'gravatar'
+        else:
+            avatar_type = 'face'
+
+        user_data = MultiDict([
+            ('chosen_avatar', avatar_type),
+            ('avatar_img_str', self.user.image),
+        ])
+        self.context['form'] = self.form(user_data)
         return render_template(self.template_name, **self.context)
 
     def post(self):
-        is_gravatar = self.user.gravatar
+        # выбор типа аватарки - граватар или рожица
+        if request.form.get('chosen_avatar') == 'gravatar':
+            is_gravatar = True
+        if request.form.get('chosen_avatar') == 'face':
+            is_gravatar = False
         new_img = self.user.image
         if request.form.get('avatar_img_str'):
             new_img = request.form.get('avatar_img_str')
-        if request.form.get('chosen_avatar') == 'face':
-            is_gravatar = False
+
+        # если аватар по умолчанию -
+        # подтягивается граватар по email пользователя
         if request.form.get('default_avatar'):
             is_gravatar = True
             new_img = self.user.email
@@ -244,6 +285,15 @@ bp.add_url_rule(
         name='email_aprove',
     ),
 )
+
+bp.add_url_rule(
+    '/resend_email/',
+    view_func=EmailResend.as_view(
+        name='resend_email',
+        template_name='resend_email_form.jinja2',
+    ),
+)
+
 bp.add_url_rule(
     '/change_avatar/',
     view_func=ChangeAvatar.as_view(

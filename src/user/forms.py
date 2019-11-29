@@ -1,5 +1,5 @@
-from wtforms import (BooleanField, Form, PasswordField, SelectField,
-                     StringField, validators)
+from wtforms import (BooleanField, Form, HiddenField, PasswordField,
+                     SelectField, StringField, validators)
 
 
 class BaseForm(Form):
@@ -69,6 +69,17 @@ class RegistrationForm(BaseForm):
         validators.optional(),
         validators.length(
             min=1,
+            max=30,
+        ),
+    ])
+
+
+class ResendEmailForm(BaseForm):
+    email = StringField('Email адрес', [
+        validators.email(),
+        validators.data_required(),
+        validators.length(
+            min=4,
             max=30,
         ),
     ])
@@ -161,4 +172,4 @@ class ChangeAvatarForm(Form):
         ('face', 'правдоподобный'),
     ])
     default_avatar = BooleanField('Аватар по умолчанию')
-    avatar_img_str = StringField('')
+    avatar_img_str = HiddenField('')
