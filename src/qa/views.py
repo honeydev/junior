@@ -2,6 +2,7 @@ from flask import Blueprint, redirect, render_template, request, session
 
 from src.qa.forms import AnswerForm
 from src.qa.models import Answer, Question
+from src.user import LoginForm
 from src.views import BaseView
 
 bp: Blueprint = Blueprint('answers', __name__, template_folder='templates')
@@ -26,6 +27,8 @@ class AnswerView(BaseView):
     def get(self, question_id):
         self.get_context(question_id)
         self.context['form'] = AnswerForm()
+        self.context['login_form'] = LoginForm()
+        print(self.context)
         return render_template(self.template_name, **self.context)
 
     def post(self, question_id):
