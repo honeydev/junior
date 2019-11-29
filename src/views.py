@@ -1,7 +1,9 @@
-from flask import Blueprint, current_app, render_template, session
+from flask import Blueprint, current_app, redirect, render_template, session
 from flask.views import MethodView
+from sqlalchemy.sql import func
 
 from src.qa.models import Chapter, Question, Section
+from src.test_cases.models import TestQuestionUserRelation
 
 bp: Blueprint = Blueprint('index', __name__, template_folder='templates')
 
@@ -23,8 +25,8 @@ class HomePage(BaseView):
         super().__init__(template_name)
 
     def get(self):
-
-        return render_template(self.template_name, **self.context)
+        section = Section.query.order_by('order_number').first()
+        return redirect(f'/{section.id}', code=302)
 
 
 class IndexPage(BaseView):
@@ -40,16 +42,19 @@ class IndexPage(BaseView):
                 chapters=Chapter.query.filter(Chapter.section_id == section.id),
             ),
         )
+
         if self.context.get('auth'):
-            self.context.update(
-                dict(
-                    passed=dict(
-                        Question.query.join('test_case', 'test_questions', 'user_relation')
-                        .filter_by(completed=True, user_id=self.context.get('auth').user.id)
-                        .values('question_id', 'completed'),
-                    ),
-                ),
+            passed = Question.query.join(
+                'test_case', 'test_questions', 'user_relation',
+            ).filter_by(
+                user_id=self.context.get('auth').user.id,
+            ).group_by(
+                'question_id',
+            ).values(
+                'question_id', func.bool_and(TestQuestionUserRelation.completed),
             )
+
+            self.context.update(dict(passed=dict(passed)))
 
         return render_template(self.template_name, **self.context)
 
