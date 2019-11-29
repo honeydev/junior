@@ -50,7 +50,7 @@ class User(db.Model):  # noqa: WPS230
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
     image = db.Column(db.String(), nullable=True)
-    gravatar = db.Column(db.Boolean(), default=True, nullable=False)
+    gravatar = db.Column(db.Boolean(), default=True, nullable=True)
     github_id = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False, nullable=False)
