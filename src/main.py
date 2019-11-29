@@ -11,7 +11,8 @@ from flask_sessionstore import SqlAlchemySessionInterface
 
 from src import user
 from src.admin_forms import QAWYSIWYG
-from src.commands import create_admin_user, load_section_questions, clear_questions
+from src.commands import (clear_questions, create_admin_user,
+                          load_section_questions)
 from src.extensions import admin, bcrypt, db, migrate, sess
 from src.qa.models import Answer, Question, Section
 from src.qa.views import bp as qa_bp
