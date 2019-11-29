@@ -28,14 +28,13 @@
                  data-toggle="dropdown"
                  aria-haspopup="true" aria-expanded="false">
                 Вы вошли как {{ auth.user.login }}
-                <img src="{{ auth.user.avatar(48) }}">
               </a>
               <div class="dropdown-menu bg-secondary" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item text-light" href="{{ url_for('auth.profile') }}">Профиль</a>
                 <a class="dropdown-item text-light" href="{{ url_for('auth.logout') }}">Выход</a>
               </div>
             </li>
-            <li><img class="rounded-circle" height="50" width="50" src="{{ avatar }}" alt=""></li>
+            <li><img class="rounded-circle" height="50" width="50" src="{{ auth.user.avatar(48) }}" alt=""></li>
           {% else %}
             <li class="nav-item active">
               <a class="nav-link text-light" href="{{ url_for('auth.login') }}" methods="get">Вход</a>
