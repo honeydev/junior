@@ -18,9 +18,17 @@
     </span>
   </div>
   <div class="card-body">{{ question.text | safe | truncate(60) }}</div>
-  <a href="{{ url_for('answers.answer', question_id=question.id) }}"
-     class="btn"
-     style="background-color: #9e779eb0">
-    Подробней...
-  </a>
+    {% if auth.user %}
+    <a href="{{ url_for('answers.answer', question_id=question.id) }}"
+       class="btn"
+       style="background-color: #9e779eb0">
+      Подробней...
+    </a>
+    {% else %}
+    <a href="{{ url_for('auth.login') }}"
+       class="btn"
+       style="background-color: #9e779eb0">
+      Подробней...
+    </a>
+    {% endif %}
 </div>
