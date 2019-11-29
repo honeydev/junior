@@ -169,7 +169,7 @@ class ProfileForm(BaseForm):
 class ChangeAvatarForm(Form):
     chosen_avatar = SelectField('Ваш аватар', choices=[
         ('gravatar', 'обычный'),
-        ('face', 'правдоподобный'),
+        ('face', 'рожица'),
     ])
     default_avatar = BooleanField('Аватар по умолчанию')
     avatar_img_str = HiddenField('')
