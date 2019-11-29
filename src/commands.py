@@ -9,12 +9,30 @@ from src.uttils import load_fixture
 
 @click.command()
 @with_appcontext
-def load_chapters_questions():
-    Section.query.delete()
+def clear_questions():
+    """Clear all Sections, Chapters, Questions."""
+    Answer.query.delete()
     Question.query.delete()
     Chapter.query.delete()
-    Answer.query.delete()
-    fixtures: dict = load_fixture('chapters-questions.yml')
+    Section.query.delete()
+
+    db.session.commit()
+
+    print('DB cleared successfully') # noqa TOO1
+
+
+@click.command()
+@click.argument('fixture_name')
+@with_appcontext
+def load_section_questions(fixture_name: str):
+    """
+    Load selected Section, related Chapters and Questions.
+
+    Requires YML filename without '-questions.yml'
+    Example:
+    flask load-section-questions bars
+    """
+    fixtures: dict = load_fixture(f'{fixture_name}-questions.yml')
     db.session.add_all(
         Chapter(**chapter_fixture)
         for chapter_fixture in fixtures['chapters']
@@ -31,7 +49,7 @@ def load_chapters_questions():
 
     db.session.commit()
 
-    print('Sections, chapters and questions successful load in database.')  # noqa TOO1
+    print(f'{fixture_name}: chapters and questions successful load in database.')  # noqa TOO1
 
 
 @click.option('-l', '--login')

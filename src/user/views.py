@@ -3,6 +3,7 @@ from flask import (Blueprint, flash, redirect, render_template, request,
 from flask.views import MethodView
 from werkzeug.datastructures import MultiDict
 
+from src.extensions import db
 from src.mailers.send_mail import send_mail_for_aprove
 from src.user.auth import SessionAuth
 from src.user.decorators import login_required
@@ -92,7 +93,7 @@ class Login(MethodView):
                 flash('Завершите регистрацию, пройдя по ссылке, отправленной на почту', 'error')
                 return redirect(url_for('auth.login'))
             session['auth'] = SessionAuth(True, user)
-            return redirect(url_for('index.index'))
+            return redirect(url_for('index.home'))
         flash('Неверный логин или пароль!', 'error')
         return render_template(self.template, **{'form': form})
 
@@ -132,7 +133,7 @@ class Logout(MethodView):
     def get(self):
         auth = session.get('auth')
         auth.logout()
-        return redirect(url_for('index.index'))
+        return redirect(url_for('index.home'))
 
 
 class EmailAprove(MethodView):
@@ -144,7 +145,7 @@ class EmailAprove(MethodView):
     def get(self, token):
         user = User.verify_token_for_mail_aproved(token)
         if not user:
-            return redirect(url_for('index.index'))
+            return redirect(url_for('index.home'))
         return redirect(url_for('auth.login'))
 
 
@@ -186,6 +187,21 @@ class ChangeAvatar(BaseView):
         return render_template(self.template_name, **self.context)
 
     def post(self):
+        is_gravatar = self.user.gravatar
+        new_img = self.user.image
+        if request.form.get('avatar_img_str'):
+            new_img = request.form.get('avatar_img_str')
+        if request.form.get('chosen_avatar') == 'face':
+            is_gravatar = False
+        if request.form.get('default_avatar'):
+            is_gravatar = True
+            new_img = self.user.email
+        User.query.filter_by(login=session['auth'].user.login).update({
+            'image': new_img,
+            'gravatar': is_gravatar,
+        })
+        db.session.commit()
+
         return redirect(url_for('auth.change_avatar'))
 
 
