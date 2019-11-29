@@ -1,4 +1,5 @@
 const newImage = () => {
+  var MD5 = require('crypto-js/md5');
   const faceApi = 'https://api.adorable.io/avatars/';
   const gravatarApi = 'https://www.gravatar.com/avatar/';
   const size = 128;
@@ -10,7 +11,7 @@ const newImage = () => {
     newUrl = `${faceApi}${size}/${randomStr}.png`;
   }
   if (document.getElementById('chosen_avatar').value === 'gravatar') {
-    newUrl = `${gravatarApi}${randomStr}?d=identicon&s=${size}`;
+    newUrl = `${gravatarApi}${MD5(randomStr)}?d=identicon&s=${size}`;
   }
   ava.setAttribute('src', newUrl);
 };

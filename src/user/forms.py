@@ -1,5 +1,5 @@
-from wtforms import (BooleanField, Form, PasswordField, SelectField,
-                     StringField, validators)
+from wtforms import (BooleanField, Form, HiddenField, PasswordField,
+                     SelectField, StringField, validators)
 
 
 class BaseForm(Form):
@@ -172,4 +172,4 @@ class ChangeAvatarForm(Form):
         ('face', 'правдоподобный'),
     ])
     default_avatar = BooleanField('Аватар по умолчанию')
-    avatar_img_str = StringField('')
+    avatar_img_str = HiddenField('')
