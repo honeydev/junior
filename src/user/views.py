@@ -156,16 +156,30 @@ class ChangeAvatar(BaseView):
         self.form = ChangeAvatarForm
 
     def get(self):
-        self.context['form'] = self.form()
+        if self.user.gravatar == True:
+            avatar_type = 'gravatar'
+        else:
+            avatar_type = 'face'
+
+        user_data = MultiDict([
+            ('chosen_avatar', avatar_type),
+            ('avatar_img_str', self.user.image),
+        ])
+        self.context['form'] = self.form(user_data)
         return render_template(self.template_name, **self.context)
 
     def post(self):
-        is_gravatar = self.user.gravatar
+        # выбор типа аватарки - граватар или рожица
+        if request.form.get('chosen_avatar') == 'gravatar':
+            is_gravatar = True
+        if request.form.get('chosen_avatar') == 'face':
+            is_gravatar = False
         new_img = self.user.image
         if request.form.get('avatar_img_str'):
             new_img = request.form.get('avatar_img_str')
-        if request.form.get('chosen_avatar') == 'face':
-            is_gravatar = False
+
+        # если аватар по умолчанию -
+        # подтягивается граватар по email пользователя
         if request.form.get('default_avatar'):
             is_gravatar = True
             new_img = self.user.email
