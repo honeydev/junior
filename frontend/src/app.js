@@ -5,6 +5,7 @@ import '../css/style.css';
 import Vue from 'vue';
 import TestCase from './components/testCase';
 import TestCaseProgress from './components/testCaseProgress';
+import { newImage, btnRandom } from './avatarRandomizer';
 
 window.onload = () => {
   new Vue().$mount('#app');
@@ -19,3 +20,6 @@ window.onload = () => {
     }).$mount('#testCaseProgress');
   }
 };
+
+newImage();
+btnRandom();
