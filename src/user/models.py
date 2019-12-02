@@ -1,5 +1,3 @@
-# import enum
-import enum
 import os
 from hashlib import md5
 from time import time
@@ -10,12 +8,6 @@ from flask import flash, redirect, session, url_for
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from src.extensions import db
-
-
-# class AvatarType(enum.Enum):
-#     gravatar = 'gravatar'
-#     face = 'face'
-# false = False
 
 
 class User(db.Model):  # noqa: WPS230
@@ -58,15 +50,8 @@ class User(db.Model):  # noqa: WPS230
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
     image = db.Column(db.String(), default=email, nullable=True)
-    # gravatar = db.Column(db.Boolean(), default=True, nullable=True)
-    # avatar_types = (
-    #     'gravatar',
-    #     'face',
-    # )
-    # avatar_types_enum = ENUM(*avatar_types, name="avatar_types")
-    # gravatar = db.Column(avatar_types_enum, default='gravatar', nullable=True)
     gravatar = db.Column(
-        db.Enum('gravatar', 'face'),
+        db.Enum('gravatar', 'face', ''),
         default='gravatar',
         name='avatar_type',
         nullable=True,
