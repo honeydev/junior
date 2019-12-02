@@ -31,20 +31,7 @@
           {% else %}
             <form action="{{ url_for('auth.login') }}" method="post" class="form-horizontal">
               <div id="el1" class="panel-collapse collapse">
-                <div class="panel-body">
-                  {% for field in login_form %}
-                    <div class="row">
-                      <div class="mx-auto col-10 mt-5 mb-2">
-                        {{ field(class_='form-control', placeholder = field.label.text) }}
-                      </div>
-                    </div>
-                  {% endfor %}
-                  <div class="row">
-                    <div class="mx-auto col-auto my-3">
-                      <button type="submit" class="btn btn-success">Отправить</button>
-                    </div>
-                  </div>
-                </div>
+                {% include 'components/inc_login_form.jinja2' %}
               </div>
             </form>
           {% endif %}

@@ -81,3 +81,4 @@ class AnswerUsersRelations(BaseDateTimeModel):
         'User',
         back_populates='answer_relation',
     )
+    set_like = db.Column(db.Integer, default=0, nullable=True)

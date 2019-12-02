@@ -2,57 +2,87 @@
 {% block content %}
 
   <div class="container p-4">
-      <div class="card row my-1" style="background-color: #D8BFD8">
-        <div class="card-header h5">Раздел {{ question.chapter.name }} Вопрос #{{ question.order_number }}</div>
-        <div class="card-body">{{ question.text | safe }}</div>
-      </div>
+    <div class="card row my-1" style="background-color: #D8BFD8">
+      <div class="card-header h5">Раздел {{ question.chapter.name }} Вопрос #{{ question.order_number }}</div>
+      <div class="card-body">{{ question.text | safe }}</div>
+    </div>
 
 
     {% if answers %}
       {% for answer in answers %}
         <div class="row">
           <div class="card my-1 col">
-            <div class="card-header row" >
+            <div class="card-header row">
               <div class="mr-auto">
-                {{ like_count }}
-                <form action="{{ url_for('answers.answer', question_id=question.id) }}" method="post">
-                    <button class="btn-success"> + </button>
-                </form>
-                <form action="{{ url_for('answers.answer', question_id=question.id) }}" method="post">
-                    <button class="btn-danger"> - </button>
-                </form>
-                {% if answer.is_approve %} <img src="{{ url_for('static', filename='approve_symbol.jpg') }}" width="30" alt="Одобрено" title="Одобрено">{% endif %}
+                {{ answer.likes_count }}
+                <div class="panel-group" id="collapse-group">
+                  <div class="panel panel-default">
+                    <div class="panel-heading" style="cursor: pointer;">
+                      <h4 class="panel-title ">
+                        {% if not auth %}
+                          <div data-toggle="collapse" class="text-center" data-parent="#collapse-group"
+                               href="#el{{ answer.id }}">
+                            <button class="btn-success"> +</button>
+                            <button class="btn-danger"> --</button>
+                          </div>
+                        {% endif %}
+                      </h4>
+                      {% if auth %}
+                        <form action="{{ url_for('answers.likes_count', question_id=question.id,
+                                                                          answer_id=answer.id,
+                                                                          like='plus') }}" method="post">
+                          <button class="btn-success"> +</button>
+                        </form>
+                        <form action="{{ url_for('answers.likes_count', question_id=question.id,
+                                                                          answer_id=answer.id,
+                                                                          like='minus') }}" method="post">
+                          <button class="btn-danger"> --</button>
+                        </form>
+                      {% else %}
+                        <form action="{{ url_for('auth.login') }}" method="post" class="form-horizontal">
+                          <div id="el{{ answer.id }}" class="panel-collapse collapse">
+                            {% include 'components/inc_login_form.jinja2' %}
+                          </div>
+                        </form>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+
+                {% if answer.is_approve %}
+                  <img src="{{ url_for('static', filename='approve_symbol.jpg') }}" width="30" alt="Одобрено"
+                       title="Одобрено">{% endif %}
                 Ответ
               </div>
             </div>
             <div class="card-body">
               <blockquote class="blockquote mb-0">
-                 <div class="card-body">{{ answer.text | safe }}</div>
+                <div class="card-body">{{ answer.text | safe }}</div>
               </blockquote>
             </div>
           </div>
         </div>
       {% endfor %}
     {% else %}
-        <div class="row justify-content-center">
-          <div class="card my-1 col bg-light">
-            <div class="card-header">
-              :(
-            </div>
-            <div class="card-body">
-              <blockquote class="blockquote mb-0">
-                <div class="card-body">Ответов нет :( Вы можете стать первым.</div>
-              </blockquote>
-            </div>
+      <div class="row justify-content-center">
+        <div class="card my-1 col bg-light">
+          <div class="card-header">
+            :(
+          </div>
+          <div class="card-body">
+            <blockquote class="blockquote mb-0">
+              <div class="card-body">Ответов нет :( Вы можете стать первым.</div>
+            </blockquote>
           </div>
         </div>
+      </div>
     {% endif %}
-  {% if form.errors %}
-    <div class="row justify-content-center">
+    {% if form.errors %}
+      <div class="row justify-content-center">
         {% include 'components/form_error.jinja2' %}
-    </div>
-  {% endif %}
-  {% include 'components/answer_form.jinja2' %}
-    </div>
+      </div>
+    {% endif %}
+    {% include 'components/answer_form.jinja2' %}
+  </div>
 
 {% endblock %}
