@@ -28,7 +28,6 @@ class AnswerView(BaseView):
         self.get_context(question_id)
         self.context['form'] = AnswerForm()
         self.context['login_form'] = LoginForm()
-        print(self.context)
         return render_template(self.template_name, **self.context)
 
     def post(self, question_id):
