@@ -15,11 +15,20 @@ class AnswerView(BaseView):
         answers = Answer.query.filter_by(
             question_id=question_id,
         ).order_by('created')
+        if session.get('auth'):
+            user_id = session.get('auth').user.id
+            ans_user_relations = AnswerUsersRelations.query.filter_by(
+                user_id=user_id).values('answer_id', 'set_like')
+            ans_user_relations = {ans[0]: ans[1] for ans in ans_user_relations}
+        else:
+            ans_user_relations = None
+
         self.context.update(
             dict(
                 auth=session.get('auth'),
                 question=question,
                 answers=answers,
+                ans_user_relations=ans_user_relations,
             ),
         )
         return self.context

@@ -7,7 +7,6 @@
       <div class="card-body">{{ question.text | safe }}</div>
     </div>
 
-
     {% if answers %}
       {% for answer in answers %}
         <div class="row">
@@ -28,19 +27,24 @@
                         {% endif %}
                       </h4>
                       {% if auth %}
-                        <form action="{{ url_for('answers.likes_count', question_id=question.id,
-                                                                          answer_id=answer.id,
-                                                                          like='plus') }}" method="post">
-                          <button class="btn-success"> +</button>
-                        </form>
-                        <form action="{{ url_for('answers.likes_count', question_id=question.id,
-                                                                          answer_id=answer.id,
-                                                                          like='minus') }}" method="post">
-                          <button class="btn-danger"> --</button>
-                        </form>
+                        {% if answer.id in ans_user_relations.keys() %}
+                          {% for answer_id, set_like in ans_user_relations.items() %}
+                            {% if answer_id == answer.id %}
+                              {% if set_like < 0 %}
+                                {% include 'components/set_plus_like_form.jinja2' %}
+                              {% else %}
+                                {% include 'components/set_minus_like_form.jinja2' %}
+                              {% endif %}
+                            {% endif %}
+                          {% endfor %}
+                        {% else %}
+                          {% include 'components/set_plus_like_form.jinja2' %}
+                          {% include 'components/set_minus_like_form.jinja2' %}
+                        {% endif %}
                       {% else %}
                         <form action="{{ url_for('auth.login') }}" method="post" class="form-horizontal">
                           <div id="el{{ answer.id }}" class="panel-collapse collapse">
+                            Голосовать могут только зарегистрированные пользователи
                             {% include 'components/inc_login_form.jinja2' %}
                           </div>
                         </form>
@@ -51,7 +55,8 @@
 
                 {% if answer.is_approve %}
                   <img src="{{ url_for('static', filename='approve_symbol.jpg') }}" width="30" alt="Одобрено"
-                       title="Одобрено">{% endif %}
+                       title="Одобрено">
+                {% endif %}
                 Ответ
               </div>
             </div>
