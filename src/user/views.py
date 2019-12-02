@@ -43,6 +43,7 @@ class Registration(MethodView):
             middlename=middlename,
             lastname=lastname,
             image=image,
+            gravatar='gravatar',
         )
         if User.query.filter_by(login=login).first():
             flash('Логин уже занят.', 'error')
@@ -199,10 +200,7 @@ class ChangeAvatar(BaseView):
 
     def post(self):
         # выбор типа аватарки - граватар или рожица
-        if request.form.get('chosen_avatar') == 'gravatar':
-            is_gravatar = True
-        if request.form.get('chosen_avatar') == 'face':
-            is_gravatar = False
+        avatar_type = request.form.get('chosen_avatar')
         new_img = self.user.image
         if request.form.get('avatar_img_str'):
             new_img = request.form.get('avatar_img_str')
@@ -210,11 +208,11 @@ class ChangeAvatar(BaseView):
         # если аватар по умолчанию -
         # подтягивается граватар по email пользователя
         if request.form.get('default_avatar'):
-            is_gravatar = True
+            avatar_type = 'gravatar'
             new_img = self.user.email
         User.query.filter_by(login=session['auth'].user.login).update({
             'image': new_img,
-            'gravatar': is_gravatar,
+            'gravatar': avatar_type,
         })
         db.session.commit()
 

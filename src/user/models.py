@@ -22,8 +22,8 @@ class User(db.Model):  # noqa: WPS230
             firstname: str = '',
             middlename: str = '',
             lastname: str = '',
-            image: bytes = '',
-            gravatar: bool = True,
+            image: str = '',
+            gravatar: str = '',
             github_id: str = None,
             is_oauth: bool = False,
             is_superuser: bool = False,
@@ -49,8 +49,14 @@ class User(db.Model):  # noqa: WPS230
     firstname = db.Column(db.String(), nullable=True)
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
-    image = db.Column(db.String(), nullable=True)
-    gravatar = db.Column(db.Boolean(), default=True, nullable=True)
+    image = db.Column(db.String(), default=email, nullable=True)
+    gravatar = db.Column(
+        db.Enum('gravatar', 'face', ''),
+        default='gravatar',
+        name='avatar_type',
+        nullable=True,
+    )
+
     github_id = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False, nullable=False)
@@ -81,10 +87,10 @@ class User(db.Model):  # noqa: WPS230
             db.session.commit()
         else:
             image_str = self.image
-        if self.gravatar:
+        if not self.gravatar or self.gravatar == 'gravatar':
             digest = md5(image_str.encode('utf-8')).hexdigest()
             image_str = f'{os.getenv("GRAVATAR_API")}{digest}?d=identicon&s={size}'
-        else:
+        if self.gravatar == 'face':
             image_str = f'{os.getenv("FACE_API")}{size}/{self.image}.png'
 
         return image_str

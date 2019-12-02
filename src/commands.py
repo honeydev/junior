@@ -65,6 +65,7 @@ def create_admin_user(login, password, email):
         password=password.decode(),
         is_superuser=True,
         is_aproved=True,
+        gravatar='gravatar',
     )
     User.save(user)
 
