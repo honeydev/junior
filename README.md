@@ -12,3 +12,7 @@
 ## Администрирование:
 `flask create-admin-user --login=admin --password=admin1234 --email=admin@admin.ru
 ` <br>
+
+## Заполнение БД:
+`flask load-section-questions bars` - загрузить вопросы из секции "Барс".<br>
+`flask load-section-questions minimum` - загрузить вопросы из секции "Минимум".<br>
