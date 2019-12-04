@@ -5,6 +5,8 @@ from src.qa.models import Answer, AnswerUsersRelations, Question
 from src.user import LoginForm
 from src.views import BaseView
 
+from sqlalchemy import desc
+
 bp: Blueprint = Blueprint('answers', __name__, template_folder='templates')
 
 
@@ -14,12 +16,12 @@ class AnswerView(BaseView):
         question = Question.query.get(question_id)
         answers = Answer.query.filter_by(
             question_id=question_id,
-        ).order_by('created')
+        ).order_by(desc('likes_count'))
         if session.get('auth'):
             user_id = session.get('auth').user.id
             ans_user_relations = AnswerUsersRelations.query.filter_by(
                 user_id=user_id).values('answer_id', 'set_like')
-            ans_user_relations = {ans[0]: ans[1] for ans in ans_user_relations}
+            ans_user_relations = {answer_id: set_like for answer_id, set_like in ans_user_relations}
         else:
             ans_user_relations = None
 
@@ -50,6 +52,7 @@ class AnswerView(BaseView):
         answer = Answer(
             text=self.context['form'].text.data,
             question_id=question_id,
+            owner_id=session['auth'].user.id,
         )
         Answer.save(answer)
         return redirect(request.url)
@@ -58,28 +61,26 @@ class AnswerView(BaseView):
 class LikesCountView(BaseView):
 
     def post(self, question_id, answer_id, like):
-        answer = Answer.query.filter_by(
-            question_id=question_id,
-            id=answer_id).first()
-        ans_user_relations = AnswerUsersRelations.query.filter_by(
-            user_id=session['auth'].user.id,
-            answer_id=answer_id).first()
-        if not ans_user_relations:
+        try:
+            user_id = session['auth'].user.id
+        except AttributeError:
+            return redirect('/')
+        answer = Answer.query.get({"id": answer_id})
+        ans_user_relations = AnswerUsersRelations.query.filter_by(answer_id=answer_id, user_id=user_id)
+
+        if not ans_user_relations.count():
             ans_user_rel = AnswerUsersRelations(
-                user_id=session['auth'].user.id,
+                user_id=user_id,
                 answer_id=answer_id,
-                set_like=0,
+                set_like=bool(like),
             )
             AnswerUsersRelations.save(ans_user_rel)
-        ans_user_relations = AnswerUsersRelations.query.filter_by(
-            user_id=session['auth'].user.id,
-            answer_id=answer_id).first()
-        if like == 'plus' and ans_user_relations.set_like < 1:
-            answer.likes_count += 1
-            ans_user_relations.set_like = 1
-        if like == 'minus' and ans_user_relations.set_like > -1:
-            answer.likes_count -= 1
-            ans_user_relations.set_like = -1
+        else:
+            set_like = False if ans_user_relations.value('set_like') else True
+            ans_user_relations.update({'set_like': set_like})
+
+        answer.update_likes_count(like)
+
         return redirect(request.referrer)
 
 
@@ -92,7 +93,7 @@ bp.add_url_rule(
 
 
 bp.add_url_rule(
-    '/answer/<int:question_id>/<int:answer_id>/like=<string:like>/',
+    '/answer/<int:question_id>/<int:answer_id>/like=<int:like>/',
     view_func=LikesCountView.as_view(
         name='likes_count', template_name='answer.jinja2',
     ),
