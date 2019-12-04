@@ -6,53 +6,29 @@
       <div class="card-header h5">Раздел {{ question.chapter.name }} Вопрос #{{ question.order_number }}</div>
       <div class="card-body">{{ question.text | safe }}</div>
     </div>
-
+{#TODO: восстановить работу кнопок#}
     {% if answers %}
       {% for answer in answers %}
         <div class="row">
+          <div class="card my-1" style="max-width: 5rem;">
+            <div class="row no-gutters">
+              <div class="col-md-4" style="padding: 5px">
+                <img src="{{ answer.users.avatar(65) }}" class="rounded-circle mb-3" alt="...">
+              </div>
+            </div>
+            <div class="text-center">
+              <span class="d-block">
+              <button class="btn-success rounded-top"> +</button>
+              </span>
+              <span class="d-block">{{ answer.likes_count }}</span>
+              <span class="d-block">
+                <button class="btn-danger rounded-bottom"> --</button>
+              </span>
+            </div>
+          </div>
           <div class="card my-1 col">
             <div class="card-header row">
               <div class="mr-auto">
-                {{ answer.likes_count }}
-                <div class="panel-group" id="collapse-group">
-                  <div class="panel panel-default">
-                    <div class="panel-heading" style="cursor: pointer;">
-                      <h4 class="panel-title ">
-                        {% if not auth %}
-                          <div data-toggle="collapse" class="text-center" data-parent="#collapse-group"
-                               href="#el{{ answer.id }}">
-                            <button class="btn-success"> +</button>
-                            <button class="btn-danger"> --</button>
-                          </div>
-                        {% endif %}
-                      </h4>
-                      {% if auth %}
-                        {% if answer.id in ans_user_relations.keys() %}
-                          {% for answer_id, set_like in ans_user_relations.items() %}
-                            {% if answer_id == answer.id %}
-                              {% if set_like < 0 %}
-                                {% include 'components/set_plus_like_form.jinja2' %}
-                              {% else %}
-                                {% include 'components/set_minus_like_form.jinja2' %}
-                              {% endif %}
-                            {% endif %}
-                          {% endfor %}
-                        {% else %}
-                          {% include 'components/set_plus_like_form.jinja2' %}
-                          {% include 'components/set_minus_like_form.jinja2' %}
-                        {% endif %}
-                      {% else %}
-                        <form action="{{ url_for('auth.login') }}" method="post" class="form-horizontal">
-                          <div id="el{{ answer.id }}" class="panel-collapse collapse">
-                            Голосовать могут только зарегистрированные пользователи
-                            {% include 'components/inc_login_form.jinja2' %}
-                          </div>
-                        </form>
-                      {% endif %}
-                    </div>
-                  </div>
-                </div>
-
                 {% if answer.is_approve %}
                   <img src="{{ url_for('static', filename='approve_symbol.jpg') }}" width="30" alt="Одобрено"
                        title="Одобрено">
