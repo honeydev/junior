@@ -17,20 +17,20 @@ class AnswerView(BaseView):
         answers = Answer.query.filter_by(
             question_id=question_id,
         ).order_by(desc('likes_count'))
+        button_color = dict()
         if session.get('auth'):
             user_id = session.get('auth').user.id
             ans_user_relations = AnswerUsersRelations.query.filter_by(
                 user_id=user_id).values('answer_id', 'set_like')
             ans_user_relations = {answer_id: set_like for answer_id, set_like in ans_user_relations}
-        else:
-            ans_user_relations = None
+            button_color = {answer.id: answer.get_color_like_buttons(ans_user_relations) for answer in answers}
 
         self.context.update(
             dict(
                 auth=session.get('auth'),
                 question=question,
                 answers=answers,
-                ans_user_relations=ans_user_relations,
+                button_color=button_color,
             ),
         )
         return self.context
@@ -60,7 +60,7 @@ class AnswerView(BaseView):
 
 class LikesCountView(BaseView):
 
-    def post(self, question_id, answer_id, like):
+    def post(self, answer_id, like):
         try:
             user_id = session['auth'].user.id
         except AttributeError:
@@ -75,11 +75,14 @@ class LikesCountView(BaseView):
                 set_like=bool(like),
             )
             AnswerUsersRelations.save(ans_user_rel)
+            answer.update_likes_count(like, on_created=True)
         else:
-            set_like = False if ans_user_relations.value('set_like') else True
-            ans_user_relations.update({'set_like': set_like})
-
-        answer.update_likes_count(like)
+            if like and not ans_user_relations.value('set_like'):
+                ans_user_relations.update({'set_like': True})
+                answer.update_likes_count(like)
+            elif like == 0 and ans_user_relations.value('set_like'):
+                ans_user_relations.update({'set_like': False})
+                answer.update_likes_count(like)
 
         return redirect(request.referrer)
 
@@ -93,7 +96,7 @@ bp.add_url_rule(
 
 
 bp.add_url_rule(
-    '/answer/<int:question_id>/<int:answer_id>/like=<int:like>/',
+    '/answer/<int:answer_id>/like=<int:like>/',
     view_func=LikesCountView.as_view(
         name='likes_count', template_name='answer.jinja2',
     ),

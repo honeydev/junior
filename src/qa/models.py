@@ -1,3 +1,5 @@
+from flask import session
+
 from src.base.base_models import BaseDateTimeModel
 from src.extensions import db
 
@@ -65,11 +67,37 @@ class Answer(BaseDateTimeModel):
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     users = db.relationship("User", back_populates="answers")
 
-    def update_likes_count(self, like_status: int):
-        if like_status:
-            self.likes_count += 1
+    def update_likes_count(self, like_status: int, on_created=False):
+        if on_created:
+            if like_status:
+                self.likes_count += 1
+            else:
+                self.likes_count -= 1
         else:
-            self.likes_count -= 1
+            if like_status:
+                self.likes_count += 2
+            else:
+                self.likes_count -= 2
+
+    def get_color_like_buttons(self, ans_user_relations):
+        button_colors = {
+            True: {
+                'like': 'secondary" disabled',
+                'dislike': 'danger"'
+            },
+            False: {
+                'like': 'success"',
+                'dislike': 'secondary" disabled'
+            },
+            'default': {
+                'like': 'success"',
+                'dislike': 'danger"'
+            },
+        }
+        for answer_id, set_like in ans_user_relations.items():
+            if self.id == answer_id:
+                return button_colors[set_like]
+        return button_colors['default']
 
 
 class AnswerUsersRelations(BaseDateTimeModel):
@@ -90,3 +118,5 @@ class AnswerUsersRelations(BaseDateTimeModel):
         back_populates='answer_relation',
     )
     set_like = db.Column(db.Boolean, default=0, nullable=True)
+
+

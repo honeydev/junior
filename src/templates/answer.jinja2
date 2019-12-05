@@ -6,7 +6,7 @@
       <div class="card-header h5">Раздел {{ question.chapter.name }} Вопрос #{{ question.order_number }}</div>
       <div class="card-body">{{ question.text | safe }}</div>
     </div>
-{#TODO: восстановить работу кнопок#}
+
     {% if answers %}
       {% for answer in answers %}
         <div class="row">
@@ -16,15 +16,38 @@
                 <img src="{{ answer.users.avatar(65) }}" class="rounded-circle mb-3" alt="...">
               </div>
             </div>
+            {% if not auth %}
             <div class="text-center">
               <span class="d-block">
-              <button class="btn-outline-success rounded-top"> +</button>
+              <button class="btn-outline-success rounded-top"
+                      data-toggle="modal" data-target="#exampleModal"> +</button>
               </span>
               <span class="d-block">{{ answer.likes_count }}</span>
               <span class="d-block">
-                <button class="btn-outline-danger rounded-bottom"> --</button>
+                <button class="btn-outline-danger rounded-bottom mb-1"
+                        data-toggle="modal" data-target="#exampleModal"> --</button>
               </span>
             </div>
+            {% else %}
+              {{ ans_user_relations }}
+              <div class="text-center">
+              <span class="d-block">
+                <form action="{{ url_for('answers.likes_count', answer_id=answer.id,
+                                                                like=1) }}" method="post">
+                  <button class="rounded-top btn-outline-{{ button_color.get(answer.id).get('like') }}
+                   > +</button>
+                </form>
+              </span>
+              <span class="d-block">{{ answer.likes_count }}</span>
+              <span class="d-block">
+                <form action="{{ url_for('answers.likes_count', answer_id=answer.id,
+                                                                like=0) }}" method="post">
+                  <button class="rounded-bottom mb-1 btn-outline-{{ button_color.get(answer.id).get('dislike') }}
+                  > --</button>
+                </form>
+              </span>
+            </div>
+            {% endif %}
           </div>
           <div class="card my-1 col">
             <div class="card-header row">
@@ -65,5 +88,5 @@
     {% endif %}
     {% include 'components/answer_form.jinja2' %}
   </div>
-
+{% include "components/inc_login_modal.jinja2" %}
 {% endblock %}
