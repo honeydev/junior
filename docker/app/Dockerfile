@@ -6,7 +6,7 @@ RUN mkdir /app
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml poetry.lock docker/app/entrypoint.sh ./
 
 RUN echo $PATH
 
@@ -18,7 +18,11 @@ RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poet
 
 RUN $HOME/.poetry/bin/poetry install --no-dev
 
-EXPOSE 8080
-RUN poetry shell
-# CMD ["python", "gunicorn", "app:app", "-b", ":8080"]
+
+EXPOSE 5000
+
+# COPY . /app
+
+ENTRYPOINT [ "bash", "./docker/app/entrypoint.sh" ]
+# CMD ["python", "gunicorn", "app:app", "-b", "0.0.0.0:5000"]
 # CMD ["gunicorn", "app:app", "--bind", "unix:///tmp/nginx.socket"]
