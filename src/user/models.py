@@ -1,9 +1,10 @@
+import os
 from hashlib import md5
 from time import time
 
 import jwt
 from flask import current_app as junior_app
-from flask import flash, redirect, url_for
+from flask import flash, redirect, session, url_for
 from flask_bcrypt import check_password_hash, generate_password_hash
 
 from src.extensions import db
@@ -21,7 +22,8 @@ class User(db.Model):  # noqa: WPS230
             firstname: str = '',
             middlename: str = '',
             lastname: str = '',
-            image: bytes = '',
+            image: str = '',
+            gravatar: str = '',
             github_id: str = None,
             is_oauth: bool = False,
             is_superuser: bool = False,
@@ -34,6 +36,7 @@ class User(db.Model):  # noqa: WPS230
         self.middlename = middlename
         self.lastname = lastname
         self.image = image
+        self.gravatar = gravatar
         self.github_id = github_id
         self.is_oauth = is_oauth
         self.is_superuser = is_superuser
@@ -46,7 +49,14 @@ class User(db.Model):  # noqa: WPS230
     firstname = db.Column(db.String(), nullable=True)
     middlename = db.Column(db.String(), nullable=True)
     lastname = db.Column(db.String(), nullable=True)
-    image = db.Column(db.String(), nullable=True)
+    image = db.Column(db.String(), default=email, nullable=True)
+    gravatar = db.Column(
+        db.Enum('gravatar', 'face', ''),
+        default='gravatar',
+        name='avatar_type',
+        nullable=True,
+    )
+
     github_id = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False, nullable=False)
@@ -59,21 +69,31 @@ class User(db.Model):  # noqa: WPS230
         'TestQuestionUserRelation',
         back_populates='user',
     )
+    answer_relation = db.relationship(
+        'AnswerUsersRelations',
+        back_populates='user',
+    )
 
     def __str__(self):
         return '{0} <id {1}>'.format(self.login, self.id)
 
     def avatar(self, size):
 
+        # если нет строки с картинкой, используется email
+        # и обновляется БД - теперь в картинке email
         if self.image is None:
             image_str = self.email
-            User.query.filter_by(id=self.context['auth'].user.id).update({'image': self.email})
+            User.query.filter_by(id=session['auth'].user.id).update({'image': self.email})
             db.session.commit()
         else:
             image_str = self.image
-        digest = md5(image_str.encode('utf-8')).hexdigest()
+        if not self.gravatar or self.gravatar == 'gravatar':
+            digest = md5(image_str.encode('utf-8')).hexdigest()
+            image_str = f'{os.getenv("GRAVATAR_API")}{digest}?d=identicon&s={size}'
+        if self.gravatar == 'face':
+            image_str = f'{os.getenv("FACE_API")}{size}/{self.image}.png'
 
-        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+        return image_str
 
     def __repr__(self):
         return '<id {0}>'.format(self.id)
