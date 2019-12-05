@@ -17,36 +17,33 @@
               </div>
             </div>
             {% if not auth %}
-            <div class="text-center">
+              <div class="text-center">
               <span class="d-block">
               <button class="btn-outline-success rounded-top"
                       data-toggle="modal" data-target="#exampleModal"> +</button>
               </span>
-              <span class="d-block">{{ answer.likes_count }}</span>
-              <span class="d-block">
+                <span class="d-block">{{ answer.likes_count }}</span>
+                <span class="d-block">
                 <button class="btn-outline-danger rounded-bottom mb-1"
                         data-toggle="modal" data-target="#exampleModal"> --</button>
               </span>
-            </div>
+              </div>
             {% else %}
-              {{ ans_user_relations }}
               <div class="text-center">
               <span class="d-block">
                 <form action="{{ url_for('answers.likes_count', answer_id=answer.id,
                                                                 like=1) }}" method="post">
-                  <button class="rounded-top btn-outline-{{ button_color.get(answer.id).get('like') }}
-                   > +</button>
+                  <button class="rounded-top btn-outline-success" {{ button_status.get(answer.id).get('like') }}> +</button>
                 </form>
               </span>
-              <span class="d-block">{{ answer.likes_count }}</span>
-              <span class="d-block">
+                <span class="d-block">{{ answer.likes_count }}</span>
+                <span class="d-block">
                 <form action="{{ url_for('answers.likes_count', answer_id=answer.id,
                                                                 like=0) }}" method="post">
-                  <button class="rounded-bottom mb-1 btn-outline-{{ button_color.get(answer.id).get('dislike') }}
-                  > --</button>
+                  <button class="rounded-bottom mb-1 btn-outline-danger" {{ button_status.get(answer.id).get('dislike') }}> --</button>
                 </form>
               </span>
-            </div>
+              </div>
             {% endif %}
           </div>
           <div class="card my-1 col">
@@ -88,5 +85,5 @@
     {% endif %}
     {% include 'components/answer_form.jinja2' %}
   </div>
-{% include "components/inc_login_modal.jinja2" %}
+  {% include "components/inc_login_modal.jinja2" %}
 {% endblock %}

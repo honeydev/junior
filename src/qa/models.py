@@ -79,19 +79,19 @@ class Answer(BaseDateTimeModel):
             else:
                 self.likes_count -= 2
 
-    def get_color_like_buttons(self, ans_user_relations):
+    def get_buttons_status(self, ans_user_relations):
         button_colors = {
             True: {
-                'like': 'secondary" disabled',
-                'dislike': 'danger"'
+                'like': 'data-toggle="tooltip" data-placement="right" title="Вы уже лайкнули." disabled',
+                'dislike': ''
             },
             False: {
-                'like': 'success"',
-                'dislike': 'secondary" disabled'
+                'like': '',
+                'dislike': 'data-toggle="tooltip" data-placement="right" title="Вы уже дизлайкнули." disabled'
             },
             'default': {
-                'like': 'success"',
-                'dislike': 'danger"'
+                'like': '',
+                'dislike': ''
             },
         }
         for answer_id, set_like in ans_user_relations.items():
@@ -118,5 +118,3 @@ class AnswerUsersRelations(BaseDateTimeModel):
         back_populates='answer_relation',
     )
     set_like = db.Column(db.Boolean, default=0, nullable=True)
-
-

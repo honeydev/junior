@@ -3,6 +3,7 @@ from faker.generator import Generator
 from flask import url_for
 
 from src.qa.models import Answer, Chapter, Question
+from src.user.models import User
 from tests.base import BaseTest
 
 
@@ -67,14 +68,29 @@ class TestAnswerView(BaseTest):
         Question.save(question)
         question = Question.query.get(1)
 
+        user_username: str = factory.md5()[:8]
+        user_password: str = factory.password(8)
+        user_email: str = factory.email()
+        user_firstname: str = factory.first_name()
+        user = User(
+            login=user_username,
+            email=user_email,
+            password=user_password,
+            firstname=user_firstname,
+            is_aproved=True,
+        )
+        User.save(user)
+
         answer_text: str = factory.paragraph()
         answer_is_approve: bool = True
         answer_question_id: int = 1
+        answer_owner_id: int = 1
 
         answer = Answer(
             text=answer_text,
             is_approve=answer_is_approve,
             question_id=answer_question_id,
+            owner_id=answer_owner_id,
         )
         Answer.save(answer)
         answer = Answer.query.get(1)

@@ -1,11 +1,10 @@
 from flask import Blueprint, redirect, render_template, request, session
+from sqlalchemy import desc
 
 from src.qa.forms import AnswerForm
 from src.qa.models import Answer, AnswerUsersRelations, Question
 from src.user import LoginForm
 from src.views import BaseView
-
-from sqlalchemy import desc
 
 bp: Blueprint = Blueprint('answers', __name__, template_folder='templates')
 
@@ -17,20 +16,23 @@ class AnswerView(BaseView):
         answers = Answer.query.filter_by(
             question_id=question_id,
         ).order_by(desc('likes_count'))
-        button_color = dict()
+        buttons_status = dict()
         if session.get('auth'):
             user_id = session.get('auth').user.id
             ans_user_relations = AnswerUsersRelations.query.filter_by(
                 user_id=user_id).values('answer_id', 'set_like')
             ans_user_relations = {answer_id: set_like for answer_id, set_like in ans_user_relations}
-            button_color = {answer.id: answer.get_color_like_buttons(ans_user_relations) for answer in answers}
+            buttons_status = {
+                answer.id: answer.get_buttons_status(ans_user_relations)
+                for answer in answers
+            }
 
         self.context.update(
             dict(
                 auth=session.get('auth'),
                 question=question,
                 answers=answers,
-                button_color=button_color,
+                button_status=buttons_status,
             ),
         )
         return self.context
