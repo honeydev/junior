@@ -1,5 +1,3 @@
-from flask import session
-
 from src.base.base_models import BaseDateTimeModel
 from src.extensions import db
 
@@ -65,33 +63,38 @@ class Answer(BaseDateTimeModel):
         back_populates='answers',
     )
     owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    users = db.relationship("User", back_populates="answers")
+    users = db.relationship('User', back_populates='answers')
 
     def update_likes_count(self, like_status: int, on_created=False):
-        if on_created:
-            if like_status:
-                self.likes_count += 1
-            else:
-                self.likes_count -= 1
+        if on_created and like_status:
+            self.likes_count += 1
+        elif on_created and not like_status:
+            self.likes_count -= 1
+        elif not on_created and like_status:
+            self.likes_count += 2
         else:
-            if like_status:
-                self.likes_count += 2
-            else:
-                self.likes_count -= 2
+            self.likes_count -= 2
 
     def get_buttons_status(self, ans_user_relations):
+        bootstrap = [
+            'data-toggle="tooltip"',
+            'data - placement = "right"',
+            'title = "Вы уже проголосовали."',
+            'disabled',
+        ]
+
         button_colors = {
             True: {
-                'like': 'data-toggle="tooltip" data-placement="right" title="Вы уже лайкнули." disabled',
-                'dislike': ''
+                'like': ' '.join(bootstrap),
+                'dislike': '',
             },
             False: {
                 'like': '',
-                'dislike': 'data-toggle="tooltip" data-placement="right" title="Вы уже дизлайкнули." disabled'
+                'dislike': ' '.join(bootstrap),
             },
             'default': {
                 'like': '',
-                'dislike': ''
+                'dislike': '',
             },
         }
         for answer_id, set_like in ans_user_relations.items():

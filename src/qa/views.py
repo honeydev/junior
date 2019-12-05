@@ -67,10 +67,11 @@ class LikesCountView(BaseView):
             user_id = session['auth'].user.id
         except AttributeError:
             return redirect('/')
-        answer = Answer.query.get({"id": answer_id})
-        ans_user_relations = AnswerUsersRelations.query.filter_by(answer_id=answer_id, user_id=user_id)
+        answer = Answer.query.get({'id': answer_id})
+        ans_user_relations = AnswerUsersRelations.query.filter_by(
+            answer_id=answer_id, user_id=user_id)
 
-        if not ans_user_relations.count():
+        if not ans_user_relations.count():  # noqa:WPS504
             ans_user_rel = AnswerUsersRelations(
                 user_id=user_id,
                 answer_id=answer_id,
@@ -78,7 +79,7 @@ class LikesCountView(BaseView):
             )
             AnswerUsersRelations.save(ans_user_rel)
             answer.update_likes_count(like, on_created=True)
-        else:
+        else:   # noqa:WPS513
             if like and not ans_user_relations.value('set_like'):
                 ans_user_relations.update({'set_like': True})
                 answer.update_likes_count(like)

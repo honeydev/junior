@@ -73,7 +73,7 @@ class User(db.Model):  # noqa: WPS230
         'AnswerUsersRelations',
         back_populates='user',
     )
-    answers = db.relationship("Answer", back_populates="users", uselist=False)
+    answers = db.relationship('Answer', back_populates='users', uselist=False)
 
     def __str__(self):
         return '{0} <id {1}>'.format(self.login, self.id)
