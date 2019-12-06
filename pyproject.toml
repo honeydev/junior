@@ -5,7 +5,7 @@ description = ""
 authors = ["Alexey Lebedev <alexey.lebedev@fogstream.ru>"]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8.0"
 flask = "^1.1"
 flask-restplus = "^0.13.0"
 SQLAlchemy = "^1.3"

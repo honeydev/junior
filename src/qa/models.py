@@ -62,6 +62,18 @@ class Answer(BaseDateTimeModel):
         'AnswerUsersRelations',
         back_populates='answers',
     )
+    owner_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    users = db.relationship('User', back_populates='answers')
+
+    def update_likes_count(self, like_status: int, on_created=False):
+        if on_created and like_status:
+            self.likes_count += 1
+        elif on_created and not like_status:
+            self.likes_count -= 1
+        elif not on_created and like_status:
+            self.likes_count += 2
+        else:
+            self.likes_count -= 2
 
 
 class AnswerUsersRelations(BaseDateTimeModel):
@@ -81,3 +93,4 @@ class AnswerUsersRelations(BaseDateTimeModel):
         'User',
         back_populates='answer_relation',
     )
+    set_like = db.Column(db.Boolean, default=0, nullable=True)
