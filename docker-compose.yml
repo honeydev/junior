@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  flask:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - "./:/app"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - 80:80
+    depends_on:
+      - flask
+    volumes:
+      - "./:/app"
+  postgres:
+    image: postgres:12.1-alpine
+    environment:
+      POSTGRES_USER: junior
+      POSTGRES_PASSWORD: junior
+      POSTGRES_DB: junior
+      PGDATA: /data/postgres
+    volumes:
+      - /data/postgres:/data/postgres
+    restart: on-failure
