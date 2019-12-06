@@ -31,15 +31,13 @@
             {% else %}
               <div class="text-center">
               <span class="d-block">
-                <form action="{{ url_for('answers.likes_count', answer_id=answer.id,
-                                                                like=1) }}" method="post">
+                <form action="{{ url_for('answers.likes_count', answer_id=answer.id, like=1) }}" method="post">
                   <button class="rounded-top btn-outline-success" {{ button_status.get(answer.id).get('like') }}> +</button>
                 </form>
               </span>
                 <span class="d-block">{{ answer.likes_count }}</span>
                 <span class="d-block">
-                <form action="{{ url_for('answers.likes_count', answer_id=answer.id,
-                                                                like=0) }}" method="post">
+                <form action="{{ url_for('answers.likes_count', answer_id=answer.id, like=0) }}" method="post">
                   <button class="rounded-bottom mb-1 btn-outline-danger" {{ button_status.get(answer.id).get('dislike') }}> --</button>
                 </form>
               </span>

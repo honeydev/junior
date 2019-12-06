@@ -23,7 +23,7 @@ class AnswerView(BaseView):
                 user_id=user_id).values('answer_id', 'set_like')
             ans_user_relations = {answer_id: set_like for answer_id, set_like in ans_user_relations}
             buttons_status = {
-                answer.id: answer.get_buttons_status(ans_user_relations)
+                answer.id: get_buttons_status(ans_user_relations, answer)
                 for answer in answers
             }
 
@@ -88,6 +88,34 @@ class LikesCountView(BaseView):
                 answer.update_likes_count(like)
 
         return redirect(request.referrer)
+
+
+def get_buttons_status(ans_user_relations, answer):
+    bootstrap = [
+        'data-toggle="tooltip"',
+        'data - placement = "right"',
+        'title = "Вы уже проголосовали."',
+        'disabled',
+    ]
+
+    button_colors = {
+        True: {
+            'like': ' '.join(bootstrap),
+            'dislike': '',
+        },
+        False: {
+            'like': '',
+            'dislike': ' '.join(bootstrap),
+        },
+        'default': {
+            'like': '',
+            'dislike': '',
+        },
+    }
+    for answer_id, set_like in ans_user_relations.items():
+        if answer.id == answer_id:
+            return button_colors[set_like]
+    return button_colors['default']
 
 
 bp.add_url_rule(

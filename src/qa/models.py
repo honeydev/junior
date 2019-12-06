@@ -75,33 +75,6 @@ class Answer(BaseDateTimeModel):
         else:
             self.likes_count -= 2
 
-    def get_buttons_status(self, ans_user_relations):
-        bootstrap = [
-            'data-toggle="tooltip"',
-            'data - placement = "right"',
-            'title = "Вы уже проголосовали."',
-            'disabled',
-        ]
-
-        button_colors = {
-            True: {
-                'like': ' '.join(bootstrap),
-                'dislike': '',
-            },
-            False: {
-                'like': '',
-                'dislike': ' '.join(bootstrap),
-            },
-            'default': {
-                'like': '',
-                'dislike': '',
-            },
-        }
-        for answer_id, set_like in ans_user_relations.items():
-            if self.id == answer_id:
-                return button_colors[set_like]
-        return button_colors['default']
-
 
 class AnswerUsersRelations(BaseDateTimeModel):
     __tablename__ = 'answer_users_relations'
