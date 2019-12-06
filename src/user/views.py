@@ -94,6 +94,8 @@ class Login(MethodView):
                 flash('Завершите регистрацию, пройдя по ссылке, отправленной на почту', 'error')
                 return redirect(url_for('auth.login'))
             session['auth'] = SessionAuth(True, user)
+            if request.referrer and 'answer' in request.referrer:
+                return redirect(request.referrer)
             return redirect(url_for('index.home'))
         flash('Неверный логин или пароль!', 'error')
         return render_template(self.template, **{'form': form})
