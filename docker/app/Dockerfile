@@ -25,7 +25,7 @@ USER ${USER_NAME}
 
 RUN yarn install
 
-RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | POETRY_PREVIEW=1 python
 
 RUN ${POETRY_PATH}/poetry install --no-dev
 
