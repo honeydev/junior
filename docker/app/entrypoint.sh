@@ -1,6 +1,8 @@
 #!/bin/bash
 
-$HOME/.poetry/bin/poetry shell
-python --version
-ls
-$HOME/.poetry/bin/poetry run gunicorn --paste docker/app/gunicorn.ini -b :5000 --chdir ./
+$POETRY_PATH/poetry shell
+
+yarn build --mode development
+
+$POETRY_PATH/poetry run flask db upgrade
+$POETRY_PATH/poetry run gunicorn app:app --bind 0.0.0.0:5000

@@ -1,28 +1,34 @@
-FROM python:3.7-alpine
+FROM python:3.8-alpine
 
-RUN echo $PATH
-RUN echo $HOME
+ENV USER_NAME flask
+ENV POETRY_PATH /${USER_NAME}/.poetry/bin
+
+RUN addgroup -S appgroup
+
+RUN adduser -S ${USER_NAME} -G appgroup --home /${USER_NAME}
+
 RUN mkdir /app
+
+RUN chown -R ${USER_NAME} /app
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock docker/app/entrypoint.sh ./
-
-RUN echo $PATH
+COPY pyproject.toml poetry.lock docker/app/entrypoint.sh package.json yarn.lock ./
+COPY ./src/static ./src/static
 
 RUN apk add --no-cache --virtual .build-deps \
     ca-certificates gcc postgresql-dev linux-headers musl-dev \
-    libffi-dev jpeg-dev zlib-dev bash curl
+    libffi-dev jpeg-dev zlib-dev bash curl \
+    yarn
+
+USER ${USER_NAME}
+
+RUN yarn install
 
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 
-RUN $HOME/.poetry/bin/poetry install --no-dev
-
+RUN ${POETRY_PATH}/poetry install --no-dev
 
 EXPOSE 5000
 
-# COPY . /app
-
 ENTRYPOINT [ "bash", "./docker/app/entrypoint.sh" ]
-# CMD ["python", "gunicorn", "app:app", "-b", "0.0.0.0:5000"]
-# CMD ["gunicorn", "app:app", "--bind", "unix:///tmp/nginx.socket"]

@@ -25,6 +25,8 @@ gunicorn = "^19.9"
 marshmallow = "^3.2"
 flask-mail = "^0.9.1"
 PyJWT = "=1.6.1"
+paste = "^3.2"
+pastedeploy = "^2.0"
 
 [tool.poetry.dev-dependencies]
 Flask-Testing = "^0.7.1"

@@ -13,9 +13,13 @@ class Config:
     CSRF_ENABLED = os.getenv('CSRF_ENABLED', True)
     WTF_CSRF_SECRET_KEY = os.getenv('WTF_CSRF_SECRET_KEY', 'dsofpkoasodksap')
     SECRET_KEY = os.getenv('SECRET_KEY', 'SOSECRET')
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        'DATABASE_URL', 'postgres://junior:junior@127.0.0.1:5432/junior',
-    )
+    DB_ENGINE = os.getenv('ENGINE', 'postgres')
+    DB_USER = os.getenv('DB_USER', 'junior')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', 'junior')
+    DB_HOST = os.getenv('DB_HOST', 'localhost')
+    DB_NAME = os.getenv('DB_NAME', 'junior')
+    DB_PORT = os.getenv('DB_PORT', 5432)
+    SQLALCHEMY_DATABASE_URI = f'{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
