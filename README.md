@@ -16,3 +16,6 @@
 ## Заполнение БД:
 `flask load-section-questions bars` - загрузить вопросы из секции "Барс".<br>
 `flask load-section-questions minimum` - загрузить вопросы из секции "Минимум".<br>
+
+## Микросервисы:
+https://github.com/honeydev/junior-chat
