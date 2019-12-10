@@ -18,6 +18,7 @@ class Config:
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    OAUTH_BACKEND = os.getenv('OAUTH_BACKEND', '').split()
 
 
 class ProductionConfig(Config):
@@ -32,3 +33,4 @@ class DevelopConfig(Config):
 
 class TestConfig(ProductionConfig):
     SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL', 'sqlite://')
+    OAUTH_BACKEND = os.getenv('TEST_OAUTH_BACKEND', 'github').split()

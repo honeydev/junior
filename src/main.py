@@ -100,8 +100,6 @@ def register_shellcontext(app):
 
 
 def register_oauth(app):
-    app.config['OAUTH_BACKEND'] = os.getenv('OAUTH_BACKEND', '').split()
-
     for backend in app.config['OAUTH_BACKEND']:
         back = backend.upper()
         app.config[f'{back}_CLIENT_ID'] = os.getenv(f'{back}_CLIENT_ID', '')
