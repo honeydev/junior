@@ -2,10 +2,9 @@
 
 import os
 
-from flask import Flask, url_for
+from flask import Flask
 from flask_admin.contrib.sqla import ModelView
 from flask_admin.menu import MenuLink
-from flask_dance.contrib.github import make_github_blueprint
 from flask_mail import Mail
 from flask_sessionstore import SqlAlchemySessionInterface
 
@@ -13,7 +12,7 @@ from src import user
 from src.admin_forms import QAWYSIWYG, TestQuestionView
 from src.commands import (clear_questions, create_admin_user,
                           load_section_questions)
-from src.extensions import admin, bcrypt, db, migrate, sess
+from src.extensions import admin, bcrypt, db, migrate, oauth, sess
 from src.qa.models import Answer, AnswerUsersRelations, Question, Section
 from src.qa.views import bp as qa_bp
 from src.settings import DevelopConfig
@@ -22,6 +21,8 @@ from src.test_cases import (TestAnswer, TestCase, TestQuestion,
 from src.test_cases.views import bp as test_cases_bp
 from src.user import User
 from src.user.auth import auth_hook
+from src.user.oauth import register_oauth_backend
+from src.user.views_oauth import bp as oauth_bp
 from src.views import bp as index_bp
 
 
@@ -30,7 +31,7 @@ def create_app(config=DevelopConfig):
     app = Flask(
         __name__.split('.')[0],
         static_url_path='/static',
-        static_folder=f'{config.PROJECT_PATH}/src/static'
+        static_folder=f'{config.PROJECT_PATH}/src/static',
     )
     app.url_map.strict_slashes = False
     app.config.from_object(config)
@@ -39,7 +40,7 @@ def create_app(config=DevelopConfig):
     register_shellcontext(app)
     register_adminpanel(app)
     register_sessions(app)
-    register_github_oauth(app)
+    register_oauth(app)
     register_before_hooks(app)
     register_commands(app)
     register_mail_settings(app)
@@ -79,6 +80,7 @@ def register_sessions(app):
 
 def register_blueprints(app):
     app.register_blueprint(user.views.bp)
+    app.register_blueprint(oauth_bp)
     app.register_blueprint(index_bp)
     app.register_blueprint(qa_bp)
     app.register_blueprint(test_cases_bp)
@@ -97,11 +99,16 @@ def register_shellcontext(app):
     app.shell_context_processor(shell_context)
 
 
-def register_github_oauth(app):
-    app.config['GITHUB_OAUTH_CLIENT_ID'] = os.environ.get('GITHUB_OAUTH_CLIENT_ID')
-    app.config['GITHUB_OAUTH_CLIENT_SECRET'] = os.environ.get('GITHUB_OAUTH_CLIENT_SECRET')
-    github_bp = make_github_blueprint(scope='read:user,user:email', redirect_to='auth.login_oauth')
-    app.register_blueprint(github_bp, url_prefix='/login')
+def register_oauth(app):
+    app.config['OAUTH_BACKEND'] = os.getenv('OAUTH_BACKEND', '').split()
+
+    for backend in app.config['OAUTH_BACKEND']:
+        back = backend.upper()
+        app.config[f'{back}_CLIENT_ID'] = os.getenv(f'{back}_CLIENT_ID', '')
+        app.config[f'{back}_CLIENT_SECRET'] = os.getenv(f'{back}_CLIENT_SECRET', '')
+        register_oauth_backend(backend, oauth)
+
+    oauth.init_app(app)
 
 
 def register_before_hooks(app):
@@ -116,20 +123,15 @@ def register_commands(app):
 
 def register_mail_settings(app):
     mail = Mail(app)
-    app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER",
-                                               'smtp.googlemail.com')
-    app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT",
-                                                 587))
-    app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS",
-                                                True)
-    app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME",
-                                                 'fogstream.khb@gmail.com')
-    app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD",
-                                                 '123456789')
-    app.config["ADMINS"] = os.environ.get("ADMINS", ['admin@gmail.com'])
+    app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')
+    app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
+    app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', True)
+    app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', 'fogstream.khb@gmail.com')
+    app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', '123456789')
+    app.config['ADMINS'] = os.environ.get('ADMINS', ['admin@gmail.com'])
     return mail
 
 
 def register_secret(app):
-    app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY",
+    app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY',
                                               'mysupersecretkey')

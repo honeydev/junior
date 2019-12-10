@@ -1,3 +1,4 @@
+from authlib.integrations.flask_client import OAuth
 from flask_admin import Admin
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
@@ -41,3 +42,4 @@ admin = Admin(
     name='junior', template_mode='bootstrap3', index_view=CustomAdminView(),
 )
 sess = Session()
+oauth = OAuth()
