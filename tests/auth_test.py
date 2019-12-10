@@ -4,8 +4,9 @@ from faker import Faker
 from faker.generator import Generator
 from flask import url_for
 
-from src.user.auth import GithubAuth
+from src.user.auth import SessionAuth
 from src.user.models import User
+from src.user.oauth import adapt_remote_profile
 from tests.base import BaseTest
 from tests.mocks import get_github_profile_mock
 from tests.test_uttils import load_yaml_fixture
@@ -34,15 +35,15 @@ class TestRegistrationView(BaseTest):
 class TestGithubAuthRedirect(BaseTest):
 
     def test(self):
-        response = self.client.get(url_for('github.login'))
+        response = self.client.get(url_for('oauth.login', **{'service': 'github'}))
         self.assert_status(response, int(HTTPStatus.FOUND))
 
 
 class TestGithubAuthCreateNewUser(BaseTest):
 
     def test(self):
-        github_profile: dict = get_github_profile_mock()
-        github_auth: GithubAuth = GithubAuth.create(github_profile)
+        github_profile: dict = adapt_remote_profile('github', get_github_profile_mock())
+        github_auth: SessionAuth = SessionAuth.create_from_oauth('github', github_profile)
         user: User = github_auth.user
         self.assertEqual(user.email, github_profile['email'])
         self.assertEqual(user.login, github_profile['login'])
@@ -62,12 +63,14 @@ class TestGithubAuthWithExistUser(BaseTest):
         self.user.save()
 
     def test(self):
-        github_auth: GithubAuth = GithubAuth.create({
-            'email': self.user.email,
-            'login': self.user.login,
-            'id': self.user.github_id,
-        })
+        oauth_auth: SessionAuth = SessionAuth.create_from_oauth(
+            'github',
+            {
+                'email': self.user.email,
+                'login': self.user.login,
+                'id': self.user.github_id,
+            })
 
-        self.assertTrue(github_auth.user.email, self.user.email)
-        self.assertTrue(github_auth.user.login, self.user.login)
-        self.assertTrue(github_auth.user.id, self.user.id)
+        self.assertTrue(oauth_auth.user.email, self.user.email)
+        self.assertTrue(oauth_auth.user.login, self.user.login)
+        self.assertTrue(oauth_auth.user.id, self.user.id)
