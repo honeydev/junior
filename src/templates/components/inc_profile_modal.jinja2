@@ -1,0 +1,43 @@
+<div class="modal fade" id="profileModal{{ answer.users.id }}" tabindex="-1" role="document" aria-labelledby="profileModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="profileModalLabel">Профиль пользователя {{ answer.users }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" action="" method="post">
+          <div class="form-group">
+            <div class="row">
+              <div class="mx-auto col-auto">
+                <img class="rounded mx-auto d-block my-3" src="{{ answer.users.avatar(65) }}"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Логин:</label>
+              {{ answer.users.login }}
+            </div>
+            <div class="form-group">
+              <label>Email:</label>
+              {{ answer.users.email }}
+            </div>
+            <div class="form-group">
+              <label>Фамилия:</label>
+              {{ answer.users.lastname }}
+            </div>
+            <div class="form-group">
+              <label>Имя:</label>
+              {{ answer.users.firstname }}
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

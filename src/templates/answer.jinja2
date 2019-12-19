@@ -6,16 +6,18 @@
       <div class="card-header h5">Раздел {{ question.chapter.name }} Вопрос #{{ question.order_number }}</div>
       <div class="card-body">{{ question.text | safe }}</div>
     </div>
-
     {% if answers %}
       {% for answer in answers %}
         <div class="row">
           <div class="card my-1" style="max-width: 5rem;">
             <div class="row no-gutters">
               <div class="col-md-4" style="padding: 5px">
-                <img src="{{ answer.users.avatar(65) }}" class="rounded-circle mb-3" alt="...">
+                <a href="" data-toggle="modal" data-target="#profileModal{{ answer.users.id }}" >
+                  <img src="{{ answer.users.avatar(65) }}" class="rounded-circle mb-3" alt="...">
+                </a>
               </div>
             </div>
+            {% include "components/inc_profile_modal.jinja2" %}
             {% if not auth %}
               <div class="text-center">
               <span class="d-block">
@@ -84,4 +86,6 @@
     {% include 'components/answer_form.jinja2' %}
   </div>
   {% include "components/inc_login_modal.jinja2" %}
+
+
 {% endblock %}
