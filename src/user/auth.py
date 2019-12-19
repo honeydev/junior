@@ -1,74 +1,36 @@
-from http import HTTPStatus
-
-from flask import current_app as junior_app
 from flask import session
-from flask_dance.contrib.github import github
 
 from src.user.models import User
-from src.user.uttils import get_or_create_user_through_oauth
+from src.user.oauth import get_or_create_user_through_oauth
 
 
 def auth_hook() -> None:
 
-    current_session: SessionAuth or bool = session.get('auth', False)
-
-    if github.authorized and not session.get('oauth_link', False):
-        session['auth'] = GithubAuth.create(github.get('user').json())
-    else:
-        current_session or session.update(dict(auth=SessionAuth(False)))  # noqa WPS428
+    session['auth'] = session.get('auth') if session.get('auth', False) else SessionAuth(False)
 
 
-class BaseAuth:
+class SessionAuth:
 
-    def __init__(self, auth: bool, user: User = None, ouath_data: dict = None):
+    def __init__(self, auth: bool, user: User = None):
         self.auth: bool = auth
-        self.ouath_data: dict = ouath_data
         self._user: User = user
 
     def __bool__(self) -> bool:
         return self.auth
 
     def logout(self) -> None:
+        session['oauth_link'] = False
+        session['oauth_new'] = False
         session['auth'] = SessionAuth(False)
 
     @property
     def user(self) -> User:
         return User.query.get(self._user.id)
 
-
-class SessionAuth(BaseAuth):
-
-    @property
-    def is_oauth(self) -> bool:
-        return False
-
-
-class GithubAuth(BaseAuth):
-
-    @property
-    def is_oauth(self) -> bool:
-        return True
-
-    def logout(self, github_client=github) -> None:
-
-        client_id: str = github_client.client_id
-        access_token: str = github_client.access_token
-        client_secret: str = github_client.blueprint.client_secret
-
-        response = github_client.delete(
-            f'/applications/{client_id}/grants/{access_token}',
-            auth=(client_id, client_secret))
-
-        if response.status_code != HTTPStatus.NO_CONTENT:
-            raise RuntimeError('Github logout error')
-        # log out nethod writen in flask-dance documentation
-        del junior_app.blueprints['github'].token  # noqa WPS420
-
-        super().logout()
-
     @classmethod
-    def create(cls, github_profile: dict) -> BaseAuth:
-        user = get_or_create_user_through_oauth(github_profile, 'github')
+    def create_from_oauth(cls, service: str, profile: dict):
+        user = get_or_create_user_through_oauth(service, profile)
         if user:
-            return cls(True, user, github_profile)
+            # FIXME: без запроса к БД падает после создании юзера DetachedInstanceError
+            return cls(True, User.query.get(user.id))
         return cls(False)

@@ -1,0 +1,15 @@
+<div class="row justify-content-center py-4">
+  {% with user_services = auth.user.get_oauth_dict().items() %}
+    {% for service, service_id in user_services  %}
+      <div class="col-lg-2 col-4">
+        {% if service_id %}
+            <div class="row justify-content-center p-1"><img src="{{ url_for('static', filename=service+'.png') }}" title="{{ service }}"></div>
+            <div class="row justify-content-center"><a href="{{ url_for('oauth.delink', **{'service': service}) }}" class="btn btn-outline-danger btn-sm">Отвязать</a></div>
+        {% else %}
+          <div class="row justify-content-center p-1"><img src="{{ url_for('static', filename=service+'.png') }}" title="{{ service }}"></div>
+          <div class="row justify-content-center"><a href="{{ url_for('oauth.link', **{'service': service}) }}" class="btn btn-outline-success btn-sm">Привязать</a></div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% endwith %}
+</div>

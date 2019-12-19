@@ -1,0 +1,9 @@
+<div class="row">
+  <div class="card mt-3 col-6 offset-3">
+    <div class="row justify-content-center py-4">
+      {% for service in oauth_backend  %}
+        <a href="{{ url_for('oauth.login', **{'service': service}) }}" style="display: inline-block; width: 32px; height: 32px; background-image: url({{ url_for('static', filename=service+'.png') }});" class="mx-1"></a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
