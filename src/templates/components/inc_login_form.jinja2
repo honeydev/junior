@@ -1,0 +1,14 @@
+<div class="panel-body">
+  {% for field in login_form %}
+    <div class="row">
+      <div class="mx-auto col-10 mt-5 mb-2">
+        {{ field(class_='form-control', placeholder = field.label.text) }}
+      </div>
+    </div>
+  {% endfor %}
+  <div class="row">
+    <div class="mx-auto col-auto my-3">
+      <button type="submit" class="btn btn-success">Отправить</button>
+    </div>
+  </div>
+</div>

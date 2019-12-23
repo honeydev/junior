@@ -11,7 +11,7 @@ def send_mail_for_aprove(user):
     )
 
     msg.html = render_template(
-        'email_aprove.html',
+        'user/email_aprove.html',
         user=user,
         token=user.get_token_for_mail_aproved(),
     )

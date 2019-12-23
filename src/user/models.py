@@ -25,6 +25,7 @@ class User(db.Model):  # noqa: WPS230
             image: str = '',
             gravatar: str = '',
             github_id: str = None,
+            yandex_id: str = None,
             is_oauth: bool = False,
             is_superuser: bool = False,
             is_aproved: bool = False,
@@ -38,6 +39,7 @@ class User(db.Model):  # noqa: WPS230
         self.image = image
         self.gravatar = gravatar
         self.github_id = github_id
+        self.yandex_id = yandex_id
         self.is_oauth = is_oauth
         self.is_superuser = is_superuser
         self.is_aproved = is_aproved
@@ -58,6 +60,7 @@ class User(db.Model):  # noqa: WPS230
     )
 
     github_id = db.Column(db.String(), nullable=True)
+    yandex_id = db.Column(db.String(), nullable=True)
     is_oauth = db.Column(db.Boolean, default=False, nullable=False)
     is_superuser = db.Column(db.Boolean, default=False, nullable=False)
     is_aproved = db.Column(db.Boolean, default=False, nullable=True)
@@ -73,6 +76,7 @@ class User(db.Model):  # noqa: WPS230
         'AnswerUsersRelations',
         back_populates='user',
     )
+    answers = db.relationship('Answer', back_populates='users', uselist=False)
 
     def __str__(self):
         return '{0} <id {1}>'.format(self.login, self.id)
@@ -118,6 +122,19 @@ class User(db.Model):  # noqa: WPS230
             {'user_id': self.id, 'exp': time() + expires_in},
             junior_app.config['SECRET_KEY'],
             algorithm='HS256').decode('utf-8')
+
+    def get_oauth_dict(self):
+        """Возвращает словарь сервисов OAuth, связанных с аккаунтом.
+
+        Если не связан, то в качестве ключа пустота.
+        """
+        backends = dict()
+        user_data = self.__dict__
+
+        for backend in junior_app.config['OAUTH_BACKEND']:
+            backends[backend] = user_data.get(f'{backend}_id', False)
+
+        return backends
 
     @classmethod
     def verify_token_for_mail_aproved(cls, token):
