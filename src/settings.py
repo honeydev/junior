@@ -19,7 +19,10 @@ class Config:
     DB_HOST = os.getenv('DB_HOST', 'localhost')
     DB_NAME = os.getenv('DB_NAME', 'junior')
     DB_PORT = os.getenv('DB_PORT', 5432)
-    SQLALCHEMY_DATABASE_URI = f'{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    DATABASE_URL = os.getenv('DATABASE_URL', None)
+    SQLALCHEMY_DATABASE_URI = DATABASE_URL if DATABASE_URL else (
+        f'{DB_ENGINE}://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+    )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROJECT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     OAUTH_BACKEND = os.getenv('OAUTH_BACKEND', '').split()
