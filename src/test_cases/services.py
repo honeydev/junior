@@ -1,44 +1,53 @@
 from src.extensions import db
 from src.test_cases.models import TestQuestionUserRelation
-from src.test_cases.schemas import UserTestCaseSchema
+from src.test_cases.schemas import TestQuestionUserRelationSchema
 from src.test_cases.uttils import flat_user_test_case
 
 
 class TestCaseService:
-    """Uset test case logic layer."""
+    """Сервис отвечающий за формирование данных тест-кейса."""
 
     def __init__(self, user, test_case):
         self.user = user
         self.test_case = test_case
 
-    def load_user_case(self):
-        """Return user test case relations."""
+    def load_user_case(self) -> tuple:
+        """Возвращает сформированные данные тест-кейса."""
+        self.select_test_case_questions_id()
         self.create_missing_relations()
-        schema = UserTestCaseSchema()
+        schema = TestQuestionUserRelationSchema()
 
-        return tuple(filter(
-            lambda question: question['test_case_id'] == self.test_case.id,
-            flat_user_test_case(schema.dump(self.user)),
-        ))
+        relations = TestQuestionUserRelation.query.filter(
+            TestQuestionUserRelation.id.in_(self.test_questions_id),
+            TestQuestionUserRelation.user == self.user,
+        )
 
-    def create_missing_relations(self):
+        return flat_user_test_case(schema.dump(relations, many=True))
 
-        questions_id = {
+    def select_test_case_questions_id(self):
+        """Делает выборку id вопросов относящихся к текущему тест-кейсу."""
+        self.test_questions_id = {
             test_question.id
             for test_question in self.test_case.test_questions
         }
 
+    def create_missing_relations(self):
+        """
+        Создает связи TestQuestionUserRelation.
+
+        В том случае, если он отстутсвует для текущего пользователя.
+        """
         user_question_relations = TestQuestionUserRelation.query.filter(
             TestQuestionUserRelation.user == self.user,
-            TestQuestionUserRelation.test_question_id.in_(questions_id),
-        ).all()
+            TestQuestionUserRelation.test_question_id.in_(self.test_questions_id),
+        )
 
         existed_relations_ids = {
             relation.test_question.id
             for relation in user_question_relations
         }
 
-        questions_without_relations = questions_id - existed_relations_ids
+        questions_without_relations = self.test_questions_id - existed_relations_ids
 
         new_relations = tuple(
             TestQuestionUserRelation(

@@ -2,7 +2,7 @@ from src.extensions import db
 
 
 class TestCase(db.Model):
-    """Question test cases set model."""
+    """Модель отвечающая за связь вопроса и вопросов тестовго задания."""
 
     __tablename__ = 'test_cases'
 
@@ -16,7 +16,7 @@ class TestCase(db.Model):
 
 
 class TestQuestion(db.Model):
-    """Question for test case."""
+    """Тестовый вопрос."""
 
     __tablename__ = 'test_questions'
 
@@ -37,7 +37,7 @@ class TestQuestion(db.Model):
 
 
 class TestQuestionUserRelation(db.Model):
-    """Relation with User and TestQuestion."""
+    """Связь тестового вопроса и пользователя."""
 
     __tablename__ = 'test_questions_users_relations'
 
@@ -62,6 +62,7 @@ class TestQuestionUserRelation(db.Model):
 
 
 class TestAnswer(db.Model):
+    """Ответ на тестовый вопрос."""
 
     __tablename__ = 'test_answers'
 
