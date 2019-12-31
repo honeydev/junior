@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class AnswerTypes(Enum):
+    """Типы ответов тестового вопроса."""
 
     RADIUS = 0
     CHECK_BOX = 1

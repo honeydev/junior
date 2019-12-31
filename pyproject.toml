@@ -5,7 +5,7 @@ description = ""
 authors = ["Alexey Lebedev <alexey.lebedev@fogstream.ru>"]
 
 [tool.poetry.dependencies]
-python = "^3.8.0"
+python = "^3.7.0"
 flask = "^1.1"
 flask-restplus = "^0.13.0"
 SQLAlchemy = "^1.3"
@@ -27,6 +27,7 @@ flask-mail = "^0.9.1"
 PyJWT = "=1.6.1"
 paste = "^3.2"
 pastedeploy = "^2.0"
+Authlib = "^0.13.0"
 
 [tool.poetry.dev-dependencies]
 Flask-Testing = "^0.7.1"
