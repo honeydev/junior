@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>{{ app_name }}</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    </head>
-    <body class="bg-dark">
-        {% block pre_navbar %}{% endblock %}
-        {% include 'navbar.jinja2'%}
-        {% block content %}{% endblock %}
-        <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
-        <div id="app"></div>
-    </body>
+  <head>
+    <title>{{ app_name }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  </head>
+  <body class="bg-dark">
+    {% block pre_navbar %}{% endblock %}
+    {% include 'navbar.jinja2'%}
+    {% block content %}{% endblock %}
+    {% include 'footer.jinja2' %}
+    <script src="{{ url_for('static', filename='dist/main.js') }}"></script>
+    <div id="app"></div>
+  </body>
 </html>
